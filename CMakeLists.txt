@@ -5,4 +5,4 @@ set(CMAKE_C_STANDARD 11)
 
 include_directories(src)
 
-add_executable(TP1-AEDS2 src/main.c src/arquivo.c src/lista.c src/processo.c)
+add_executable(TP1-AEDS2 src/main.c src/file/arquivo.c src/linkedlist/lista.c src/model/processo.c)

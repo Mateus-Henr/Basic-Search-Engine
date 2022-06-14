@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "arquivo.h"
+#include "file.h"
 
 bool readFile(char *filename)
 {

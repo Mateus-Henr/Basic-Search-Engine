@@ -1,6 +1,7 @@
 #include <stddef.h>
+#include "../linkedlist/linkedlist.h"
 
-#include "Hashtable.h"
+#include "hashtable.h"
 
 int hash(int value);
 
@@ -8,6 +9,7 @@ void initialiseHashtable(Hashtable *hashtable)
 {
     for (int i = 0; i < 7; i++)
     {
+        Lista list;
         hashtable->crewMember[i] = NULL;
     }
 

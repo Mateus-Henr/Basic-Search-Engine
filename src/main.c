@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <limits.h>
 
-#include "file/arquivo.h"
+#include "file/file.h"
 
+#define INPUT_FILES_PATH "../"
 #define FILE_ERROR "\nCouldn't open the file: '%s'.\n"
 
 void cleanStdin();
@@ -16,7 +17,7 @@ int main(void)
     {
         char input_filename[CHAR_MAX];
 
-        printf("Digite o nome do %s° arquivo: ", input_filename);
+        printf("Type the input filename: ");
         if (readFile(input_filename))
         {
             printf(FILE_ERROR, input_filename);

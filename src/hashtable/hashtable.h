@@ -1,17 +1,13 @@
 #include <stdbool.h>
 
-#include "CrewMember.h"
-
 typedef struct Hashtable
 {
-    CrewMember *crewMember[7];
+    LinkedList *linkedList;
     int size;
 } Hashtable;
 
 void initialiseHashtable(Hashtable *hashtable);
 
-bool insert(Hashtable *hashtable, CrewMember *crewMember);
-
-int getSize(Hashtable *hashtable);
+bool insert(Hashtable *hashtable, char *word);
 
 bool isFull(Hashtable *hashtable);

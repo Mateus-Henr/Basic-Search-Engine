@@ -2,7 +2,7 @@
 
 typedef struct PairNode
 {
-    long numberOfApearences;
-    long idDocument;
+    long numberOfOccurrences;
+    long documentID;
     struct PairNode *next;
 } PairNode;

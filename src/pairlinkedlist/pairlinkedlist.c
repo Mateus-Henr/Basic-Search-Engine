@@ -14,7 +14,7 @@ PairLinkedList *initialisePairLinkedList()
     return list;
 }
 
-bool pushPair(PairLinkedList *list)
+bool pushPair(PairLinkedList *list, long documentID)
 {
     struct PairNode *node = (PairNode *) malloc(sizeof(PairNode));
 

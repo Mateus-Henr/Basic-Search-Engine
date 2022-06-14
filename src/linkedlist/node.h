@@ -1,7 +1,5 @@
 #include "pairlinkedlist/pairlinkedlist.h"
 
-#include "linkedlist.h"
-
 typedef struct Node
 {
     char *word;

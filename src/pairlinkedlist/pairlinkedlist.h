@@ -10,7 +10,7 @@ typedef struct
 
 PairLinkedList *initialisePairLinkedList();
 
-bool pushPair(PairLinkedList *list);
+bool pushPair(PairLinkedList *list, long documentID);
 
 bool isPairLinkedListEmpty(PairLinkedList *list);
 

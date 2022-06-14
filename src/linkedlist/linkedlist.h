@@ -10,9 +10,9 @@ typedef struct
 
 void initialiseLinkedList(LinkedList *list);
 
-bool push(LinkedList *list, char *word);
+bool push(LinkedList *list, const char *word, long documentID);
 
-bool remove(LinkedList *list, char *word);
+bool removeFromList(LinkedList *list, char *word);
 
 unsigned int getSize(LinkedList *list);
 

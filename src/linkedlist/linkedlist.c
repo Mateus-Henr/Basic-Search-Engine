@@ -1,12 +1,10 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <string.h>
-#include "node.h"
-#include "pairlinkedlist/pairlinkedlist.h"
 
 #include "linkedlist.h"
 
-struct Node *searchNodeOrLastElement(Node *head, char *word);
+struct Node *searchNode(Node *head, const char *word, long documentID);
 
 void initialiseLinkedList(LinkedList *list)
 {
@@ -15,25 +13,58 @@ void initialiseLinkedList(LinkedList *list)
     list->size = 0;
 }
 
-bool push(LinkedList *list, char *word)
+bool push(LinkedList *list, const char *word, long documentID)
 {
-    struct Node *foundNode = searchNodeOrLastElement(list->head, word);
+    struct Node *foundNode = searchNode(list->head, word, documentID);
 
     if (!foundNode)
     {
-        struct Node *nodeToadd = (Node *) malloc(sizeof(Node));
-        list->tail->next = nodeToadd;
+        struct Node *nodeToAdd = (Node *) malloc(sizeof(Node));
+
+        if (!nodeToAdd)
+        {
+            return false;
+        }
+
+        list->tail->next = nodeToAdd;
 
         list->tail->next->pairSet = initialisePairLinkedList();
+
+        if (!list->tail->next->pairSet)
+        {
+            return false;
+        }
+
+        pushPair(list->tail->next->pairSet, documentID);
     }
+    else
+    {
+        struct PairNode *nodeToSearch = foundNode->pairSet->head;
+
+        while (nodeToSearch && nodeToSearch->documentID == documentID)
+        {
+            nodeToSearch = nodeToSearch->next;
+        }
+
+        if (!nodeToSearch)
+        {
+            pushPair(foundNode->pairSet, documentID);
+        }
+        else
+        {
+            nodeToSearch->numberOfOccurrences = nodeToSearch->numberOfOccurrences + 1;
+        }
+    }
+
+    return true;
 }
 
-bool remove(LinkedList *list, char *word)
+bool removeFromList(LinkedList *list, char *word)
 {
 
 }
 
-struct Node *searchNodeOrLastElement(Node *head, char *word)
+struct Node *searchNode(Node *head, const char *word, long documentID)
 {
     while (head && strcmp(word, head->word) == 0)
     {

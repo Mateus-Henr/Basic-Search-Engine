@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <limits.h>
+#include "linkedlist/linkedlist.h"
 
 #include "file/file.h"
 
@@ -11,22 +12,27 @@ void cleanStdin();
 
 int main(void)
 {
-    bool loop = true;
+//    bool loop = true;
+//
+//    while (loop)
+//    {
+//        char input_filename[CHAR_MAX];
+//
+//        printf("Type the input filename: ");
+//        if (readFile(input_filename))
+//        {
+//            printf(FILE_ERROR, input_filename);
+//            cleanStdin();
+//            continue;
+//        }
+//
+//        loop = false;
+//    }
 
-    while (loop)
-    {
-        char input_filename[CHAR_MAX];
+    LinkedList list;
 
-        printf("Type the input filename: ");
-        if (readFile(input_filename))
-        {
-            printf(FILE_ERROR, input_filename);
-            cleanStdin();
-            continue;
-        }
-
-        loop = false;
-    }
+    initialiseLinkedList(&list);
+    push(&list, "Que", 1);
 
     return 0;
 }

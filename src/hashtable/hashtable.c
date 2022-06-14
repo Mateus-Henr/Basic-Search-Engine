@@ -1,31 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include <stddef.h>
-#include "../linkedlist/linkedlist.h"
 
 #include "hashtable.h"
 
-int hash(int value);
+int hash(Hashtable *hashtable, int value);
 
-void initialiseHashtable(Hashtable *hashtable)
+void initialiseHashtable(Hashtable *hashtable, int maxSize)
 {
-    hashtable->size = 0;
+    hashtable->linkedListsArray = (LinkedList **) malloc(sizeof(LinkedList *) * maxSize);
+
+    for (int i = 0; i < maxSize; i++)
+    {
+        hashtable->linkedListsArray[i] = NULL;
+    }
+
+    hashtable->maxSize = maxSize;
+    hashtable->numberOfElements = 0;
 }
 
-bool isFull(Hashtable *hashtable)
+bool insert(Hashtable *hashtable, const char *word, long documentID)
 {
-    return hashtable->size;
-}
+    int hashedKey = hash(hashtable, hashCode(word));
 
-bool insert(Hashtable *hashtable, char *word)
-{
-    if (isFull(hashtable))
+    if (!hashtable->linkedListsArray[hashedKey])
+    {
+        hashtable->linkedListsArray[hashedKey] = initialiseLinkedList();
+
+        if (!hashtable->linkedListsArray[hashedKey])
+        {
+            return false;
+        }
+    }
+
+    if (!push(hashtable->linkedListsArray[hashedKey], word, documentID))
     {
         return false;
     }
 
+    hashtable->numberOfElements++;
+
     return true;
 }
 
-int hash(int value)
+int hash(Hashtable *hashtable, int value)
 {
-    return value % 7;
+    return abs(value % hashtable->maxSize);
+}
+
+bool isHashtableEmpty(Hashtable *hashtable)
+{
+    return hashtable->numberOfElements == 0;
+}
+
+void printHashtable(Hashtable *hashtable)
+{
+    if (isHashtableEmpty(hashtable))
+    {
+        printf("EMPTY.\n");
+        return;
+    }
+
+    for (int i = 0; i < hashtable->maxSize; i++)
+    {
+        if (!hashtable->linkedListsArray[i])
+        {
+            printf("NULL\n");
+        }
+        else
+        {
+            printLinkedList(hashtable->linkedListsArray[i]);
+        }
+    }
 }

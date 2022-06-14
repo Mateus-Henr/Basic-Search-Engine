@@ -1,13 +1,17 @@
 #include <stdbool.h>
+#include "linkedlist/linkedlist.h"
 
 typedef struct Hashtable
 {
-    LinkedList *linkedList;
-    int size;
+    LinkedList **linkedListsArray;
+    int maxSize;
+    int numberOfElements;
 } Hashtable;
 
-void initialiseHashtable(Hashtable *hashtable);
+void initialiseHashtable(Hashtable *hashtable, int maxSize);
 
-bool insert(Hashtable *hashtable, char *word);
+bool insert(Hashtable *hashtable, const char *word, long documentID);
 
-bool isFull(Hashtable *hashtable);
+void printHashtable(Hashtable *hashtable);
+
+bool isHashtableEmpty(Hashtable *hashtable);

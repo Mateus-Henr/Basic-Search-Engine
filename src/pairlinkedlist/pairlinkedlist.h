@@ -5,7 +5,7 @@ typedef struct
 {
     PairNode *head;
     PairNode *tail;
-    unsigned int size;
+    int size;
 } PairLinkedList;
 
 PairLinkedList *initialisePairLinkedList();
@@ -13,4 +13,3 @@ PairLinkedList *initialisePairLinkedList();
 bool pushPair(PairLinkedList *list, long documentID);
 
 bool isPairLinkedListEmpty(PairLinkedList *list);
-

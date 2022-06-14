@@ -8,12 +8,14 @@ typedef struct
     unsigned int size;
 } LinkedList;
 
-void initialiseLinkedList(LinkedList *list);
+LinkedList *initialiseLinkedList();
 
 bool push(LinkedList *list, const char *word, long documentID);
 
-bool removeFromList(LinkedList *list, char *word);
+bool removeFromList(LinkedList *list, const char *word);
 
 unsigned int getSize(LinkedList *list);
 
-bool isEmpty(LinkedList *list);
+bool isLinkedListEmpty(LinkedList *list);
+
+void printLinkedList(LinkedList *list);

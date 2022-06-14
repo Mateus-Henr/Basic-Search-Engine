@@ -6,3 +6,7 @@ typedef struct Node
     PairLinkedList *pairSet;
     struct Node *next;
 } Node;
+
+struct Node *initialiseNode(const char *word, long documentID);
+
+int hashCode(const char *word);

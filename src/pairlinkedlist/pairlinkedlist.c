@@ -23,16 +23,22 @@ bool pushPair(PairLinkedList *list, long documentID)
         return false;
     }
 
-    if (!list->tail)
+    node->documentID = documentID;
+    node->numberOfOccurrences = 1;
+    node->next = NULL;
+
+    if (isPairLinkedListEmpty(list))
     {
-        list->tail = node;
         list->head = node;
+        list->tail = node;
     }
     else
     {
         list->tail->next = node;
         list->tail = node;
     }
+
+    list->size++;
 
     return true;
 }

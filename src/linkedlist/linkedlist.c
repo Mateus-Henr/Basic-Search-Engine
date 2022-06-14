@@ -1,70 +1,68 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include <string.h>
 
 #include "linkedlist.h"
 
-struct Node *searchNode(Node *head, const char *word, long documentID);
+struct Node *searchNode(struct Node *head, const char *word);
 
-void initialiseLinkedList(LinkedList *list)
+LinkedList *initialiseLinkedList()
 {
+    LinkedList *list = (LinkedList *) malloc(sizeof(LinkedList));
+
     list->head = NULL;
     list->tail = NULL;
     list->size = 0;
+
+    return list;
 }
 
 bool push(LinkedList *list, const char *word, long documentID)
 {
-    struct Node *foundNode = searchNode(list->head, word, documentID);
+    if (isLinkedListEmpty(list))
+    {
+        list->head = initialiseNode(word, documentID);
+        list->tail = list->head;
+
+        return list->tail;
+    }
+
+    struct Node *foundNode = searchNode(list->head, word);
 
     if (!foundNode)
     {
-        struct Node *nodeToAdd = (Node *) malloc(sizeof(Node));
+        list->tail->next = initialiseNode(word, documentID);
+        list->tail = list->tail->next;
 
-        if (!nodeToAdd)
-        {
-            return false;
-        }
+        return list->tail->next;
+    }
 
-        list->tail->next = nodeToAdd;
+    struct PairNode *nodeToSearch = foundNode->pairSet->head;
 
-        list->tail->next->pairSet = initialisePairLinkedList();
+    while (nodeToSearch && nodeToSearch->documentID != documentID)
+    {
+        nodeToSearch = nodeToSearch->next;
+    }
 
-        if (!list->tail->next->pairSet)
-        {
-            return false;
-        }
-
-        pushPair(list->tail->next->pairSet, documentID);
+    if (!nodeToSearch)
+    {
+        pushPair(foundNode->pairSet, documentID);
     }
     else
     {
-        struct PairNode *nodeToSearch = foundNode->pairSet->head;
-
-        while (nodeToSearch && nodeToSearch->documentID == documentID)
-        {
-            nodeToSearch = nodeToSearch->next;
-        }
-
-        if (!nodeToSearch)
-        {
-            pushPair(foundNode->pairSet, documentID);
-        }
-        else
-        {
-            nodeToSearch->numberOfOccurrences = nodeToSearch->numberOfOccurrences + 1;
-        }
+        nodeToSearch->numberOfOccurrences++;
     }
 
     return true;
 }
 
-bool removeFromList(LinkedList *list, char *word)
+bool removeFromList(LinkedList *list, const char *word)
 {
-
+    return true;
 }
 
-struct Node *searchNode(Node *head, const char *word, long documentID)
+struct Node *searchNode(struct Node *head, const char *word)
 {
     while (head && strcmp(word, head->word) == 0)
     {
@@ -79,7 +77,20 @@ unsigned int getSize(LinkedList *list)
     return list->size;
 }
 
-bool isEmpty(LinkedList *list)
+bool isLinkedListEmpty(LinkedList *list)
 {
     return list->head == NULL;
+}
+
+void printLinkedList(LinkedList *list)
+{
+    struct Node *currNode = list->head;
+
+    while (currNode)
+    {
+        printf("%s => ", currNode->word);
+        currNode = currNode->next;
+    }
+
+    printf("\n");
 }

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <limits.h>
-#include "linkedlist/linkedlist.h"
+#include "hashtable//hashtable.h"
 
 #include "file/file.h"
 
@@ -29,10 +29,12 @@ int main(void)
 //        loop = false;
 //    }
 
-    LinkedList list;
+    Hashtable hashtable;
 
-    initialiseLinkedList(&list);
-    push(&list, "Que", 1);
+    initialiseHashtable(&hashtable, 10);
+    insert(&hashtable, "Mateus", 10);
+
+    printHashtable(&hashtable);
 
     return 0;
 }

@@ -35,7 +35,7 @@ bool push(LinkedList *list, const char *word, long documentID)
         list->tail->next = initialiseNode(word, documentID);
         list->tail = list->tail->next;
 
-        return list->tail->next;
+        return list->tail;
     }
 
     struct PairNode *nodeToSearch = foundNode->pairSet->head;
@@ -64,7 +64,7 @@ bool removeFromList(LinkedList *list, const char *word)
 
 struct Node *searchNode(struct Node *head, const char *word)
 {
-    while (head && strcmp(word, head->word) == 0)
+    while (head && strcmp(word, head->word) != 0)
     {
         head = head->next;
     }

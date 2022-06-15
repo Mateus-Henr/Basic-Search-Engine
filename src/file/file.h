@@ -1,3 +1,3 @@
 #include <stdbool.h>
 
-bool readFile(char *filename);
+bool readFileIntoHashtable(Hashtable *hashtable, int number, char *filename);

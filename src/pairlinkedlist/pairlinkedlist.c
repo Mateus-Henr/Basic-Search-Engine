@@ -4,6 +4,7 @@
 
 #include "pairlinkedlist.h"
 
+
 PairLinkedList *initialisePairLinkedList()
 {
     PairLinkedList *list = (PairLinkedList *) malloc(sizeof(PairLinkedList));
@@ -14,6 +15,7 @@ PairLinkedList *initialisePairLinkedList()
 
     return list;
 }
+
 
 bool pushPair(PairLinkedList *list, long documentID)
 {
@@ -40,13 +42,27 @@ bool pushPair(PairLinkedList *list, long documentID)
     return true;
 }
 
+
+int getPairLinkedListSize(PairLinkedList *list)
+{
+    return list->size;
+}
+
+
 bool isPairLinkedListEmpty(PairLinkedList *list)
 {
     return list->head == NULL;
 }
 
+
 void printPairLinkedList(PairLinkedList *list)
 {
+    if (isPairLinkedListEmpty(list))
+    {
+        printf("EMPTY.\n");
+        return;
+    }
+
     struct PairNode *currNode = list->head;
 
     while (currNode)

@@ -3,6 +3,7 @@
 
 #include "pairnode.h"
 
+
 PairNode *initialisePairNode(long documentID)
 {
     struct PairNode *node = (PairNode *) malloc(sizeof(PairNode));

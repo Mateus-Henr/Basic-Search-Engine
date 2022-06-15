@@ -3,9 +3,11 @@
 #include "hashtable/hashtable.h"
 #include "file/file.h"
 
-#define FILE_ERROR "\nCouldn't open the file: '%s'.\n\n"
+#define FILE_ERROR "\nCouldn't open the file: '%s' or error tying to insert into the hashtable.\n\n"
 #define INVALID_VALUE "\nInvalid value.\n\n"
 
+
+// Function prototype
 void cleanStdin();
 
 
@@ -27,7 +29,6 @@ int main(void)
 
         int currFile = 0;
         Hashtable hashtable;
-
         initialiseHashtable(&hashtable, 10);
 
         while (currFile < numberOfFiles)
@@ -37,7 +38,7 @@ int main(void)
             printf("Type the %d° input filename:", currFile + 1);
             scanf("%s", input_filename);
 
-            if (!readFileIntoHashtable(&hashtable, currFile + 1, input_filename))
+            if (!readFileIntoHashtable(&hashtable, input_filename, currFile + 1))
             {
                 printf(FILE_ERROR, input_filename);
                 cleanStdin();
@@ -48,12 +49,13 @@ int main(void)
         }
 
         printHashtable(&hashtable);
-
+        freeMemory(&hashtable);
         loop = false;
     }
 
     return 0;
 }
+
 
 void cleanStdin(void)
 {

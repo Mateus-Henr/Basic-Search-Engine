@@ -4,7 +4,10 @@
 
 #include "hashtable.h"
 
+
+// Function prototype
 int hash(Hashtable *hashtable, int value);
+
 
 void initialiseHashtable(Hashtable *hashtable, int maxSize)
 {
@@ -18,6 +21,7 @@ void initialiseHashtable(Hashtable *hashtable, int maxSize)
     hashtable->maxSize = maxSize;
     hashtable->numberOfElements = 0;
 }
+
 
 bool insert(Hashtable *hashtable, const char *word, long documentID)
 {
@@ -43,15 +47,18 @@ bool insert(Hashtable *hashtable, const char *word, long documentID)
     return true;
 }
 
+
 int hash(Hashtable *hashtable, int value)
 {
     return abs(value % hashtable->maxSize);
 }
 
+
 bool isHashtableEmpty(Hashtable *hashtable)
 {
     return hashtable->numberOfElements == 0;
 }
+
 
 void printHashtable(Hashtable *hashtable)
 {
@@ -71,5 +78,46 @@ void printHashtable(Hashtable *hashtable)
         {
             printLinkedList(hashtable->linkedListsArray[i]);
         }
+    }
+}
+
+
+void freeMemory(Hashtable *hashtable)
+{
+    if (hashtable->linkedListsArray)
+    {
+        for (int i = 0; i < hashtable->maxSize; i++)
+        {
+            if (hashtable->linkedListsArray[i])
+            {
+                struct Node *currNode = hashtable->linkedListsArray[i]->head;
+
+                while (currNode)
+                {
+                    if (currNode->word)
+                    {
+                        free(currNode->word);
+                    }
+
+                    if (currNode->pairSet)
+                    {
+                        struct PairNode *currPairNode = currNode->pairSet->head;
+
+                        while (currPairNode)
+                        {
+                            struct PairNode *pairNodeToDelete = currPairNode;
+                            currPairNode = currPairNode->next;
+                            free(pairNodeToDelete);
+                        }
+                    }
+
+                    struct Node *nodeToDelete = currNode;
+                    currNode = currNode->next;
+                    free(nodeToDelete);
+                }
+            }
+        }
+
+        free(hashtable->linkedListsArray);
     }
 }

@@ -5,7 +5,7 @@ typedef struct
 {
     Node *head;
     Node *tail;
-    unsigned int size;
+    int size;
 } LinkedList;
 
 LinkedList *initialiseLinkedList();

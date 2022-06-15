@@ -8,9 +8,12 @@
 
 #define INPUT_FILES_PATH "../files/"
 
+
+// Function prototype
 void reformatString(char *dest, char *src);
 
-bool readFileIntoHashtable(Hashtable *hashtable, int number, char *filename)
+
+bool readFileIntoHashtable(Hashtable *hashtable, char *filename, int fileNumber)
 {
     char filePath[strlen(INPUT_FILES_PATH) + strlen(filename) + 1];
 
@@ -32,11 +35,15 @@ bool readFileIntoHashtable(Hashtable *hashtable, int number, char *filename)
         char reformattedString[strlen(string) + 1];
         reformatString(reformattedString, string);
 
-        insert(hashtable, reformattedString, number);
+        if (!insert(hashtable, reformattedString, fileNumber))
+        {
+            return false;
+        }
     }
 
     return true;
 }
+
 
 void reformatString(char *dest, char *src)
 {

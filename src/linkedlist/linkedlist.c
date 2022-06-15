@@ -5,7 +5,10 @@
 
 #include "linkedlist.h"
 
+
+// Function prototype
 struct Node *searchNode(struct Node *head, const char *word);
+
 
 LinkedList *initialiseLinkedList()
 {
@@ -17,6 +20,7 @@ LinkedList *initialiseLinkedList()
 
     return list;
 }
+
 
 bool push(LinkedList *list, const char *word, long documentID)
 {
@@ -47,20 +51,20 @@ bool push(LinkedList *list, const char *word, long documentID)
 
     if (!nodeToSearch)
     {
-        pushPair(foundNode->pairSet, documentID);
+        return pushPair(foundNode->pairSet, documentID);
     }
-    else
-    {
-        nodeToSearch->numberOfOccurrences++;
-    }
+
+    nodeToSearch->numberOfOccurrences++;
 
     return true;
 }
+
 
 bool removeFromList(LinkedList *list, const char *word)
 {
     return true;
 }
+
 
 struct Node *searchNode(struct Node *head, const char *word)
 {
@@ -72,18 +76,27 @@ struct Node *searchNode(struct Node *head, const char *word)
     return head;
 }
 
-unsigned int getSize(LinkedList *list)
+
+int getLinkedListSize(LinkedList *list)
 {
     return list->size;
 }
+
 
 bool isLinkedListEmpty(LinkedList *list)
 {
     return list->head == NULL;
 }
 
+
 void printLinkedList(LinkedList *list)
 {
+    if (isLinkedListEmpty(list))
+    {
+        printf("EMPTY.\n");
+        return;
+    }
+
     struct Node *currNode = list->head;
 
     while (currNode)
@@ -91,6 +104,7 @@ void printLinkedList(LinkedList *list)
         printf("%s ", currNode->word);
         printPairLinkedList(currNode->pairSet);
         printf("=> ");
+
         currNode = currNode->next;
     }
 

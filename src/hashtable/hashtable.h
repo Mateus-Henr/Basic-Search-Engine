@@ -15,3 +15,5 @@ bool insert(Hashtable *hashtable, const char *word, long documentID);
 void printHashtable(Hashtable *hashtable);
 
 bool isHashtableEmpty(Hashtable *hashtable);
+
+void freeMemory(Hashtable *hashtable);

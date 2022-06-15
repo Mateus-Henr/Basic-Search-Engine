@@ -4,6 +4,7 @@
 
 #include "node.h"
 
+
 struct Node *initialiseNode(const char *word, long documentID)
 {
     struct Node *nodeToAdd = (struct Node *) malloc(sizeof(struct Node));
@@ -14,6 +15,13 @@ struct Node *initialiseNode(const char *word, long documentID)
     }
 
     nodeToAdd->word = (char *) malloc(sizeof(strlen(word)) + 1);
+
+    if (!nodeToAdd->word)
+    {
+        free(nodeToAdd);
+        return NULL;
+    }
+
     strcpy(nodeToAdd->word, word);
     nodeToAdd->pairSet = initialisePairLinkedList();
     nodeToAdd->next = NULL;
@@ -24,10 +32,16 @@ struct Node *initialiseNode(const char *word, long documentID)
         return NULL;
     }
 
-    pushPair(nodeToAdd->pairSet, documentID);
+    if (!pushPair(nodeToAdd->pairSet, documentID))
+    {
+        free(nodeToAdd->pairSet);
+        free(nodeToAdd);
+        return NULL;
+    }
 
     return nodeToAdd;
 }
+
 
 int hashCode(const char *word)
 {

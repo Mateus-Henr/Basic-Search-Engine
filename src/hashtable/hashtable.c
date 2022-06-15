@@ -72,10 +72,11 @@ void printHashtable(Hashtable *hashtable)
     {
         if (!hashtable->linkedListsArray[i])
         {
-            printf("NULL\n");
+            printf("[%d] NULL\n", i);
         }
         else
         {
+            printf("[%d] ", i);
             printLinkedList(hashtable->linkedListsArray[i]);
         }
     }

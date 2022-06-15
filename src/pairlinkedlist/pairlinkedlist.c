@@ -67,7 +67,7 @@ void printPairLinkedList(PairLinkedList *list)
 
     while (currNode)
     {
-        printf("<N = %ld | ID = %ld> ", currNode->numberOfOccurrences, currNode->documentID);
+        printf("| <N = %ld | ID = %ld> ", currNode->numberOfOccurrences, currNode->documentID);
         currNode = currNode->next;
     }
 }

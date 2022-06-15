@@ -103,7 +103,7 @@ void printLinkedList(LinkedList *list)
     {
         printf("%s ", currNode->word);
         printPairLinkedList(currNode->pairSet);
-        printf("=> ");
+        printf("|   =>   ");
 
         currNode = currNode->next;
     }

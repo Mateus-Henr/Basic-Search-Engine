@@ -6,3 +6,5 @@ typedef struct PairNode
     long documentID;
     struct PairNode *next;
 } PairNode;
+
+PairNode *initialisePairNode(long documentID);

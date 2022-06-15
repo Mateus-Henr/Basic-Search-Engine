@@ -4,6 +4,7 @@
 #include "file/file.h"
 
 #define FILE_ERROR "\nCouldn't open the file: '%s'.\n\n"
+#define INVALID_VALUE "\nInvalid value.\n\n"
 
 void cleanStdin();
 
@@ -14,33 +15,42 @@ int main(void)
 
     while (loop)
     {
-        char input_filename[CHAR_MAX];
+        int numberOfFiles = 0;
 
-        printf("Type the input filename:");
-        scanf("%s", input_filename);
+        printf("Type the number of files:");
+        if (!scanf("%d", &numberOfFiles) || numberOfFiles <= 0)
+        {
+            printf(INVALID_VALUE);
+            cleanStdin();
+            continue;
+        }
 
+        int currFile = 0;
         Hashtable hashtable;
 
         initialiseHashtable(&hashtable, 10);
 
-        if (!readFileIntoHashtable(&hashtable, 1, input_filename))
+        while (currFile < numberOfFiles)
         {
-            printf(FILE_ERROR, input_filename);
-            cleanStdin();
-            continue;
+            char input_filename[CHAR_MAX];
+
+            printf("Type the %d° input filename:", currFile + 1);
+            scanf("%s", input_filename);
+
+            if (!readFileIntoHashtable(&hashtable, currFile + 1, input_filename))
+            {
+                printf(FILE_ERROR, input_filename);
+                cleanStdin();
+                continue;
+            }
+
+            currFile++;
         }
 
         printHashtable(&hashtable);
 
         loop = false;
     }
-
-//    Hashtable hashtable;
-//
-//    initialiseHashtable(&hashtable, 10);
-//    insert(&hashtable, "Mateus", 10);
-//
-//    printHashtable(&hashtable);
 
     return 0;
 }

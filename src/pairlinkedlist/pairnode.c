@@ -1,3 +1,20 @@
+#include <stdlib.h>
+#include <stddef.h>
+
 #include "pairnode.h"
 
-PairNode initialisePairNode(PairNode *pairNode);
+PairNode *initialisePairNode(long documentID)
+{
+    struct PairNode *node = (PairNode *) malloc(sizeof(PairNode));
+
+    if (!node)
+    {
+        return NULL;
+    }
+
+    node->documentID = documentID;
+    node->numberOfOccurrences = 1;
+    node->next = NULL;
+
+    return node;
+}

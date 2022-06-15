@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
 
@@ -16,16 +17,12 @@ PairLinkedList *initialisePairLinkedList()
 
 bool pushPair(PairLinkedList *list, long documentID)
 {
-    struct PairNode *node = (PairNode *) malloc(sizeof(PairNode));
+    struct PairNode *node = initialisePairNode(documentID);
 
     if (!node)
     {
         return false;
     }
-
-    node->documentID = documentID;
-    node->numberOfOccurrences = 1;
-    node->next = NULL;
 
     if (isPairLinkedListEmpty(list))
     {
@@ -46,4 +43,15 @@ bool pushPair(PairLinkedList *list, long documentID)
 bool isPairLinkedListEmpty(PairLinkedList *list)
 {
     return list->head == NULL;
+}
+
+void printPairLinkedList(PairLinkedList *list)
+{
+    struct PairNode *currNode = list->head;
+
+    while (currNode)
+    {
+        printf("<N = %ld | ID = %ld> ", currNode->numberOfOccurrences, currNode->documentID);
+        currNode = currNode->next;
+    }
 }

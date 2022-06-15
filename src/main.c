@@ -18,34 +18,19 @@ int main(void)
     while (loop)
     {
         int numberOfFiles = 0;
+        char input_filename[CHAR_MAX];
 
-        printf("Type the number of files:");
-        if (!scanf("%d", &numberOfFiles) || numberOfFiles <= 0)
-        {
-            printf(INVALID_VALUE);
-            cleanStdin();
-            continue;
-        }
+        printf("Type the input filename:");
+        scanf("%s", input_filename);
 
-        int currFile = 0;
         Hashtable hashtable;
         initialiseHashtable(&hashtable, 10);
 
-        while (currFile < numberOfFiles)
+        if (!readFilesNames(&hashtable, input_filename))
         {
-            char input_filename[CHAR_MAX];
-
-            printf("Type the %d° input filename:", currFile + 1);
-            scanf("%s", input_filename);
-
-            if (!readFileIntoHashtable(&hashtable, input_filename, currFile + 1))
-            {
-                printf(FILE_ERROR, input_filename);
-                cleanStdin();
-                continue;
-            }
-
-            currFile++;
+            printf(FILE_ERROR, input_filename);
+            cleanStdin();
+            continue;
         }
 
         printHashtable(&hashtable);

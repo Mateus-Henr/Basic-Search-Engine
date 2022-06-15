@@ -96,8 +96,8 @@ void printLinkedList(LinkedList *list)
     while (currNode)
     {
         printf("%s ", currNode->word);
-        printPairLinkedList(currNode->pairSet);
-        printf("|   =>   ");
+//        printPairLinkedList(currNode->pairSet);
+//        printf("|   =>   ");
 
         currNode = currNode->next;
     }

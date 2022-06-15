@@ -31,7 +31,7 @@ int main(void)
             continue;
         }
 
-        printHashtable(&hashtable);
+        convertToLinkedList(&hashtable);
         freeMemory(&hashtable);
         loop = false;
     }

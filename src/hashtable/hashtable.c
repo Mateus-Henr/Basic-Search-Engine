@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <stddef.h>
 
 #include "hashtable.h"
@@ -7,6 +8,8 @@
 
 // Function prototype
 int hash(Hashtable *hashtable, int value);
+
+int compareInAscendingOrder(const char *word, const char *anotherWord);
 
 
 void initialiseHashtable(Hashtable *hashtable, int maxSize)
@@ -45,6 +48,71 @@ bool insert(Hashtable *hashtable, const char *word, long documentID)
     hashtable->numberOfElements++;
 
     return true;
+}
+
+bool insertSorted(LinkedList *list, Node *node)
+{
+    struct Node *nodeCopy = initialisePointerFromExistent(node);
+
+    if (isLinkedListEmpty(list))
+    {
+        list->head = nodeCopy;
+        list->tail = nodeCopy;
+
+        return true;
+    }
+
+    if (compareInAscendingOrder(list->tail->word, nodeCopy->word) == -1)
+    {
+        list->tail->next = nodeCopy;
+        list->tail = nodeCopy;
+    }
+    else if (compareInAscendingOrder(list->head->word, nodeCopy->word) == 1)
+    {
+        nodeCopy->next = list->head;
+        list->head = nodeCopy;
+    }
+    else
+    {
+        struct Node *currNode = list->head;
+
+        while (currNode->next && compareInAscendingOrder(currNode->next->word, nodeCopy->word) != 1)
+        {
+            currNode = currNode->next;
+        }
+
+        nodeCopy->next = currNode->next;
+        currNode->next = nodeCopy;
+    }
+
+    return true;
+}
+
+int compareInAscendingOrder(const char *word, const char *anotherWord)
+{
+    while (*word && *anotherWord)
+    {
+        if (*word > *anotherWord)
+        {
+            return 1;
+        }
+        else if (*word < *anotherWord)
+        {
+            return -1;
+        }
+
+        word++;
+        anotherWord++;
+    }
+
+    if (*word)
+    {
+        return 1;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 
@@ -121,4 +189,32 @@ void freeMemory(Hashtable *hashtable)
 
         free(hashtable->linkedListsArray);
     }
+}
+
+
+int getHashtableSize(Hashtable *hashtable)
+{
+    return hashtable->numberOfElements;
+}
+
+
+void convertToLinkedList(Hashtable *hashtable)
+{
+    LinkedList *list = initialiseLinkedList();
+
+    for (int i = 0; i < hashtable->maxSize; i++)
+    {
+        if (hashtable->linkedListsArray[i])
+        {
+            struct Node *currNode = hashtable->linkedListsArray[i]->head;
+
+            while (currNode)
+            {
+                insertSorted(list, currNode);
+                currNode = currNode->next;
+            }
+        }
+    }
+
+    printLinkedList(list);
 }

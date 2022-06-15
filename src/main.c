@@ -24,14 +24,14 @@ int main(void)
         Hashtable hashtable;
         initialiseHashtable(&hashtable, 10);
 
-        if (!readFilesNames(&hashtable, input_filename))
+        if (!readFilenames(&hashtable, input_filename))
         {
             printf(FILE_ERROR, input_filename);
             cleanStdin();
             continue;
         }
 
-        convertToLinkedList(&hashtable);
+        sortAndPrintHashtable(&hashtable);
         freeMemory(&hashtable);
         loop = false;
     }

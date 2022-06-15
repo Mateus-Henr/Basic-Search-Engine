@@ -5,12 +5,18 @@
 #include "hashtable.h"
 
 
-// Function prototype
+// Function prototypes.
 int hash(Hashtable *hashtable, int value);
 
-int compareInAscendingOrder(const char *word, const char *anotherWord);
+int compareAlphabetically(const char *word, const char *anotherWord);
 
 
+/*
+ *  Initialises hashtable struct.
+ *
+ *  @param     hashtable     pointer to Hashtable struct.
+ *  @param     maxSize       size for the array that backs the struct.
+ */
 void initialiseHashtable(Hashtable *hashtable, int maxSize)
 {
     hashtable->linkedListsArray = (LinkedList **) malloc(sizeof(LinkedList *) * maxSize);
@@ -25,6 +31,14 @@ void initialiseHashtable(Hashtable *hashtable, int maxSize)
 }
 
 
+/*
+ *  Inserts a new word into the hashtable.
+ *
+ *  @param     hashtable     pointer to Hashtable struct.
+ *  @param     word          word to be inserted.
+ *  @param     documentID    document's number (ID).
+ *  @return                  whether the operation was successful or not.
+ */
 bool insert(Hashtable *hashtable, const char *word, long documentID)
 {
     int hashedKey = hash(hashtable, hashCode(word));
@@ -49,6 +63,13 @@ bool insert(Hashtable *hashtable, const char *word, long documentID)
     return true;
 }
 
+/*
+ *  Inserts data into a linked list in a sorted fashion.
+ *  Note: This method is internally used to get data sorted.
+ *
+ *  @param     list     pointer to LinkedList struct.
+ *  @param     node     pointer to the node to be added.
+ */
 bool insertSorted(LinkedList *list, Node *node)
 {
     struct Node *nodeCopy = initialisePointerFromExistent(node);
@@ -61,12 +82,12 @@ bool insertSorted(LinkedList *list, Node *node)
         return true;
     }
 
-    if (compareInAscendingOrder(list->tail->word, nodeCopy->word) == -1)
+    if (compareAlphabetically(list->tail->word, nodeCopy->word) == -1)
     {
         list->tail->next = nodeCopy;
         list->tail = nodeCopy;
     }
-    else if (compareInAscendingOrder(list->head->word, nodeCopy->word) == 1)
+    else if (compareAlphabetically(list->head->word, nodeCopy->word) == 1)
     {
         nodeCopy->next = list->head;
         list->head = nodeCopy;
@@ -75,7 +96,7 @@ bool insertSorted(LinkedList *list, Node *node)
     {
         struct Node *currNode = list->head;
 
-        while (currNode->next && compareInAscendingOrder(currNode->next->word, nodeCopy->word) != 1)
+        while (currNode->next && compareAlphabetically(currNode->next->word, nodeCopy->word) != 1)
         {
             currNode = currNode->next;
         }
@@ -87,7 +108,14 @@ bool insertSorted(LinkedList *list, Node *node)
     return true;
 }
 
-int compareInAscendingOrder(const char *word, const char *anotherWord)
+
+/*
+ *  Compares one word against another character by character.
+ *
+ *  @param     word            first word to compare.
+ *  @param     anotherWord     second word to compare.
+ */
+int compareAlphabetically(const char *word, const char *anotherWord)
 {
     while (*word && *anotherWord)
     {
@@ -104,29 +132,40 @@ int compareInAscendingOrder(const char *word, const char *anotherWord)
         anotherWord++;
     }
 
-    if (*word)
-    {
-        return 1;
-    }
-    else
-    {
-        return -1;
-    }
+    return *word ? 1 : -1;
 }
 
 
+/*
+ *  Gets an index within the range of the hashtable array based on a hash code.
+ *
+ *  @param     hashtable     pointer to Hashtable struct.
+ *  @param     value         hash code value.
+ *  @return                  index for the hashtable array.
+ */
 int hash(Hashtable *hashtable, int value)
 {
     return abs(value % hashtable->maxSize);
 }
 
 
+/*
+ *  Checks if the hashtable is empty.
+ *
+ *  @param     hashtable     pointer to Hashtable struct.
+ *  @return                  whether the hashtable is empty or not.
+ */
 bool isHashtableEmpty(Hashtable *hashtable)
 {
     return hashtable->numberOfElements == 0;
 }
 
 
+/*
+ *  Prints the hashtable out.
+ *
+ *  @param     hashtable     pointer to Hashtable struct.
+ */
 void printHashtable(Hashtable *hashtable)
 {
     if (isHashtableEmpty(hashtable))
@@ -150,6 +189,11 @@ void printHashtable(Hashtable *hashtable)
 }
 
 
+/*
+ *  Deallocates structs that have been allocated dynamically.
+ *
+ *  @param     hashtable     pointer to Hashtable struct.
+ */
 void freeMemory(Hashtable *hashtable)
 {
     if (hashtable->linkedListsArray)
@@ -191,14 +235,31 @@ void freeMemory(Hashtable *hashtable)
 }
 
 
+/*
+ *  Gets the hashtable size.
+ *
+ *  @param     hashtable     pointer to Hashtable struct.
+ *  @return                  hashtable size.
+ */
 int getHashtableSize(Hashtable *hashtable)
 {
     return hashtable->numberOfElements;
 }
 
 
-void convertToLinkedList(Hashtable *hashtable)
+/*
+ *  Sorts and then prints the hashtable out.
+ *
+ *  @param     hashtable     pointer to Hashtable struct.
+ */
+void sortAndPrintHashtable(Hashtable *hashtable)
 {
+    if (isHashtableEmpty(hashtable))
+    {
+        printf("EMPTY.\n");
+        return;
+    }
+
     LinkedList *list = initialiseLinkedList();
 
     for (int i = 0; i < hashtable->maxSize; i++)

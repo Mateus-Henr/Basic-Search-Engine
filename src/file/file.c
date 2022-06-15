@@ -7,18 +7,26 @@
 #include "file.h"
 
 #define INPUT_FILES_PATH "../files/"
+#define FILE_ERROR "\nCouldn't open the file: '%s'\n\n"
 
 
-// Function prototype
+// Function prototype.
 void reformatString(char *dest, char *src);
 
 
-bool readFilesNames(Hashtable *hashtable, char *input_filename)
+/*
+ *  Reads filenames that contain input texts.
+ *
+ *  @param     hashtable         struct to Hashtable struct.
+ *  @param     inputFilename     input filename.
+ *  @return                      whether the operation was successful or not.
+ */
+bool readFilenames(Hashtable *hashtable, char *inputFilename)
 {
-    char filePath[strlen(INPUT_FILES_PATH) + strlen(input_filename) + 1];
+    char filePath[strlen(INPUT_FILES_PATH) + strlen(inputFilename) + 1];
 
     strcpy(filePath, INPUT_FILES_PATH);
-    strcat(filePath, input_filename);
+    strcat(filePath, inputFilename);
 
     FILE *file = fopen(filePath, "r");
 
@@ -29,7 +37,10 @@ bool readFilesNames(Hashtable *hashtable, char *input_filename)
 
     int numberOfFiles = 0;
 
-    fscanf(file, "%d", &numberOfFiles);
+    if (!fscanf(file, "%d", &numberOfFiles))
+    {
+        return false;
+    }
 
     for (int i = 0; i < numberOfFiles; i++)
     {
@@ -38,7 +49,7 @@ bool readFilesNames(Hashtable *hashtable, char *input_filename)
         fscanf(file, "%s", filename);
         if (!readFileIntoHashtable(hashtable, filename, i + 1))
         {
-            printf("Could read file '%s'", filename);
+            printf(FILE_ERROR, filename);
         }
     }
 
@@ -46,6 +57,14 @@ bool readFilesNames(Hashtable *hashtable, char *input_filename)
 }
 
 
+/*
+ *  Read text from file into the hashtable.
+ *
+ *  @param     hashtable     struct to Hashtable struct.
+ *  @param     filename      filename that contains the text.
+ *  @param     fileNumber    number of the file being read.
+ *  @return                  whether the operation was successful or not.
+ */
 bool readFileIntoHashtable(Hashtable *hashtable, char *filename, int fileNumber)
 {
     char filePath[strlen(INPUT_FILES_PATH) + strlen(filename) + 1];
@@ -78,6 +97,13 @@ bool readFileIntoHashtable(Hashtable *hashtable, char *filename, int fileNumber)
 }
 
 
+/*
+ *  Reformats string by removing punctuation and converting everything
+ *  to lower case.
+ *
+ *  @param     dest     destination string.
+ *  @param     src      source string.
+ */
 void reformatString(char *dest, char *src)
 {
     for (; *src; src++)

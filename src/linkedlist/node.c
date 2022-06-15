@@ -4,17 +4,6 @@
 
 #include "node.h"
 
-struct Node *initialisePointerFromExistent(struct Node *node)
-{
-    struct Node *copiedNode = (struct Node *) malloc(sizeof(struct Node));
-
-    copiedNode->word = node->word;
-    copiedNode->pairSet = node->pairSet;
-    copiedNode->next = NULL;
-
-    return copiedNode;
-}
-
 struct Node *initialiseNode(const char *word, long documentID)
 {
     struct Node *nodeToAdd = (struct Node *) malloc(sizeof(struct Node));
@@ -50,6 +39,18 @@ struct Node *initialiseNode(const char *word, long documentID)
     }
 
     return nodeToAdd;
+}
+
+
+struct Node *initialisePointerFromExistent(struct Node *node)
+{
+    struct Node *copiedNode = (struct Node *) malloc(sizeof(struct Node));
+
+    copiedNode->word = node->word;
+    copiedNode->pairSet = node->pairSet;
+    copiedNode->next = NULL;
+
+    return copiedNode;
 }
 
 

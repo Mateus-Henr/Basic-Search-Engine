@@ -1,5 +1,5 @@
 #include <stdbool.h>
 
-bool readFilesNames(Hashtable *hashtable, char *input_filename);
+bool readFilenames(Hashtable *hashtable, char *inputFilename);
 
 bool readFileIntoHashtable(Hashtable *hashtable, char *filename, int fileNumber);

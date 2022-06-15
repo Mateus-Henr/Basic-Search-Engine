@@ -10,6 +10,11 @@
 struct Node *searchNode(struct Node *head, const char *word);
 
 
+/*
+ *  Initialises linked list with default values.
+ *
+ *  @return         pointer for LinkedList struct dynamically allocated.
+ */
 LinkedList *initialiseLinkedList()
 {
     LinkedList *list = (LinkedList *) malloc(sizeof(LinkedList));
@@ -22,6 +27,14 @@ LinkedList *initialiseLinkedList()
 }
 
 
+/*
+ *  Pushes a new word into the linked list.
+ *
+ *  @param     list           pointer to LinkedList struct.
+ *  @param     word           word to be pushed.
+ *  @param     documentID     document's number (ID).
+ *  @return                   whether the operation was successful or not.
+ */
 bool push(LinkedList *list, const char *word, long documentID)
 {
     if (isLinkedListEmpty(list))
@@ -60,6 +73,13 @@ bool push(LinkedList *list, const char *word, long documentID)
 }
 
 
+/*
+ *  Searches for a node in a linked list.
+ *
+ *  @param     list     pointer to LinkedList struct.
+ *  @param     word     word to search for.
+ *  @return             pointer for the node if found or null.
+ */
 struct Node *searchNode(struct Node *head, const char *word)
 {
     while (head && strcmp(word, head->word) != 0)
@@ -71,18 +91,34 @@ struct Node *searchNode(struct Node *head, const char *word)
 }
 
 
+/*
+ *  Gets the linked list size.
+ *
+ *  @param     list     pointer to LinkedList struct.
+ *  @return             the list size.
+ */
 int getLinkedListSize(LinkedList *list)
 {
     return list->size;
 }
 
-
+/*
+ *  Checks if the linked list is empty.
+ *
+ *  @param     list     pointer to LinkedList struct.
+ *  @return             whether the linked list is empty or not.
+ */
 bool isLinkedListEmpty(LinkedList *list)
 {
     return list->head == NULL;
 }
 
 
+/*
+ *  Prints the linked list out.
+ *
+ *  @param     list     pointer to LinkedList struct.
+ */
 void printLinkedList(LinkedList *list)
 {
     if (isLinkedListEmpty(list))
@@ -96,11 +132,20 @@ void printLinkedList(LinkedList *list)
     while (currNode)
     {
         printf("%s ", currNode->word);
-//        printPairLinkedList(currNode->pairSet);
-//        printf("|   =>   ");
+        printPairLinkedList(currNode->pairSet);
+        printf("\n");
 
         currNode = currNode->next;
     }
 
     printf("\n");
+
+    currNode = list->head;
+
+    while (currNode)
+    {
+        struct Node *nodeToDelete = currNode;
+        currNode = currNode->next;
+        free(nodeToDelete);
+    }
 }

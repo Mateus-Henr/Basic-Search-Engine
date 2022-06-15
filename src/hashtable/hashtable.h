@@ -20,4 +20,4 @@ bool isHashtableEmpty(Hashtable *hashtable);
 
 void freeMemory(Hashtable *hashtable);
 
-void convertToLinkedList(Hashtable *hashtable);
+void sortAndPrintHashtable(Hashtable *hashtable);

@@ -12,6 +12,8 @@ PairLinkedList *initialisePairLinkedList();
 
 bool pushPair(PairLinkedList *list, long documentID);
 
+int getPairLinkedListSize(PairLinkedList *list);
+
 bool isPairLinkedListEmpty(PairLinkedList *list);
 
 void printPairLinkedList(PairLinkedList *list);

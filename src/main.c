@@ -4,7 +4,6 @@
 #include "file/file.h"
 
 #define FILE_ERROR "\nCouldn't open the file: '%s' or error tying to insert into the hashtable.\n\n"
-#define INVALID_VALUE "\nInvalid value.\n\n"
 
 
 // Function prototype
@@ -17,7 +16,6 @@ int main(void)
 
     while (loop)
     {
-        int numberOfFiles = 0;
         char input_filename[CHAR_MAX];
 
         printf("Type the input filename:");

@@ -12,9 +12,7 @@ LinkedList *initialiseLinkedList();
 
 bool push(LinkedList *list, const char *word, long documentID);
 
-bool removeFromList(LinkedList *list, const char *word);
-
-unsigned int getSize(LinkedList *list);
+int getLinkedListSize(LinkedList *list);
 
 bool isLinkedListEmpty(LinkedList *list);
 

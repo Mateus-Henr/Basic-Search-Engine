@@ -60,12 +60,6 @@ bool push(LinkedList *list, const char *word, long documentID)
 }
 
 
-bool removeFromList(LinkedList *list, const char *word)
-{
-    return true;
-}
-
-
 struct Node *searchNode(struct Node *head, const char *word)
 {
     while (head && strcmp(word, head->word) != 0)

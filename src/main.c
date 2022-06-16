@@ -25,7 +25,7 @@ int main(void)
         scanf("%s", input_filename);
 
         Hashtable hashtable;
-        initialiseHashtable(&hashtable, 10);
+        initialiseHashtable(&hashtable, 128);
 
         if (!readFilenames(&hashtable, input_filename))
         {
@@ -34,7 +34,9 @@ int main(void)
             continue;
         }
 
-        sortAndPrintHashtable(&hashtable);
+        printHashtable(&hashtable);
+//        sortAndPrintHashtable(&hashtable);
+
         freeMemory(&hashtable);
         loop = false;
     }

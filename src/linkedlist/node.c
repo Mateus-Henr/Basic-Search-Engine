@@ -71,16 +71,17 @@ struct Node *initialisesNodeWithExistentOne(struct Node *node)
 /*
  *  Gets the hashcode of a word based on a weights array.
  *
- *  @param     word     word to get its hashcode.
- *  @return             hash code for the word.
+ *  @param     word        word to get its hashcode.
+ *  @param     weights     array of weights.
+ *  @return                hash code for the word.
  */
-int hashCode(const char *word)
+int hashCode(const char *word, const int *weights)
 {
     int hashCode = 0;
 
     for (int i = 0; i < strlen(word); i++)
     {
-        hashCode += word[i] * (i + 1);
+        hashCode += word[i] * weights[i];
     }
 
     return hashCode;

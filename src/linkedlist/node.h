@@ -11,4 +11,4 @@ struct Node *initialiseNode(const char *word, long documentID);
 
 struct Node *initialisesNodeWithExistentOne(struct Node *node);
 
-int hashCode(const char *word);
+int hashCode(const char *word, const int *weights);

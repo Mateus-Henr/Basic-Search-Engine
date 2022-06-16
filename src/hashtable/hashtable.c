@@ -1,8 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <math.h>
 #include <stddef.h>
 
 #include "hashtable.h"
+
+// According to Grammarly the longest word that is actually used in the English language has 45 words.
+#define MAXIMUM_WORD_LENGTH 45
 
 
 // Function prototypes.
@@ -10,24 +15,112 @@ int hash(Hashtable *hashtable, int value);
 
 int compareAlphabetically(const char *word, const char *anotherWord);
 
+int *initialiseWeightsArray();
+
+int getTwoPowerValueGreaterOrEqual(int number);
+
+int getPreviousPrime(int number);
+
+bool checkForPrimality(int numberToCheck);
+
 
 /*
  *  Initialises Hashtable struct.
  *
- *  @param     hashtable     pointer to Hashtable struct.
- *  @param     maxSize       size for the array that backs the struct.
+ *  @param     hashtable            pointer to Hashtable struct.
+ *  @param     sizeSuggestion       suggestion of size for the array that backs the struct.
  */
-void initialiseHashtable(Hashtable *hashtable, int maxSize)
+void initialiseHashtable(Hashtable *hashtable, int sizeSuggestion)
 {
-    hashtable->linkedListsArray = (LinkedList **) malloc(sizeof(LinkedList *) * maxSize);
+    // Using Sedgewick way of finding best size for the hashtable array.
+    hashtable->maxSize = getPreviousPrime(getTwoPowerValueGreaterOrEqual(sizeSuggestion));
+    hashtable->linkedListsArray = (LinkedList **) malloc(sizeof(LinkedList *) * hashtable->maxSize);
 
-    for (int i = 0; i < maxSize; i++)
+    for (int i = 0; i < hashtable->maxSize; i++)
     {
         hashtable->linkedListsArray[i] = NULL;
     }
 
-    hashtable->maxSize = maxSize;
+    hashtable->weights = initialiseWeightsArray(45);
     hashtable->numberOfElements = 0;
+}
+
+
+/*
+ *  Initialises weight array that is used for generating hash code
+ *  for words.
+ *
+ *  @param     numberOfElements    array's size.
+ *  @return                        pointer to the initialised array.
+ */
+int *initialiseWeightsArray()
+{
+    srand(time(NULL));
+    int *weights = (int *) malloc(MAXIMUM_WORD_LENGTH * sizeof(int));
+
+    for (int i = 0; i < MAXIMUM_WORD_LENGTH; i++)
+    {
+        weights[i] = rand() % 1000 + 1;
+    }
+
+    return weights;
+}
+
+
+/*
+ *  Gets the two power greater or equal to a given number.
+ *  Note: Used to find an M value according to Sedgewick.
+ *
+ *  @param     number     number to search for the two power.
+ */
+int getTwoPowerValueGreaterOrEqual(int number)
+{
+    int twoPower = 0;
+
+    while (pow(2, twoPower) < number)
+    {
+        twoPower++;
+    }
+
+    return (int) pow(2, twoPower);
+}
+
+
+/*
+ *  Gets the closest previous prime of a given number.
+ *  Note: Used to find an M value according to Sedgewick.
+ *
+ *  @param     number     number to search for the prime.
+ *  @return               closest previous prime of a number.
+ */
+int getPreviousPrime(int number)
+{
+    while (!checkForPrimality(number))
+    {
+        number--;
+    }
+
+    return number;
+}
+
+
+/*
+ *  Checks if a number is prime or not.
+ *
+ *  @param     numberToCheck     number to check its primality.
+ *  @return                      whether the number is prime or not.
+ */
+bool checkForPrimality(int numberToCheck)
+{
+    for (int i = 2; i < sqrt(numberToCheck); i++)
+    {
+        if ((numberToCheck % i) == 0)
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 
@@ -41,7 +134,7 @@ void initialiseHashtable(Hashtable *hashtable, int maxSize)
  */
 bool insert(Hashtable *hashtable, const char *word, long documentID)
 {
-    int hashedKey = hash(hashtable, hashCode(word));
+    int hashedKey = hash(hashtable, hashCode(word, hashtable->weights));
 
     if (!hashtable->linkedListsArray[hashedKey])
     {
@@ -231,6 +324,11 @@ void freeMemory(Hashtable *hashtable)
         }
 
         free(hashtable->linkedListsArray);
+    }
+
+    if (hashtable->weights)
+    {
+        free(hashtable->weights);
     }
 }
 

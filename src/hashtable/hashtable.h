@@ -4,11 +4,12 @@
 typedef struct Hashtable
 {
     LinkedList **linkedListsArray;
+    int *weights;
     int maxSize;
     int numberOfElements;
 } Hashtable;
 
-void initialiseHashtable(Hashtable *hashtable, int maxSize);
+void initialiseHashtable(Hashtable *hashtable, int sizeSuggestion);
 
 bool insert(Hashtable *hashtable, const char *word, long documentID);
 

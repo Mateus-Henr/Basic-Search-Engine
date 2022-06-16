@@ -106,12 +106,14 @@ bool readFileIntoHashtable(Hashtable *hashtable, char *filename, int fileNumber)
  */
 void reformatString(char *dest, char *src)
 {
-    for (; *src; src++)
+    while (*src)
     {
         if (!ispunct((unsigned char) *src))
         {
             *dest++ = (char) tolower((unsigned char) *src);
         }
+
+        src++;
     }
 
     *dest = '\0';

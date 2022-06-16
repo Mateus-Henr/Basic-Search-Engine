@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stddef.h>
 #include <string.h>
+#include <stddef.h>
 
 #include "linkedlist.h"
 
+// Function prototype.
+int compareAlphabetically(const char *word, const char *anotherWord);
 
-// Function prototype
 struct Node *searchNode(struct Node *head, const char *word);
 
 
@@ -74,6 +75,52 @@ bool push(LinkedList *list, const char *word, long documentID)
 
 
 /*
+ *  Inserts data into a linked list in a sorted fashion.
+ *  Note: This method is internally used to get data sorted.
+ *
+ *  @param     list     pointer to LinkedList struct.
+ *  @param     node     pointer to the node to be added.
+ */
+bool pushSorted(LinkedList *list, Node *node)
+{
+    struct Node *nodeCopy = initialiseNodeWithExistentData(node);
+
+    if (isLinkedListEmpty(list))
+    {
+        list->head = nodeCopy;
+        list->tail = nodeCopy;
+
+        return true;
+    }
+
+    if (compareAlphabetically(list->tail->word, nodeCopy->word) == -1)
+    {
+        list->tail->next = nodeCopy;
+        list->tail = nodeCopy;
+    }
+    else if (compareAlphabetically(list->head->word, nodeCopy->word) == 1)
+    {
+        nodeCopy->next = list->head;
+        list->head = nodeCopy;
+    }
+    else
+    {
+        struct Node *currNode = list->head;
+
+        while (currNode->next && compareAlphabetically(currNode->next->word, nodeCopy->word) != 1)
+        {
+            currNode = currNode->next;
+        }
+
+        nodeCopy->next = currNode->next;
+        currNode->next = nodeCopy;
+    }
+
+    return true;
+}
+
+
+/*
  *  Searches for a node in the linked list.
  *
  *  @param     list     pointer to LinkedList struct.
@@ -102,6 +149,7 @@ int getLinkedListSize(LinkedList *list)
     return list->size;
 }
 
+
 /*
  *  Checks if the linked list is empty.
  *
@@ -111,6 +159,33 @@ int getLinkedListSize(LinkedList *list)
 bool isLinkedListEmpty(LinkedList *list)
 {
     return list->head == NULL;
+}
+
+
+/*
+ *  Compares one word against another character by character.
+ *
+ *  @param     word            first word to compare.
+ *  @param     anotherWord     second word to compare.
+ */
+int compareAlphabetically(const char *word, const char *anotherWord)
+{
+    while (*word && *anotherWord)
+    {
+        if (*word > *anotherWord)
+        {
+            return 1;
+        }
+        else if (*word < *anotherWord)
+        {
+            return -1;
+        }
+
+        word++;
+        anotherWord++;
+    }
+
+    return *word ? 1 : -1;
 }
 
 
@@ -139,8 +214,48 @@ void printLinkedList(LinkedList *list)
     }
 
     printf("\n");
+}
 
-    currNode = list->head;
+
+/*
+ *  Deallocates linked list and its content allocated dynamically from memory.
+ *
+ *  @param     list     pointer to LinkedList struct.
+ */
+void freeLinkedList(LinkedList *list)
+{
+    struct Node *currNode = list->head;
+
+    while (currNode)
+    {
+        if (currNode->word)
+        {
+            free(currNode->word);
+        }
+
+        if (currNode->pairSet)
+        {
+            freePairLinkedList(currNode->pairSet);
+        }
+
+        struct Node *nodeToDelete = currNode;
+        currNode = currNode->next;
+        free(nodeToDelete);
+    }
+}
+
+
+/*
+ *  Deallocates struct that was built for sorted data.
+ *  It only deallocates nodes from the struct Node.
+ *  Note: This method is used internally only for the linked list that was allocated
+ *        by the "sortAndPrintHashtable" method.
+ *
+ *  @param     list     pointer to LinkedList struct.
+ */
+void freeSortedLinkedList(LinkedList *list)
+{
+    struct Node *currNode = list->head;
 
     while (currNode)
     {
@@ -148,4 +263,6 @@ void printLinkedList(LinkedList *list)
         currNode = currNode->next;
         free(nodeToDelete);
     }
+
+    free(list);
 }

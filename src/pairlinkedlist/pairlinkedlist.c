@@ -100,3 +100,21 @@ void printPairLinkedList(PairLinkedList *list)
         currNode = currNode->next;
     }
 }
+
+
+/*
+ *  Deallocates pair linked list allocated dynamically from memory.
+ *
+ *  @param     list     pointer to PairLinkedList struct.
+ */
+void freePairLinkedList(PairLinkedList *list)
+{
+    struct PairNode *currPairNode = list->head;
+
+    while (currPairNode)
+    {
+        struct PairNode *pairNodeToDelete = currPairNode;
+        currPairNode = currPairNode->next;
+        free(pairNodeToDelete);
+    }
+}

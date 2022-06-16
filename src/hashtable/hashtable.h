@@ -13,12 +13,12 @@ void initialiseHashtable(Hashtable *hashtable, int sizeSuggestion);
 
 bool insert(Hashtable *hashtable, const char *word, long documentID);
 
-void printHashtable(Hashtable *hashtable);
-
 int getHashtableSize(Hashtable *hashtable);
 
 bool isHashtableEmpty(Hashtable *hashtable);
 
-void freeMemory(Hashtable *hashtable);
+void printHashtable(Hashtable *hashtable);
 
 void sortAndPrintHashtable(Hashtable *hashtable);
+
+void freeHashtable(Hashtable *hashtable);

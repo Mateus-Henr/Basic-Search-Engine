@@ -17,3 +17,5 @@ int getPairLinkedListSize(PairLinkedList *list);
 bool isPairLinkedListEmpty(PairLinkedList *list);
 
 void printPairLinkedList(PairLinkedList *list);
+
+void freePairLinkedList(PairLinkedList *list);

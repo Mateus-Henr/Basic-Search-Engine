@@ -56,7 +56,7 @@ struct Node *initialiseNode(const char *word, long documentID)
  *  @param     node     pointer to Node struct.
  *  @return             pointer to the new pointer address.
  */
-struct Node *initialisesNodeWithExistentOne(struct Node *node)
+struct Node *initialiseNodeWithExistentData(struct Node *node)
 {
     struct Node *copiedNode = (struct Node *) malloc(sizeof(struct Node));
 

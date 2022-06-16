@@ -21,7 +21,7 @@ int main(void)
     {
         char input_filename[CHAR_MAX];
 
-        printf("Type the input filename:");
+        printf("Type the input filename:\n");
         scanf("%s", input_filename);
 
         Hashtable hashtable;
@@ -37,7 +37,7 @@ int main(void)
         printHashtable(&hashtable);
 //        sortAndPrintHashtable(&hashtable);
 
-        freeMemory(&hashtable);
+        freeHashtable(&hashtable);
         loop = false;
     }
 

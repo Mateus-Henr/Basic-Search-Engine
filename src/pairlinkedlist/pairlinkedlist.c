@@ -5,6 +5,11 @@
 #include "pairlinkedlist.h"
 
 
+/*
+ *  Initialises PairLinkedList with default values.
+ *
+ *  @return                 pointer to the initialised struct.
+ */
 PairLinkedList *initialisePairLinkedList()
 {
     PairLinkedList *list = (PairLinkedList *) malloc(sizeof(PairLinkedList));
@@ -17,6 +22,13 @@ PairLinkedList *initialisePairLinkedList()
 }
 
 
+/*
+ *  Pushes a new pair (PairNode) to the list.
+ *
+ *  @param     list           pointer to PairLinkedList struct.
+ *  @param     documentID     document's number (ID).
+ *  @return                   whether the operation was successful or not.
+ */
 bool pushPair(PairLinkedList *list, long documentID)
 {
     struct PairNode *node = initialisePairNode(documentID);
@@ -43,18 +55,35 @@ bool pushPair(PairLinkedList *list, long documentID)
 }
 
 
+/*
+ *  Gets the pair linked list size.
+ *
+ *  @param     list     pointer to PairLinkedList struct.
+ *  @return             list size.
+ */
 int getPairLinkedListSize(PairLinkedList *list)
 {
     return list->size;
 }
 
 
+/*
+ *  Checks whether the pair linked list is empty or not.
+ *
+ *  @param     list     pointer to PairLinkedList struct.
+ *  @param              whether the list is empty or not.
+ */
 bool isPairLinkedListEmpty(PairLinkedList *list)
 {
     return list->head == NULL;
 }
 
 
+/*
+ *  Prints each node of the pair linked list out.
+ *
+ *  @param     list     pointer to PairLinkedList struct.
+ */
 void printPairLinkedList(PairLinkedList *list)
 {
     if (isPairLinkedListEmpty(list))

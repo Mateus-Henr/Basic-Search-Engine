@@ -9,6 +9,6 @@ typedef struct Node
 
 struct Node *initialiseNode(const char *word, long documentID);
 
-struct Node *initialisePointerFromExistent(struct Node *node);
+struct Node *initialisesNodeWithExistentOne(struct Node *node);
 
 int hashCode(const char *word);

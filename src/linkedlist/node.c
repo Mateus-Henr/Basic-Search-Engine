@@ -4,6 +4,14 @@
 
 #include "node.h"
 
+
+/*
+ *  Initialises Node struct with given values.
+ *
+ *  @param     word          word to be inserted into the node.
+ *  @param     documentID    document's number (ID).
+ *  @return                  pointer to the initialised node.
+ */
 struct Node *initialiseNode(const char *word, long documentID)
 {
     struct Node *nodeToAdd = (struct Node *) malloc(sizeof(struct Node));
@@ -42,7 +50,13 @@ struct Node *initialiseNode(const char *word, long documentID)
 }
 
 
-struct Node *initialisePointerFromExistent(struct Node *node)
+/*
+ *  Initialises a new pointer with existent node content.
+ *
+ *  @param     node     pointer to Node struct.
+ *  @return             pointer to the new pointer address.
+ */
+struct Node *initialisesNodeWithExistentOne(struct Node *node)
 {
     struct Node *copiedNode = (struct Node *) malloc(sizeof(struct Node));
 
@@ -54,6 +68,12 @@ struct Node *initialisePointerFromExistent(struct Node *node)
 }
 
 
+/*
+ *  Gets the hashcode of a word based on a weights array.
+ *
+ *  @param     word     word to get its hashcode.
+ *  @return             hash code for the word.
+ */
 int hashCode(const char *word)
 {
     int hashCode = 0;

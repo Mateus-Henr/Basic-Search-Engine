@@ -6,10 +6,13 @@
 #define FILE_ERROR "\nCouldn't open the file: '%s' or error tying to insert into the hashtable.\n\n"
 
 
-// Function prototype
+// Function prototype.
 void cleanStdin();
 
 
+/*
+ *  Code's start point.
+ */
 int main(void)
 {
     bool loop = true;
@@ -40,6 +43,9 @@ int main(void)
 }
 
 
+/*
+ *  Clears stdin to avoid problems with the "scanf()" function.
+ */
 void cleanStdin(void)
 {
     int c = getchar();

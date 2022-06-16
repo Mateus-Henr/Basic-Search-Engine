@@ -4,6 +4,12 @@
 #include "pairnode.h"
 
 
+/*
+ *  Initialises PairNode struct with default values.
+ *
+ *  @param     documentID    document's number (ID).
+ *  @return                  pointer to the initialised node.
+ */
 PairNode *initialisePairNode(long documentID)
 {
     struct PairNode *node = (PairNode *) malloc(sizeof(PairNode));

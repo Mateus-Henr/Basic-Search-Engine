@@ -12,7 +12,7 @@ int compareAlphabetically(const char *word, const char *anotherWord);
 
 
 /*
- *  Initialises hashtable struct.
+ *  Initialises Hashtable struct.
  *
  *  @param     hashtable     pointer to Hashtable struct.
  *  @param     maxSize       size for the array that backs the struct.
@@ -72,7 +72,7 @@ bool insert(Hashtable *hashtable, const char *word, long documentID)
  */
 bool insertSorted(LinkedList *list, Node *node)
 {
-    struct Node *nodeCopy = initialisePointerFromExistent(node);
+    struct Node *nodeCopy = initialisesNodeWithExistentOne(node);
 
     if (isLinkedListEmpty(list))
     {

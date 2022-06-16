@@ -11,7 +11,7 @@ struct Node *searchNode(struct Node *head, const char *word);
 
 
 /*
- *  Initialises linked list with default values.
+ *  Initialises LinkedList struct with default values.
  *
  *  @return         pointer for LinkedList struct dynamically allocated.
  */
@@ -74,7 +74,7 @@ bool push(LinkedList *list, const char *word, long documentID)
 
 
 /*
- *  Searches for a node in a linked list.
+ *  Searches for a node in the linked list.
  *
  *  @param     list     pointer to LinkedList struct.
  *  @param     word     word to search for.

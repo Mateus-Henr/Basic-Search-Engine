@@ -17,7 +17,7 @@ int getPairLinkedListSize(PairLinkedList *list);
 
 bool isPairLinkedListEmpty(PairLinkedList *list);
 
-void getTermFrequencyInPairLinkedList(PairLinkedList *list, TFIDF *tfidf, bool isRightWord);
+void getTFIDFPairLinkedList(PairLinkedList *list, TFIDF *tfidf, bool isRightWord);
 
 void printPairLinkedList(PairLinkedList *list);
 

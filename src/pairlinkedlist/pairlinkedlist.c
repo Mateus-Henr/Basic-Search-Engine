@@ -79,7 +79,13 @@ bool isPairLinkedListEmpty(PairLinkedList *list)
 }
 
 
-void getTermFrequencyInPairLinkedList(PairLinkedList *list, TFIDF *tfidf, bool isRightWord)
+/*
+ *  Calculates TF-IDF and put result into TFIDF struct.
+ *
+ *  @param     list      pointer to LinkedList struct.
+ *  @param     tfidf     pointer to TFIDF struct.
+ */
+void getTFIDFPairLinkedList(PairLinkedList *list, TFIDF *tfidf, bool isRightWord)
 {
     struct PairNode *currNode = list->head;
 
@@ -89,20 +95,20 @@ void getTermFrequencyInPairLinkedList(PairLinkedList *list, TFIDF *tfidf, bool i
         {
             bool hasBeenVisited = true;
 
-            if (tfidf->numOccurrencesInDocs[currNode->documentID - 1] == 0)
+            if (tfidf->occurrencesInDocs[currNode->documentID - 1] == 0)
             {
                 hasBeenVisited = false;
             }
 
-            tfidf->numOccurrencesInDocs[currNode->documentID - 1] += currNode->numberOfOccurrences;
+            tfidf->occurrencesInDocs[currNode->documentID - 1] += currNode->numberOfOccurrences;
 
-            if (tfidf->numOccurrencesInDocs[currNode->documentID - 1] != 0 && !hasBeenVisited)
+            if (tfidf->occurrencesInDocs[currNode->documentID - 1] != 0 && !hasBeenVisited)
             {
-                tfidf->totalDocWithTerm++;
+                tfidf->DocsWithTerm++;
             }
         }
 
-        tfidf->distinctTermInDocs[currNode->documentID - 1]++;
+        tfidf->distinctTermsInDocs[currNode->documentID - 1]++;
 
         currNode = currNode->next;
     }

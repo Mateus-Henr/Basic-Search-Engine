@@ -189,13 +189,19 @@ int compareAlphabetically(const char *word, const char *anotherWord)
 }
 
 
-void getTermFrequencyInLinkedList(LinkedList *list, TFIDF *tfidf)
+/*
+ *  Calculates TF-IDF and put result into TFIDF struct.
+ *
+ *  @param     list      pointer to LinkedList struct.
+ *  @param     tfidf     pointer to TFIDF struct.
+ */
+void getTFIDFLinkedList(LinkedList *list, TFIDF *tfidf)
 {
     struct Node *currNode = list->head;
 
     while (currNode)
     {
-        getTermFrequencyInPairLinkedList(currNode->pairSet, tfidf, !strcmp(currNode->word, tfidf->word));
+        getTFIDFPairLinkedList(currNode->pairSet, tfidf, !strcmp(currNode->word, tfidf->word));
 
         currNode = currNode->next;
     }

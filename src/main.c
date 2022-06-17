@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <limits.h>
 #include "file/file.h"
 
 #define FILE_ERROR "\nCouldn't open the file: '%s' or error tying to insert into the hashtable.\n\n"
+#define INVALID_VALUE "\nInvalid value.\n\n"
+#define ERROR -1
 
 
 // Function prototype.
@@ -27,9 +30,11 @@ int main(void)
         Hashtable hashtable;
         initialiseHashtable(&hashtable, 128);
 
-        int filesNumber = readFilenames(&hashtable, input_filename);
+        int numDocs;
 
-        if (filesNumber == -1)
+        char **filenames = readFilenames(&hashtable, input_filename, &numDocs);
+
+        if (numDocs == ERROR)
         {
             printf(FILE_ERROR, input_filename);
             cleanStdin();
@@ -41,6 +46,7 @@ int main(void)
         printf("Type the number of terms to look for:\n");
         if (!scanf("%d", &numWords) || numWords <= 0)
         {
+            printf(INVALID_VALUE);
             cleanStdin();
             continue;
         }
@@ -49,13 +55,16 @@ int main(void)
 
         for (int i = 0; i < numWords; i++)
         {
-            words[i] = (char *) malloc(CHAR_MAX);
+            char word[CHAR_MAX];
 
             printf("Type the word:\n");
-            scanf("%s", words[i]);
+            scanf("%s", word);
+
+            words[i] = (char *) malloc(strlen(word) + 1);
+            strcpy(words[i], word);
         }
 
-        calculateRelevance(&hashtable, words, numWords, filesNumber);
+        calculateRelevance(&hashtable, words, filenames, numWords, numDocs);
 
 //        printHashtable(&hashtable);
 //        sortAndPrintHashtable(&hashtable);

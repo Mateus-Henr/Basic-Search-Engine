@@ -3,10 +3,10 @@
 
 typedef struct Hashtable
 {
-    LinkedList **linkedListsArray;
+    LinkedList **linkedListArray;
     int *weights;
     int maxSize;
-    int numberOfElements;
+    int size;
 } Hashtable;
 
 void initialiseHashtable(Hashtable *hashtable, int sizeSuggestion);
@@ -19,10 +19,10 @@ bool isHashtableEmpty(Hashtable *hashtable);
 
 void printHashtable(Hashtable *hashtable);
 
-void getTermFrequencyInHashtable(Hashtable *hashtable, TFIDF *tfidf);
+void getTFIDFHashtable(Hashtable *hashtable, TFIDF *tfidf);
 
 void sortAndPrintHashtable(Hashtable *hashtable);
 
 void freeHashtable(Hashtable *hashtable);
 
-void calculateRelevance(Hashtable *hashtable, char **words, int numWords, int numDocs);
+void calculateRelevance(Hashtable *hashtable, char **words, char **filenames, int numWords, int numDocs);

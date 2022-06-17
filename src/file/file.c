@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
 #include <limits.h>
@@ -18,9 +19,8 @@ void reformatString(char *dest, char *src);
  *
  *  @param     hashtable         struct to Hashtable struct.
  *  @param     inputFilename     input filename.
- *  @return                      whether the operation was successful or not.
  */
-int readFilenames(Hashtable *hashtable, char *inputFilename)
+char **readFilenames(Hashtable *hashtable, char *inputFilename, int *numOfFiles)
 {
     char filePath[strlen(INPUT_FILES_PATH) + strlen(inputFilename) + 1];
 
@@ -31,17 +31,17 @@ int readFilenames(Hashtable *hashtable, char *inputFilename)
 
     if (!file)
     {
-        return -1;
+        return NULL;
     }
 
-    int numberOfFiles = 0;
-
-    if (!fscanf(file, "%d", &numberOfFiles))
+    if (!fscanf(file, "%d", numOfFiles))
     {
-        return -1;
+        return NULL;
     }
 
-    for (int i = 0; i < numberOfFiles; i++)
+    char **filenames = (char **) malloc(*numOfFiles * sizeof(char *));
+
+    for (int i = 0; i < *numOfFiles; i++)
     {
         char filename[CHAR_MAX];
 
@@ -50,9 +50,12 @@ int readFilenames(Hashtable *hashtable, char *inputFilename)
         {
             printf(FILE_ERROR, filename);
         }
+
+        filenames[i] = (char *) malloc(strlen(filename) + 1);
+        strcpy(filenames[i], filename);
     }
 
-    return numberOfFiles;
+    return filenames;
 }
 
 

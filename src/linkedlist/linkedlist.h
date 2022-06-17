@@ -18,7 +18,7 @@ int getLinkedListSize(LinkedList *list);
 
 bool isLinkedListEmpty(LinkedList *list);
 
-void getTermFrequencyInLinkedList(LinkedList *list, TFIDF *tfidf);
+void getTFIDFLinkedList(LinkedList *list, TFIDF *tfidf);
 
 void printLinkedList(LinkedList *list);
 

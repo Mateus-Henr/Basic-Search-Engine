@@ -21,6 +21,8 @@ int getPreviousPrime(int number);
 
 bool checkForPrimality(int numberToCheck);
 
+void insertionSort(Relevance *array, int n);
+
 
 /*
  *  Initialises Hashtable struct.
@@ -32,15 +34,15 @@ void initialiseHashtable(Hashtable *hashtable, int sizeSuggestion)
 {
     // Using Sedgewick way of finding best size for the hashtable array.
     hashtable->maxSize = getPreviousPrime(getTwoPowerValueGreaterOrEqual(sizeSuggestion));
-    hashtable->linkedListsArray = (LinkedList **) malloc(sizeof(LinkedList *) * hashtable->maxSize);
+    hashtable->linkedListArray = (LinkedList **) malloc(sizeof(LinkedList *) * hashtable->maxSize);
 
     for (int i = 0; i < hashtable->maxSize; i++)
     {
-        hashtable->linkedListsArray[i] = NULL;
+        hashtable->linkedListArray[i] = NULL;
     }
 
     hashtable->weights = initialiseWeightsArray(45);
-    hashtable->numberOfElements = 0;
+    hashtable->size = 0;
 }
 
 
@@ -48,7 +50,7 @@ void initialiseHashtable(Hashtable *hashtable, int sizeSuggestion)
  *  Initialises weight array that is used for generating hash codes.
  *  for words.
  *
- *  @param     numberOfElements    array's size.
+ *  @param     size    array's size.
  *  @return                        pointer to the initialised array.
  */
 int *initialiseWeightsArray()
@@ -134,22 +136,22 @@ bool insert(Hashtable *hashtable, const char *word, long documentID)
 {
     int hashedKey = hash(hashtable, hashCode(word, hashtable->weights));
 
-    if (!hashtable->linkedListsArray[hashedKey])
+    if (!hashtable->linkedListArray[hashedKey])
     {
-        hashtable->linkedListsArray[hashedKey] = initialiseLinkedList();
+        hashtable->linkedListArray[hashedKey] = initialiseLinkedList();
 
-        if (!hashtable->linkedListsArray[hashedKey])
+        if (!hashtable->linkedListArray[hashedKey])
         {
             return false;
         }
     }
 
-    if (!push(hashtable->linkedListsArray[hashedKey], word, documentID))
+    if (!push(hashtable->linkedListArray[hashedKey], word, documentID))
     {
         return false;
     }
 
-    hashtable->numberOfElements++;
+    hashtable->size++;
 
     return true;
 }
@@ -168,13 +170,19 @@ int hash(Hashtable *hashtable, int value)
 }
 
 
-void getTermFrequencyInHashtable(Hashtable *hashtable, TFIDF *tfidf)
+/*
+ *  Calculates TF-IDF and put result into TFIDF struct.
+ *
+ *  @param     list      pointer to LinkedList struct.
+ *  @param     tfidf     pointer to TFIDF struct.
+ */
+void getTFIDFHashtable(Hashtable *hashtable, TFIDF *tfidf)
 {
     for (int i = 0; i < hashtable->maxSize; i++)
     {
-        if (hashtable->linkedListsArray[i])
+        if (hashtable->linkedListArray[i])
         {
-            getTermFrequencyInLinkedList(hashtable->linkedListsArray[i], tfidf);
+            getTFIDFLinkedList(hashtable->linkedListArray[i], tfidf);
         }
     }
 }
@@ -188,7 +196,7 @@ void getTermFrequencyInHashtable(Hashtable *hashtable, TFIDF *tfidf)
  */
 int getHashtableSize(Hashtable *hashtable)
 {
-    return hashtable->numberOfElements;
+    return hashtable->size;
 }
 
 
@@ -200,7 +208,7 @@ int getHashtableSize(Hashtable *hashtable)
  */
 bool isHashtableEmpty(Hashtable *hashtable)
 {
-    return hashtable->numberOfElements == 0;
+    return hashtable->size == 0;
 }
 
 
@@ -219,14 +227,14 @@ void printHashtable(Hashtable *hashtable)
 
     for (int i = 0; i < hashtable->maxSize; i++)
     {
-        if (!hashtable->linkedListsArray[i])
+        if (!hashtable->linkedListArray[i])
         {
             printf("[%d] NULL\n", i);
         }
         else
         {
             printf("[%d] ", i);
-            printLinkedList(hashtable->linkedListsArray[i]);
+            printLinkedList(hashtable->linkedListArray[i]);
         }
     }
 }
@@ -249,9 +257,9 @@ void sortAndPrintHashtable(Hashtable *hashtable)
 
     for (int i = 0; i < hashtable->maxSize; i++)
     {
-        if (hashtable->linkedListsArray[i])
+        if (hashtable->linkedListArray[i])
         {
-            struct Node *currNode = hashtable->linkedListsArray[i]->head;
+            struct Node *currNode = hashtable->linkedListArray[i]->head;
 
             while (currNode)
             {
@@ -273,17 +281,17 @@ void sortAndPrintHashtable(Hashtable *hashtable)
  */
 void freeHashtable(Hashtable *hashtable)
 {
-    if (hashtable->linkedListsArray)
+    if (hashtable->linkedListArray)
     {
         for (int i = 0; i < hashtable->maxSize; i++)
         {
-            if (hashtable->linkedListsArray[i])
+            if (hashtable->linkedListArray[i])
             {
-                freeLinkedList(hashtable->linkedListsArray[i]);
+                freeLinkedList(hashtable->linkedListArray[i]);
             }
         }
 
-        free(hashtable->linkedListsArray);
+        free(hashtable->linkedListArray);
     }
 
     if (hashtable->weights)
@@ -292,49 +300,50 @@ void freeHashtable(Hashtable *hashtable)
     }
 }
 
+
+/*
+ *  Calculate TD-IDF weight of a given word.
+ *
+ *  @param     hashtable     pointer to Hashtable struct.
+ *  @param     tfidf         pointer to TFIDF struct.
+ */
 double *calculateWeight(Hashtable *hashtable, TFIDF *tfidf)
 {
-    getTermFrequencyInHashtable(hashtable, tfidf);
+    getTFIDFHashtable(hashtable, tfidf);
 
-    double *weights = (double *) malloc(tfidf->numDocs * sizeof(double));
+    double *weights = (double *) calloc(tfidf->numDocs, sizeof(double));
 
     for (int i = 0; i < tfidf->numDocs; i++)
     {
-        if (tfidf->totalDocWithTerm != 0)
+        if (tfidf->DocsWithTerm != 0)
         {
-            weights[i] = (double) tfidf->numOccurrencesInDocs[i] * log(tfidf->numDocs) /
-                         (double) tfidf->totalDocWithTerm;
+            weights[i] = (double) tfidf->occurrencesInDocs[i] * log(tfidf->numDocs) /
+                         (double) tfidf->DocsWithTerm;
         }
     }
 
     return weights;
 }
 
-void calculateRelevance(Hashtable *hashtable, char **words, int numWords, int numDocs)
+
+void calculateRelevance(Hashtable *hashtable, char **words, char **filenames, int numWords, int numDocs)
 {
-    double relevance[numDocs];
-
-    for (int i = 0; i < numDocs; i++)
-    {
-        relevance[i] = 0.0;
-    }
-
-    int distinctTerms[numWords];
+    Relevance relevanceArray[numDocs];
+    double *values = (double *) calloc(numDocs, sizeof(double));
+    int distinctTerms[numDocs];
 
     for (int i = 0; i < numWords; i++)
     {
         TFIDF *tfidf = initialiseTFIDF(words[i], numDocs);
-
         double *weights = calculateWeight(hashtable, tfidf);
-
-        distinctTerms[i] = tfidf->distinctTermInDocs[i];
+        distinctTerms[i] = tfidf->distinctTermsInDocs[i];
 
         for (int j = 0; j < numDocs; j++)
         {
-            relevance[j] += weights[j];
+            values[j] += weights[j];
         }
 
-        if ((numWords - i - 1) == 0)
+        if (weights)
         {
             free(weights);
         }
@@ -342,7 +351,35 @@ void calculateRelevance(Hashtable *hashtable, char **words, int numWords, int nu
 
     for (int i = 0; i < numDocs; i++)
     {
-        relevance[i] = (1.0 / (double) distinctTerms[i]) * relevance[i];
-        printf("\n[%d] => %lf\n", i, relevance[i]);
+        values[i] = (1.0 / (double) distinctTerms[i]) * values[i];
+        initialiseRelevance(&relevanceArray[i], i + 1, filenames[i], values[i]);
+    }
+
+    free(values);
+    insertionSort(relevanceArray, numDocs);
+
+    printf("\n\nTD-IDF:\n");
+
+    for (int i = 0; i < numDocs; i++)
+    {
+        printf("Texto %ld (%s) = %lf\n", relevanceArray[i].ID, relevanceArray[i].filename, relevanceArray[i].value);
+    }
+}
+
+
+void insertionSort(Relevance *array, int n)
+{
+    for (int i = 1; i < n; i++)
+    {
+        Relevance key = array[i];
+        int j = i - 1;
+
+        while (j >= 0 && array[j].value < key.value)
+        {
+            array[j + 1] = array[j];
+            j--;
+        }
+
+        array[j + 1] = key;
     }
 }

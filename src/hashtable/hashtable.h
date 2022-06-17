@@ -19,6 +19,10 @@ bool isHashtableEmpty(Hashtable *hashtable);
 
 void printHashtable(Hashtable *hashtable);
 
+void getTermFrequencyInHashtable(Hashtable *hashtable, TFIDF *tfidf);
+
 void sortAndPrintHashtable(Hashtable *hashtable);
 
 void freeHashtable(Hashtable *hashtable);
+
+void calculateRelevance(Hashtable *hashtable, char **words, int numWords, int numDocs);

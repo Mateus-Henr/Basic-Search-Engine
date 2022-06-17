@@ -168,6 +168,18 @@ int hash(Hashtable *hashtable, int value)
 }
 
 
+void getTermFrequencyInHashtable(Hashtable *hashtable, TFIDF *tfidf)
+{
+    for (int i = 0; i < hashtable->maxSize; i++)
+    {
+        if (hashtable->linkedListsArray[i])
+        {
+            getTermFrequencyInLinkedList(hashtable->linkedListsArray[i], tfidf);
+        }
+    }
+}
+
+
 /*
  *  Gets the hashtable size.
  *
@@ -277,5 +289,60 @@ void freeHashtable(Hashtable *hashtable)
     if (hashtable->weights)
     {
         free(hashtable->weights);
+    }
+}
+
+double *calculateWeight(Hashtable *hashtable, TFIDF *tfidf)
+{
+    getTermFrequencyInHashtable(hashtable, tfidf);
+
+    double *weights = (double *) malloc(tfidf->numDocs * sizeof(double));
+
+    for (int i = 0; i < tfidf->numDocs; i++)
+    {
+        if (tfidf->totalDocWithTerm != 0)
+        {
+            weights[i] = (double) tfidf->numOccurrencesInDocs[i] * log(tfidf->numDocs) /
+                         (double) tfidf->totalDocWithTerm;
+        }
+    }
+
+    return weights;
+}
+
+void calculateRelevance(Hashtable *hashtable, char **words, int numWords, int numDocs)
+{
+    double relevance[numDocs];
+
+    for (int i = 0; i < numDocs; i++)
+    {
+        relevance[i] = 0.0;
+    }
+
+    int distinctTerms[numWords];
+
+    for (int i = 0; i < numWords; i++)
+    {
+        TFIDF *tfidf = initialiseTFIDF(words[i], numDocs);
+
+        double *weights = calculateWeight(hashtable, tfidf);
+
+        distinctTerms[i] = tfidf->distinctTermInDocs[i];
+
+        for (int j = 0; j < numDocs; j++)
+        {
+            relevance[j] += weights[j];
+        }
+
+        if ((numWords - i - 1) == 0)
+        {
+            free(weights);
+        }
+    }
+
+    for (int i = 0; i < numDocs; i++)
+    {
+        relevance[i] = (1.0 / (double) distinctTerms[i]) * relevance[i];
+        printf("\n[%d] => %lf\n", i, relevance[i]);
     }
 }

@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include "pairnode.h"
+#include "tfidf/tfidf.h"
 
 typedef struct
 {
@@ -15,6 +16,8 @@ bool pushPair(PairLinkedList *list, long documentID);
 int getPairLinkedListSize(PairLinkedList *list);
 
 bool isPairLinkedListEmpty(PairLinkedList *list);
+
+void getTermFrequencyInPairLinkedList(PairLinkedList *list, TFIDF *tfidf, bool isRightWord);
 
 void printPairLinkedList(PairLinkedList *list);
 

@@ -189,6 +189,19 @@ int compareAlphabetically(const char *word, const char *anotherWord)
 }
 
 
+void getTermFrequencyInLinkedList(LinkedList *list, TFIDF *tfidf)
+{
+    struct Node *currNode = list->head;
+
+    while (currNode)
+    {
+        getTermFrequencyInPairLinkedList(currNode->pairSet, tfidf, !strcmp(currNode->word, tfidf->word));
+
+        currNode = currNode->next;
+    }
+}
+
+
 /*
  *  Prints the linked list out.
  *

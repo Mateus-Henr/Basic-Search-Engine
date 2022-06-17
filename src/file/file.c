@@ -2,7 +2,6 @@
 #include <ctype.h>
 #include <string.h>
 #include <limits.h>
-#include "hashtable/hashtable.h"
 
 #include "file.h"
 
@@ -21,7 +20,7 @@ void reformatString(char *dest, char *src);
  *  @param     inputFilename     input filename.
  *  @return                      whether the operation was successful or not.
  */
-bool readFilenames(Hashtable *hashtable, char *inputFilename)
+int readFilenames(Hashtable *hashtable, char *inputFilename)
 {
     char filePath[strlen(INPUT_FILES_PATH) + strlen(inputFilename) + 1];
 
@@ -32,14 +31,14 @@ bool readFilenames(Hashtable *hashtable, char *inputFilename)
 
     if (!file)
     {
-        return false;
+        return -1;
     }
 
     int numberOfFiles = 0;
 
     if (!fscanf(file, "%d", &numberOfFiles))
     {
-        return false;
+        return -1;
     }
 
     for (int i = 0; i < numberOfFiles; i++)
@@ -53,7 +52,7 @@ bool readFilenames(Hashtable *hashtable, char *inputFilename)
         }
     }
 
-    return true;
+    return numberOfFiles;
 }
 
 

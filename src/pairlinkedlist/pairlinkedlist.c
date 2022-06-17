@@ -79,6 +79,36 @@ bool isPairLinkedListEmpty(PairLinkedList *list)
 }
 
 
+void getTermFrequencyInPairLinkedList(PairLinkedList *list, TFIDF *tfidf, bool isRightWord)
+{
+    struct PairNode *currNode = list->head;
+
+    while (currNode)
+    {
+        if (isRightWord)
+        {
+            bool hasBeenVisited = true;
+
+            if (tfidf->numOccurrencesInDocs[currNode->documentID - 1] == 0)
+            {
+                hasBeenVisited = false;
+            }
+
+            tfidf->numOccurrencesInDocs[currNode->documentID - 1] += currNode->numberOfOccurrences;
+
+            if (tfidf->numOccurrencesInDocs[currNode->documentID - 1] != 0 && !hasBeenVisited)
+            {
+                tfidf->totalDocWithTerm++;
+            }
+        }
+
+        tfidf->distinctTermInDocs[currNode->documentID - 1]++;
+
+        currNode = currNode->next;
+    }
+}
+
+
 /*
  *  Prints each node of the pair linked list out.
  *

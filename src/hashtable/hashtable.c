@@ -279,7 +279,7 @@ void freeHashtable(Hashtable *hashtable)
     {
         for (int i = 0; i < hashtable->maxSize; i++)
         {
-            if (hashtable->linkedListArray[i])
+            if (hashtable->linkedListArray[i] && hashtable->linkedListArray[i]->size > 0)
             {
                 freeLinkedList(hashtable->linkedListArray[i]);
             }

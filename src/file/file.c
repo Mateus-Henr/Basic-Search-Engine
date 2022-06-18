@@ -10,10 +10,6 @@
 #define FILE_ERROR "\nCouldn't open the file: '%s'\n\n"
 
 
-// Function prototype.
-void reformatString(char *dest, char *src);
-
-
 /*
  *  Reads filenames that contain input texts.
  *
@@ -94,9 +90,12 @@ bool readFileIntoHashtable(Hashtable *hashtable, char *filename, int fileNumber)
         char reformattedString[strlen(string) + 1];
         reformatString(reformattedString, string);
 
-        if (!insert(hashtable, reformattedString, fileNumber))
+        if (strlen(reformattedString) != 0)
         {
-            return false;
+            if (!insert(hashtable, reformattedString, fileNumber))
+            {
+                return false;
+            }
         }
     }
 

@@ -12,7 +12,7 @@
  */
 PairNode *initialisePairNode(long documentID)
 {
-    struct PairNode *pairNode = (PairNode *) malloc(sizeof(struct PairNode));
+    struct PairNode *pairNode = (struct PairNode *) malloc(sizeof(struct PairNode));
 
     if (!pairNode)
     {

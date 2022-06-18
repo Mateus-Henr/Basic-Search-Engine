@@ -63,10 +63,10 @@ int main(void)
 
         calculateRelevance(&hashtable, words, filenames, numWords, numDocs);
 
-        printHashtable(&hashtable);
+//        printHashtable(&hashtable);
 //        sortAndPrintHashtable(&hashtable);
 
-//        freeHashtable(&hashtable);
+        freeHashtable(&hashtable);
 
         break;
     }

@@ -9,8 +9,6 @@
 // Function prototype.
 int compareAlphabetically(const char *word, const char *anotherWord);
 
-struct Node *searchNode(struct Node *head, const char *word);
-
 
 /*
  *  Initialises LinkedList struct with default values.
@@ -248,12 +246,12 @@ void freeLinkedList(LinkedList *list)
 
     while (currNode)
     {
-//        if (currNode->word)
-//        {
-//            free(currNode->word);
-//        }
+        if (currNode->word)
+        {
+            free(currNode->word);
+        }
 
-        if (currNode->pairSet)
+        if (currNode->pairSet && currNode->pairSet->size > 0)
         {
             freePairLinkedList(currNode->pairSet);
         }

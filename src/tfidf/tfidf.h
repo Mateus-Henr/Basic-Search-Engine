@@ -19,6 +19,3 @@ TFIDF *initialiseTFIDF(char *word, int numDocs);
 void initialiseRelevance(Relevance *relevance, long ID, char *filename, double value);
 
 void freeTFIDF(TFIDF *tfidf);
-
-void freeRelevance(Relevance *relevance);
-

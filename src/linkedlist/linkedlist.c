@@ -5,6 +5,7 @@
 
 #include "linkedlist.h"
 
+
 // Function prototype.
 int compareAlphabetically(const char *word, const char *anotherWord);
 

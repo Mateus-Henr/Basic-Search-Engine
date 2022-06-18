@@ -19,8 +19,10 @@ void reformatString(char *dest, char *src);
  *
  *  @param     hashtable         struct to Hashtable struct.
  *  @param     inputFilename     input filename.
+ *  @param     numFiles          number of file.
+ *  @return                      array with all the filenames.
  */
-char **readFilenames(Hashtable *hashtable, char *inputFilename, int *numOfFiles)
+char **readFilenames(Hashtable *hashtable, char *inputFilename, int *numFiles)
 {
     char filePath[strlen(INPUT_FILES_PATH) + strlen(inputFilename) + 1];
 
@@ -34,14 +36,14 @@ char **readFilenames(Hashtable *hashtable, char *inputFilename, int *numOfFiles)
         return NULL;
     }
 
-    if (!fscanf(file, "%d", numOfFiles))
+    if (!fscanf(file, "%d", numFiles))
     {
         return NULL;
     }
 
-    char **filenames = (char **) malloc(*numOfFiles * sizeof(char *));
+    char **filenames = (char **) malloc(*numFiles * sizeof(char *));
 
-    for (int i = 0; i < *numOfFiles; i++)
+    for (int i = 0; i < *numFiles; i++)
     {
         char filename[CHAR_MAX];
 

@@ -1,8 +1,6 @@
 #include <stdbool.h>
 #include "hashtable/hashtable.h"
 
-#define INPUT_FILES_PATH "../files/"
-
-char **readFilenames(Hashtable *hashtable, char *inputFilename, int *numOfFiles);
+char **readFilenames(Hashtable *hashtable, char *inputFilename, int *numFiles);
 
 bool readFileIntoHashtable(Hashtable *hashtable, char *filename, int fileNumber);

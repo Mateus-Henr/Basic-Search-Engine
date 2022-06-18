@@ -25,6 +25,15 @@ TFIDF *initialiseTFIDF(char *word, int numDocs)
     return tfidf;
 }
 
+
+/*
+ *  Initialises Relevant struct with given values.
+ *
+ *  @param     relevance     pointer to Relevance struct.
+ *  @param     ID            file's id.
+ *  @param     filename      name of the file.
+ *  @param     value         final calculus value.
+ */
 void initialiseRelevance(Relevance *relevance, long ID, char *filename, double value)
 {
     relevance->ID = ID;
@@ -34,6 +43,11 @@ void initialiseRelevance(Relevance *relevance, long ID, char *filename, double v
 }
 
 
+/*
+ *  Deallocates TFIDF struct from memory.
+ *
+ *  @param     tfidf     pointer to TFIDF struct.
+ */
 void freeTFIDF(TFIDF *tfidf)
 {
     if (tfidf)
@@ -46,18 +60,3 @@ void freeTFIDF(TFIDF *tfidf)
         free(tfidf);
     }
 }
-
-
-void freeRelevance(Relevance *relevance)
-{
-    if (relevance)
-    {
-        if (relevance->filename)
-        {
-            free(relevance->filename);
-        }
-
-        free(relevance);
-    }
-}
-

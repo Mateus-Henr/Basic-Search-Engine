@@ -326,6 +326,15 @@ double *calculateWeight(Hashtable *hashtable, TFIDF *tfidf)
 }
 
 
+/*
+ *  Calculates the relevance of a term based on the TF-IDF calculus.
+ *
+ *  @param     hashtable     pointer to Hashtable struct.
+ *  @param     words         array containing the words.
+ *  @param     filenames     array containing the filenames.
+ *  @param     numWords      number of words in the array.
+ *  @param     numDocs       number of files.
+ */
 void calculateRelevance(Hashtable *hashtable, char **words, char **filenames, int numWords, int numDocs)
 {
     Relevance relevanceArray[numDocs];
@@ -347,6 +356,8 @@ void calculateRelevance(Hashtable *hashtable, char **words, char **filenames, in
         {
             free(weights);
         }
+
+        freeTFIDF(tfidf);
     }
 
     for (int i = 0; i < numDocs; i++)
@@ -367,6 +378,12 @@ void calculateRelevance(Hashtable *hashtable, char **words, char **filenames, in
 }
 
 
+/*
+ *  Performs the insertion sort on an array.
+ *
+ *  @param     array     pointer to array of type Relevance to be sorted.
+ *  @param     n         array's size.
+ */
 void insertionSort(Relevance *array, int n)
 {
     for (int i = 1; i < n; i++)

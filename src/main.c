@@ -50,7 +50,6 @@ int main(void)
             cleanStdin();
             continue;
         }
-
         char **words = (char **) malloc(numWords * sizeof(char *));
 
         for (int i = 0; i < numWords; i++)

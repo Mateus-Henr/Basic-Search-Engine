@@ -127,3 +127,28 @@ void reformatString(char *dest, char *src)
 
     *dest = '\0';
 }
+
+
+/*
+ *  Deallocates filenames array from memory.
+ *  Note: This is only used when the user enters an invalid value as
+ *        some sort of "clean up" to allow the user to reenter a value.
+ *
+ *  @param     filenames     pointer to array of filenames.
+ *  @param     n             size of the array.
+ */
+void freeFilenames(char **filenames, int n)
+{
+    if (filenames)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            if (filenames[i])
+            {
+                free(filenames[i]);
+            }
+        }
+
+        free(filenames);
+    }
+}

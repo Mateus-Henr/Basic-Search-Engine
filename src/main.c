@@ -34,6 +34,7 @@ int main(void)
         if (!filenames)
         {
             printf(FILE_ERROR, inputFilename);
+            freeHashtable(&hashtable);
             cleanStdin();
             continue;
         }
@@ -44,6 +45,8 @@ int main(void)
         if (!scanf("%d", &numWords) || numWords <= 0)
         {
             printf(INVALID_VALUE);
+            freeFilenames(filenames, numDocs);
+            freeHashtable(&hashtable);
             cleanStdin();
             continue;
         }

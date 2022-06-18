@@ -248,10 +248,10 @@ void freeLinkedList(LinkedList *list)
 
     while (currNode)
     {
-        if (currNode->word)
-        {
-            free(currNode->word);
-        }
+//        if (currNode->word)
+//        {
+//            free(currNode->word);
+//        }
 
         if (currNode->pairSet)
         {
@@ -262,6 +262,8 @@ void freeLinkedList(LinkedList *list)
         currNode = currNode->next;
         free(nodeToDelete);
     }
+
+    free(list);
 }
 
 

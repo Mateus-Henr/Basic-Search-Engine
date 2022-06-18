@@ -57,6 +57,9 @@ char **readFilenames(Hashtable *hashtable, char *inputFilename, int *numFiles)
         strcpy(filenames[i], filename);
     }
 
+    fclose(file);
+    file = NULL;
+
     return filenames;
 }
 
@@ -97,12 +100,15 @@ bool readFileIntoHashtable(Hashtable *hashtable, char *filename, int fileNumber)
         }
     }
 
+    fclose(file);
+    file = NULL;
+
     return true;
 }
 
 
 /*
- *  Reformats string by removing punctuation and converting everything
+ *  Reformats string by removing punctuation and spaces, and converts everything to lowercase.
  *  to lower case.
  *
  *  @param     dest     destination string.
@@ -112,7 +118,7 @@ void reformatString(char *dest, char *src)
 {
     while (*src)
     {
-        if (!ispunct((unsigned char) *src))
+        if (isalpha((unsigned char) *src))
         {
             *dest++ = (char) tolower((unsigned char) *src);
         }

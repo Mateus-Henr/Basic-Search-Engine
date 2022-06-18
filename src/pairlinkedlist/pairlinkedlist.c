@@ -153,4 +153,6 @@ void freePairLinkedList(PairLinkedList *list)
         currPairNode = currPairNode->next;
         free(pairNodeToDelete);
     }
+
+    free(list);
 }

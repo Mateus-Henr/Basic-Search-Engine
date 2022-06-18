@@ -14,8 +14,10 @@ typedef struct
     double value;
 } Relevance;
 
-TFIDF *initialiseTFIDF(char *word, int numDocs);
+void initialiseTFIDF(TFIDF *tfidf, char *word, int numDocs);
 
 void initialiseRelevance(Relevance *relevance, long ID, char *filename, double value);
 
 void freeTFIDF(TFIDF *tfidf);
+
+void freeRelevance(Relevance *relevance);

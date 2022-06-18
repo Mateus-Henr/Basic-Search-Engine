@@ -7,22 +7,18 @@
 /*
  *  Initialises TFIDF struct with given and default values.
  *
+ *  @param     tfidf       pointer to TFIDF struct.
  *  @param     word        word to check.
  *  @param     numDocs     quantity of documents.
- *  @return                pointer to the initialised struct.
  */
-TFIDF *initialiseTFIDF(char *word, int numDocs)
+void initialiseTFIDF(TFIDF *tfidf, char *word, int numDocs)
 {
-    TFIDF *tfidf = (TFIDF *) malloc(sizeof(TFIDF));
-
     tfidf->numDocs = numDocs;
     tfidf->DocsWithTerm = 0;
     tfidf->word = (char *) malloc(strlen(word) + 1);
     strcpy(tfidf->word, word);
     tfidf->distinctTermsInDocs = (int *) calloc(numDocs, sizeof(int));
     tfidf->occurrencesInDocs = (int *) calloc(numDocs, sizeof(int));
-
-    return tfidf;
 }
 
 
@@ -50,13 +46,32 @@ void initialiseRelevance(Relevance *relevance, long ID, char *filename, double v
  */
 void freeTFIDF(TFIDF *tfidf)
 {
-    if (tfidf)
+    if (tfidf->word)
     {
-        if (tfidf->word)
-        {
-            free(tfidf->word);
-        }
+        free(tfidf->word);
+    }
 
-        free(tfidf);
+    if (tfidf->distinctTermsInDocs)
+    {
+        free(tfidf->distinctTermsInDocs);
+    }
+
+    if (tfidf->occurrencesInDocs)
+    {
+        free(tfidf->occurrencesInDocs);
+    }
+}
+
+
+/*
+ *  Deallocates Relevance struct from memory.
+ *
+ *  @param     tfidf     pointer to Relevance struct.
+ */
+void freeRelevance(Relevance *relevance)
+{
+    if (relevance->filename)
+    {
+        free(relevance->filename);
     }
 }

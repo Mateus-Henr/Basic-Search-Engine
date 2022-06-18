@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
 
@@ -13,16 +12,16 @@
  */
 PairNode *initialisePairNode(long documentID)
 {
-    struct PairNode *node = (PairNode *) malloc(sizeof(PairNode));
+    struct PairNode *pairNode = (PairNode *) malloc(sizeof(struct PairNode));
 
-    if (!node)
+    if (!pairNode)
     {
         return NULL;
     }
 
-    node->documentID = documentID;
-    node->numberOfOccurrences = 1;
-    node->next = NULL;
+    pairNode->documentID = documentID;
+    pairNode->numberOfOccurrences = 1;
+    pairNode->next = NULL;
 
-    return node;
+    return pairNode;
 }

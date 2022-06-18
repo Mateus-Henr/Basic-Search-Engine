@@ -6,7 +6,6 @@
 
 #define FILE_ERROR "\nCouldn't open the file: '%s' or error tying to insert into the hashtable.\n\n"
 #define INVALID_VALUE "\nInvalid value.\n\n"
-#define ERROR -1
 
 
 // Function prototype.
@@ -18,25 +17,23 @@ void cleanStdin();
  */
 int main(void)
 {
-    bool loop = true;
-
-    while (loop)
+    while (true)
     {
-        char input_filename[CHAR_MAX];
+        char inputFilename[CHAR_MAX];
 
         printf("Type the input filename:\n");
-        scanf("%s", input_filename);
+        scanf("%s", inputFilename);
 
         Hashtable hashtable;
-        initialiseHashtable(&hashtable, 128);
+        initialiseHashtable(&hashtable, 1500);
 
         int numDocs;
 
-        char **filenames = readFilenames(&hashtable, input_filename, &numDocs);
+        char **filenames = readFilenames(&hashtable, inputFilename, &numDocs);
 
-        if (numDocs == ERROR)
+        if (!filenames)
         {
-            printf(FILE_ERROR, input_filename);
+            printf(FILE_ERROR, inputFilename);
             cleanStdin();
             continue;
         }
@@ -50,7 +47,8 @@ int main(void)
             cleanStdin();
             continue;
         }
-        char **words = (char **) malloc(numWords * sizeof(char *));
+
+        char *words[numWords];
 
         for (int i = 0; i < numWords; i++)
         {
@@ -60,16 +58,17 @@ int main(void)
             scanf("%s", word);
 
             words[i] = (char *) malloc(strlen(word) + 1);
-            strcpy(words[i], word);
+            reformatString(words[i], word);
         }
 
         calculateRelevance(&hashtable, words, filenames, numWords, numDocs);
 
-//        printHashtable(&hashtable);
+        printHashtable(&hashtable);
 //        sortAndPrintHashtable(&hashtable);
 
-        freeHashtable(&hashtable);
-        loop = false;
+//        freeHashtable(&hashtable);
+
+        break;
     }
 
     return 0;

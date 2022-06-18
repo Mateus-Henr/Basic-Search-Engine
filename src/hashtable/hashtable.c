@@ -34,14 +34,8 @@ void initialiseHashtable(Hashtable *hashtable, int sizeSuggestion)
 {
     // Using Sedgewick way of finding best size for the hashtable array.
     hashtable->maxSize = getPreviousPrime(getTwoPowerValueGreaterOrEqual(sizeSuggestion));
-    hashtable->linkedListArray = (LinkedList **) malloc(sizeof(LinkedList *) * hashtable->maxSize);
-
-    for (int i = 0; i < hashtable->maxSize; i++)
-    {
-        hashtable->linkedListArray[i] = NULL;
-    }
-
-    hashtable->weights = initialiseWeightsArray(45);
+    hashtable->linkedListArray = (LinkedList **) calloc(hashtable->maxSize, sizeof(LinkedList *));
+    hashtable->weights = initialiseWeightsArray();
     hashtable->size = 0;
 }
 
@@ -302,27 +296,24 @@ void freeHashtable(Hashtable *hashtable)
 
 
 /*
- *  Calculate TD-IDF weight of a given word.
+ *  Calculates TD-IDF weight of a given word.
  *
  *  @param     hashtable     pointer to Hashtable struct.
  *  @param     tfidf         pointer to TFIDF struct.
  */
-double *calculateWeight(Hashtable *hashtable, TFIDF *tfidf)
+void calculateWeight(Hashtable *hashtable, double *weights, TFIDF *tfidf)
 {
     getTFIDFHashtable(hashtable, tfidf);
 
-    double *weights = (double *) calloc(tfidf->numDocs, sizeof(double));
-
     for (int i = 0; i < tfidf->numDocs; i++)
     {
+        weights[i] = 0;
+
         if (tfidf->DocsWithTerm != 0)
         {
-            weights[i] = (double) tfidf->occurrencesInDocs[i] * log(tfidf->numDocs) /
-                         (double) tfidf->DocsWithTerm;
+            weights[i] = (double) tfidf->occurrencesInDocs[i] * log(tfidf->numDocs) / (double) tfidf->DocsWithTerm;
         }
     }
-
-    return weights;
 }
 
 
@@ -338,42 +329,45 @@ double *calculateWeight(Hashtable *hashtable, TFIDF *tfidf)
 void calculateRelevance(Hashtable *hashtable, char **words, char **filenames, int numWords, int numDocs)
 {
     Relevance relevanceArray[numDocs];
-    double *values = (double *) calloc(numDocs, sizeof(double));
+    double values[numDocs];
     int distinctTerms[numDocs];
 
     for (int i = 0; i < numWords; i++)
     {
-        TFIDF *tfidf = initialiseTFIDF(words[i], numDocs);
-        double *weights = calculateWeight(hashtable, tfidf);
-        distinctTerms[i] = tfidf->distinctTermsInDocs[i];
+        TFIDF tfidf;
+        initialiseTFIDF(&tfidf, words[i], numDocs);
+
+        double weights[tfidf.numDocs];
+        calculateWeight(hashtable, weights, &tfidf);
 
         for (int j = 0; j < numDocs; j++)
         {
+            distinctTerms[j] = tfidf.distinctTermsInDocs[j];
             values[j] += weights[j];
         }
 
-        if (weights)
+        if (words[i])
         {
-            free(weights);
+            free(words[i]);
         }
 
-        freeTFIDF(tfidf);
+        freeTFIDF(&tfidf);
     }
 
     for (int i = 0; i < numDocs; i++)
     {
         values[i] = (1.0 / (double) distinctTerms[i]) * values[i];
         initialiseRelevance(&relevanceArray[i], i + 1, filenames[i], values[i]);
+        free(filenames[i]);
     }
 
-    free(values);
     insertionSort(relevanceArray, numDocs);
 
     printf("\n\nTD-IDF:\n");
-
     for (int i = 0; i < numDocs; i++)
     {
         printf("Texto %ld (%s) = %lf\n", relevanceArray[i].ID, relevanceArray[i].filename, relevanceArray[i].value);
+        freeRelevance(&relevanceArray[i]);
     }
 }
 

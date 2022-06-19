@@ -1,12 +1,17 @@
 #include <stdlib.h>
 #include <stdbool.h>
-#include "linkedlist//node.h"
-
+#include "pairlinkedlist/pairlinkedlist.h"
 
 typedef enum
 {
     Internal, External
 } NodeType;
+
+typedef struct
+{
+    const char *word;
+    PairLinkedList *pairSet;
+} ExternalNode;
 
 typedef struct TreeNodeType
 {
@@ -16,19 +21,22 @@ typedef struct TreeNodeType
         struct
         {
             unsigned char index;
-            char differChar;
+            const char differChar;
             struct TreeNodeType *left;
             struct TreeNodeType *right;
         } *InternalNode;
-        struct Node *node;
+        ExternalNode *node;
     } *TreeNode;
 } TreeNodeType;
 
-struct TreeNodeType *createInternalNode(struct TreeNodeType **left, struct TreeNodeType **right, int index);
+struct TreeNodeType *
+createInternalNode(struct TreeNodeType **left, struct TreeNodeType **right, int index, const char *word);
 
-struct TreeNodeType *createExternalNode(struct Node *node);
+struct TreeNodeType *createExternalNode(const char *word, int documentID);
 
-bool searchTreeNode(struct TreeNodeType *treeNodeType, const char *word);
+bool searchTreeNode(struct TreeNodeType *treeNodeType, char *word);
+
+struct TreeNodeType *insertTreeNode(struct TreeNodeType **treeNodeType, char *word);
 
 int compareWords(int index, Node *node);
 

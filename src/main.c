@@ -4,7 +4,7 @@
 #include <limits.h>
 #include "file/file.h"
 
-#define FILE_ERROR "\nCouldn't open the file: '%s' or error tying to insert into the hashtable.\n\n"
+#define FILE_ERROR "\nCouldn't open the file: '%s' or error trying to insert into the hashtable.\n\n"
 #define INVALID_VALUE "\nInvalid value.\n\n"
 
 
@@ -19,15 +19,38 @@ int main(void)
 {
     while (true)
     {
-        char inputFilename[CHAR_MAX];
+        int option = 0;
 
-        printf("Type the input filename:\n");
-        scanf("%s", inputFilename);
+        printf("\nChoose one of the option:\n");
+        printf("[1] Print the inverted index\n");
+        printf("[2] Search for a term\n");
+        printf("[3] Print the inverted index - alphabetic order\n");
+        printf("[0] Leave\n");
 
+        if (!scanf("%d", &option))
+        {
+            printf("Insert a valid option (1,2 or 3)\n");
+            cleanStdin();
+            continue;
+        }
+
+        if (option == 0)
+        {
+            printf("Leaving...\n");
+            break;
+        }
+
+        // Initialise the hashtable.
         Hashtable hashtable;
-        initialiseHashtable(&hashtable, 1500);
+        initialiseHashtable(&hashtable, 1000); // You can change the hash table size
 
         int numDocs;
+
+        char inputFilename[CHAR_MAX];
+        printf("========================\n");
+        printf("      Filename\n");
+        printf("========================\n");
+        scanf("%s", inputFilename);
 
         char **filenames = readFilenames(&hashtable, inputFilename, &numDocs);
 
@@ -39,44 +62,53 @@ int main(void)
             continue;
         }
 
-        int numWords = 0;
-
-        printf("Type the number of terms to look for:\n");
-        if (!scanf("%d", &numWords) || numWords <= 0)
+        else if (option == 1)
         {
-            printf(INVALID_VALUE);
-            freeFilenames(filenames, numDocs);
+
+            printf("Printing the hashtable\n");
+            printHashtable(&hashtable);
+        }
+        else if (option == 2)
+        {
+            int numWords = 0;
+
+            printf("Type the number of terms to look for:\n");
+            if (!scanf("%d", &numWords) || numWords <= 0)
+            {
+                printf(INVALID_VALUE);
+                freeFilenames(filenames, numDocs);
+                freeHashtable(&hashtable);
+                cleanStdin();
+                continue;
+            }
+
+            char *words[numWords];
+
+            for (int i = 0; i < numWords; i++)
+            {
+                char word[CHAR_MAX];
+
+                printf("Type the word:\n");
+                scanf("%s", word);
+
+                words[i] = (char *) malloc(strlen(word) + 1);
+                reformatString(words[i], word);
+            }
+
+            calculateRelevance(&hashtable, words, filenames, numWords, numDocs);
+
             freeHashtable(&hashtable);
-            cleanStdin();
-            continue;
         }
 
-        char *words[numWords];
-
-        for (int i = 0; i < numWords; i++)
+        else if (option == 3)
         {
-            char word[CHAR_MAX];
-
-            printf("Type the word:\n");
-            scanf("%s", word);
-
-            words[i] = (char *) malloc(strlen(word) + 1);
-            reformatString(words[i], word);
+            printf("Printing the hashtable sorted\n");
+            sortAndPrintHashtable(&hashtable);
         }
-
-        calculateRelevance(&hashtable, words, filenames, numWords, numDocs);
-
-//        printHashtable(&hashtable);
-//        sortAndPrintHashtable(&hashtable);
-
-        freeHashtable(&hashtable);
-
-        break;
     }
 
     return 0;
 }
-
 
 /*
  *  Clears stdin to avoid problems with the "scanf()" function.

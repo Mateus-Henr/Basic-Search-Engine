@@ -188,7 +188,7 @@ void getTFIDFHashtable(Hashtable *hashtable, TFIDF *tfidf)
  *  @param     hashtable     pointer to Hashtable struct.
  *  @return                  hashtable size.
  */
-int getHashtableSize(Hashtable *hashtable)
+long getHashtableSize(Hashtable *hashtable)
 {
     return hashtable->size;
 }
@@ -331,6 +331,11 @@ void calculateRelevance(Hashtable *hashtable, char **words, char **filenames, in
     Relevance relevanceArray[numDocs];
     double values[numDocs];
     int distinctTerms[numDocs];
+
+    for (int i = 0; i < numDocs; i++)
+    {
+        values[i] = 0;
+    }
 
     for (int i = 0; i < numWords; i++)
     {

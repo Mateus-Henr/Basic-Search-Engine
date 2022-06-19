@@ -14,6 +14,11 @@ PairLinkedList *initialisePairLinkedList()
 {
     PairLinkedList *list = (PairLinkedList *) malloc(sizeof(PairLinkedList));
 
+    if (!list)
+    {
+        return NULL;
+    }
+
     list->head = NULL;
     list->tail = NULL;
     list->size = 0;

@@ -15,6 +15,11 @@ LinkedList *initialiseLinkedList()
 {
     LinkedList *list = (LinkedList *) malloc(sizeof(LinkedList));
 
+    if (!list)
+    {
+        return NULL;
+    }
+
     list->head = NULL;
     list->tail = NULL;
     list->size = 0;

@@ -6,14 +6,14 @@ typedef struct Hashtable
     LinkedList **linkedListArray;
     int *weights;
     int maxSize;
-    int size;
+    long size;
 } Hashtable;
 
 void initialiseHashtable(Hashtable *hashtable, int sizeSuggestion);
 
 bool insert(Hashtable *hashtable, const char *word, long documentID);
 
-int getHashtableSize(Hashtable *hashtable);
+long getHashtableSize(Hashtable *hashtable);
 
 bool isHashtableEmpty(Hashtable *hashtable);
 

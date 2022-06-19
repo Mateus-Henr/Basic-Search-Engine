@@ -62,7 +62,7 @@ int main(void)
             continue;
         }
 
-        else if (option == 1)
+        if (option == 1)
         {
 
             printf("Printing the hashtable\n");
@@ -96,15 +96,14 @@ int main(void)
             }
 
             calculateRelevance(&hashtable, words, filenames, numWords, numDocs);
-
-            freeHashtable(&hashtable);
         }
-
         else if (option == 3)
         {
             printf("Printing the hashtable sorted\n");
             sortAndPrintHashtable(&hashtable);
         }
+
+        freeHashtable(&hashtable);
     }
 
     return 0;

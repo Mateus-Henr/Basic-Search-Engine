@@ -3,25 +3,13 @@
 #include "patricia.h"
 
 
-unsigned char Bit(unsigned char index, LinkedList *list)
+int compareWords(int index, LinkedList *list)
 {
-    if (index == 0)
-    {
-        return 0;
-    }
-
-    int c = list;
-
-    for (int j = 1; j <= D - index; j++)
-    {
-        c /= 2;
-    }
-
-    return (c & 1);
+    return 0;
 }
 
 
-bool isExternal(struct TreeNodeType *treeNodeType)
+bool isExternalNode(struct TreeNodeType *treeNodeType)
 {
     return treeNodeType->nodeType == External;
 }
@@ -63,7 +51,7 @@ struct TreeNodeType *createExternalNode(LinkedList *list)
 
 void search(struct TreeNodeType *treeNodeType, LinkedList *list)
 {
-    if (isExternal(treeNodeType))
+    if (isExternalNode(treeNodeType))
     {
         if (list == treeNodeType->TreeNode->list)
         {
@@ -77,7 +65,7 @@ void search(struct TreeNodeType *treeNodeType, LinkedList *list)
         return;
     }
 
-    if (Bit(treeNodeType->TreeNode->InternalNode->index, list) == 0)
+    if (compareWords(treeNodeType->TreeNode->InternalNode->index, list) == 0)
     {
         search(treeNodeType->TreeNode->InternalNode->left, list);
     }
@@ -90,11 +78,11 @@ void search(struct TreeNodeType *treeNodeType, LinkedList *list)
 
 struct TreeNodeType *insertBetween(struct TreeNodeType **treeNodeType, int index, LinkedList *list)
 {
-    if (isExternal(*treeNodeType) || index < (*treeNodeType)->TreeNode->InternalNode->index)
+    if (isExternalNode(*treeNodeType) || index < (*treeNodeType)->TreeNode->InternalNode->index)
     {
         struct TreeNodeType *treeNode = createExternalNode(list);
 
-        if (Bit(index, list) == 1)
+        if (compareWords(index, list) == 1)
         {
             return createInternalNode(&treeNode, treeNodeType, index);
         }
@@ -102,7 +90,7 @@ struct TreeNodeType *insertBetween(struct TreeNodeType **treeNodeType, int index
         return createInternalNode(&treeNode, treeNodeType, index);
     }
 
-    if (Bit((*treeNodeType)->TreeNode->InternalNode->index, list) == 1)
+    if (compareWords((*treeNodeType)->TreeNode->InternalNode->index, list) == 1)
     {
         (*treeNodeType)->TreeNode->InternalNode->right =
                 insertBetween(&(*treeNodeType)->TreeNode->InternalNode->right, index, list);
@@ -126,9 +114,9 @@ struct TreeNodeType *insertIntoTree(struct TreeNodeType **treeNodeType, LinkedLi
 
     struct TreeNodeType *currTreeNode = *treeNodeType;
 
-    while (!isExternal(currTreeNode))
+    while (!isExternalNode(currTreeNode))
     {
-        if (Bit(currTreeNode->TreeNode->InternalNode->index, list) == 1)
+        if (compareWords(currTreeNode->TreeNode->InternalNode->index, list) == 1)
         {
             currTreeNode = currTreeNode->TreeNode->InternalNode->right;
         }
@@ -140,7 +128,8 @@ struct TreeNodeType *insertIntoTree(struct TreeNodeType **treeNodeType, LinkedLi
 
     int currIndex = 1;
 
-    while ((currIndex <= D) & (Bit((int) currIndex, list) == Bit((int) currIndex, currTreeNode->TreeNode->list)))
+    while ((compareWords((int) currIndex, list) ==
+            compareWords((int) currIndex, currTreeNode->TreeNode->list)))
     {
         currIndex++;
     }

@@ -1,4 +1,4 @@
-#include<stdlib.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include "linkedlist/linkedlist.h"
 
@@ -25,9 +25,9 @@ typedef struct TreeNodeType
     } *TreeNode;
 } TreeNodeType;
 
-unsigned char Bit(unsigned char index, LinkedList *list);
+int compareWords(int index, LinkedList *list);
 
-bool isExternal(struct TreeNodeType *treeNodeType);
+bool isExternalNode(struct TreeNodeType *treeNodeType);
 
 struct TreeNodeType *createInternalNode(struct TreeNodeType **left, struct TreeNodeType **right, int index);
 

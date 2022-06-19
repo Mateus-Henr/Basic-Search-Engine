@@ -69,6 +69,33 @@ struct Node *initialiseNodeWithExistentData(struct Node *node)
 
 
 /*
+ *  Compares one word against another character by character.
+ *
+ *  @param     word            first word to compare.
+ *  @param     anotherWord     second word to compare.
+ */
+int compareAlphabetically(const char *word, const char *anotherWord)
+{
+    while (*word && *anotherWord)
+    {
+        if (*word > *anotherWord)
+        {
+            return 1;
+        }
+        else if (*word < *anotherWord)
+        {
+            return -1;
+        }
+
+        word++;
+        anotherWord++;
+    }
+
+    return *word ? 1 : -1;
+}
+
+
+/*
  *  Gets the hashcode of a word based on a weights array.
  *
  *  @param     word        word to get its hashcode.

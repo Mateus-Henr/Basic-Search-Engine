@@ -6,10 +6,6 @@
 #include "linkedlist.h"
 
 
-// Function prototype.
-int compareAlphabetically(const char *word, const char *anotherWord);
-
-
 /*
  *  Initialises LinkedList struct with default values.
  *
@@ -158,33 +154,6 @@ int getLinkedListSize(LinkedList *list)
 bool isLinkedListEmpty(LinkedList *list)
 {
     return list->head == NULL;
-}
-
-
-/*
- *  Compares one word against another character by character.
- *
- *  @param     word            first word to compare.
- *  @param     anotherWord     second word to compare.
- */
-int compareAlphabetically(const char *word, const char *anotherWord)
-{
-    while (*word && *anotherWord)
-    {
-        if (*word > *anotherWord)
-        {
-            return 1;
-        }
-        else if (*word < *anotherWord)
-        {
-            return -1;
-        }
-
-        word++;
-        anotherWord++;
-    }
-
-    return *word ? 1 : -1;
 }
 
 

@@ -11,8 +11,8 @@ struct Node *initialiseNode(const char *word, long documentID);
 
 struct Node *initialiseNodeWithExistentData(struct Node *node);
 
-struct Node *searchNode(struct Node *head, const char *word);
+int compareAlphabetically(const char *word, const char *anotherWord);
 
-void printNodes(struct Node *head);
+struct Node *searchNode(struct Node *head, const char *word);
 
 int hashCode(const char *word, const int *weights);

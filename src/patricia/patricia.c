@@ -3,14 +3,14 @@
 #include "patricia.h"
 
 
-TipoDib Bit(TipoIndexAmp index, KeyType k)
+unsigned char Bit(unsigned char index, LinkedList *list)
 {
     if (index == 0)
     {
         return 0;
     }
 
-    int c = k;
+    int c = list;
 
     for (int j = 1; j <= D - index; j++)
     {
@@ -21,134 +21,136 @@ TipoDib Bit(TipoIndexAmp index, KeyType k)
 }
 
 
-bool isExternal(struct TreeNode *treeNode)
+bool isExternal(struct TreeNodeType *treeNodeType)
 {
-    return treeNode->nodeType == External;
+    return treeNodeType->nodeType == External;
 }
 
 
-struct TreeNode *createIntNode(struct TreeNode **left, struct TreeNode **right, int index)
+struct TreeNodeType *createInternalNode(struct TreeNodeType **left, struct TreeNodeType **right, int index)
 {
-    struct TreeNode *treeNode = (struct TreeNode *) malloc(sizeof(struct TreeNode));
+    struct TreeNodeType *newInternalNode = (struct TreeNodeType *) malloc(sizeof(struct TreeNodeType));
 
-    if (!treeNode)
+    if (!newInternalNode)
     {
         return NULL;
     }
 
-    treeNode->nodeType = Internal;
-    treeNode->Node.InternalNode.left = *left;
-    treeNode->Node.InternalNode.right = *right;
-    treeNode->Node.InternalNode.Index = index;
+    newInternalNode->nodeType = Internal;
+    newInternalNode->TreeNode->InternalNode->left = *left;
+    newInternalNode->TreeNode->InternalNode->right = *right;
+    newInternalNode->TreeNode->InternalNode->index = index;
 
-    return treeNode;
+    return newInternalNode;
 }
 
 
-struct TreeNode *createExternalNode(KeyType k)
+struct TreeNodeType *createExternalNode(LinkedList *list)
 {
-    struct TreeNode *treeNode = (struct TreeNode *) malloc(sizeof(TreeNode));
+    struct TreeNodeType *newExternalNode = (struct TreeNodeType *) malloc(sizeof(struct TreeNodeType));
 
-    if (!treeNode)
+    if (!newExternalNode)
     {
         return NULL;
     }
 
-    treeNode->nodeType = External;
-    treeNode->Node.string = k;
+    newExternalNode->nodeType = External;
+    newExternalNode->TreeNode->list = list;
 
-    return treeNode;
+    return newExternalNode;
 }
 
 
-void search(struct TreeNode *treeNode, KeyType string)
+void search(struct TreeNodeType *treeNodeType, LinkedList *list)
 {
-    if (isExternal(treeNode))
+    if (isExternal(treeNodeType))
     {
-        if (string == treeNode->Node.string)
+        if (list == treeNodeType->TreeNode->list)
         {
-            printf("Elemento encontrado\n");
+            printf("Element found.\n");
         }
         else
         {
-            printf("Elemento nao encontrado\n");
+            printf("Element not found.\n");
         }
 
         return;
     }
 
-    if (Bit(treeNode->Node.InternalNode.Index, string) == 0)
+    if (Bit(treeNodeType->TreeNode->InternalNode->index, list) == 0)
     {
-        search(treeNode->Node.InternalNode.left, string);
+        search(treeNodeType->TreeNode->InternalNode->left, list);
     }
     else
     {
-        search(treeNode->Node.InternalNode.right, string);
+        search(treeNodeType->TreeNode->InternalNode->right, list);
     }
 }
 
 
-struct TreeNode *insertBetween(struct TreeNode **t, int i, KeyType k)
+struct TreeNodeType *insertBetween(struct TreeNodeType **treeNodeType, int index, LinkedList *list)
 {
-    if (isExternal(*t) || i < (*t)->Node.InternalNode.Index)
+    if (isExternal(*treeNodeType) || index < (*treeNodeType)->TreeNode->InternalNode->index)
     {
-        struct TreeNode *treeNode = createExternalNode(k);
+        struct TreeNodeType *treeNode = createExternalNode(list);
 
-        if (Bit(i, k) == 1)
+        if (Bit(index, list) == 1)
         {
-            return createIntNode(&treeNode, t, i);
+            return createInternalNode(&treeNode, treeNodeType, index);
         }
 
-        return createIntNode(&treeNode, t, i);
+        return createInternalNode(&treeNode, treeNodeType, index);
     }
 
-    if (Bit((*t)->Node.InternalNode.Index, k) == 1)
+    if (Bit((*treeNodeType)->TreeNode->InternalNode->index, list) == 1)
     {
-        (*t)->Node.InternalNode.right = insertBetween(&(*t)->Node.InternalNode.right, i, k);
+        (*treeNodeType)->TreeNode->InternalNode->right =
+                insertBetween(&(*treeNodeType)->TreeNode->InternalNode->right, index, list);
     }
     else
     {
-        (*t)->Node.InternalNode.left = insertBetween(&(*t)->Node.InternalNode.left, i, k);
+        (*treeNodeType)->TreeNode->InternalNode->left =
+                insertBetween(&(*treeNodeType)->TreeNode->InternalNode->left, index, list);
     }
 
-    return (*t);
+    return (*treeNodeType);
 }
 
 
-struct TreeNode *insertIntoTree(struct TreeNode **treeNode, KeyType k)
+struct TreeNodeType *insertIntoTree(struct TreeNodeType **treeNodeType, LinkedList *list)
 {
-    if (!(*treeNode))
+    if (!(*treeNodeType))
     {
-        return createExternalNode(k);
+        return createExternalNode(list);
     }
 
-    struct TreeNode *currTreeNode = *treeNode;
+    struct TreeNodeType *currTreeNode = *treeNodeType;
 
     while (!isExternal(currTreeNode))
     {
-        if (Bit(currTreeNode->Node.InternalNode.Index, k) == 1)
+        if (Bit(currTreeNode->TreeNode->InternalNode->index, list) == 1)
         {
-            currTreeNode = currTreeNode->Node.InternalNode.right;
+            currTreeNode = currTreeNode->TreeNode->InternalNode->right;
         }
         else
         {
-            currTreeNode = currTreeNode->Node.InternalNode.left;
+            currTreeNode = currTreeNode->TreeNode->InternalNode->left;
         }
     }
 
     int currIndex = 1;
 
-    while ((currIndex <= D) & (Bit((int) currIndex, k) == Bit((int) currIndex, currTreeNode->Node.string)))
+    while ((currIndex <= D) & (Bit((int) currIndex, list) == Bit((int) currIndex, currTreeNode->TreeNode->list)))
     {
         currIndex++;
     }
 
     if (currIndex > D)
     {
-        printf("Erro: chave ja esta na arvore\n");
+        printf("ERROR: The specified key is already in the tree.\n");
 
-        return (*treeNode);
+        return *treeNodeType;
     }
 
-    return (insertBetween(treeNode, currIndex, k));
+    return insertBetween(treeNodeType, currIndex, list);
 }

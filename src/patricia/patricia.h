@@ -1,48 +1,40 @@
 #include<stdlib.h>
 #include <stdbool.h>
-#include <sys/time.h>
+#include "linkedlist/linkedlist.h"
 
-#define D 8   /* depende de KeyType */
-
-typedef unsigned char KeyType
-{
-        char string[CHAR_MAX];
-        ////tem q coloca aquela estrutura iDoc bosta
-} KeyType;
-typedef unsigned char TipoIndexAmp;
-typedef unsigned char TipoDib;
+#define D 8
 
 typedef enum
 {
     Internal, External
 } NodeType;
 
-typedef struct TreeNode
+typedef struct TreeNodeType
 {
     NodeType nodeType;
     union
     {
         struct
         {
-            TipoIndexAmp Index;
+            unsigned char index;
             char differChar;
-            struct TreeNode *left;
-            struct TreeNode *right;
-        } InternalNode;
-        KeyType string;
-    } Node;
-} TreeNode;
+            struct TreeNodeType *left;
+            struct TreeNodeType *right;
+        } *InternalNode;
+        LinkedList *list;
+    } *TreeNode;
+} TreeNodeType;
 
-TipoDib Bit(TipoIndexAmp index, KeyType k);
+unsigned char Bit(unsigned char index, LinkedList *list);
 
-bool isExternal(struct TreeNode *treeNode);
+bool isExternal(struct TreeNodeType *treeNodeType);
 
-struct TreeNode *createIntNode(struct TreeNode **left, struct TreeNode **right, int index);
+struct TreeNodeType *createInternalNode(struct TreeNodeType **left, struct TreeNodeType **right, int index);
 
-struct TreeNode *createExternalNode(KeyType k);
+struct TreeNodeType *createExternalNode(LinkedList *list);
 
-void search(struct TreeNode *treeNode, KeyType string);
+void search(struct TreeNodeType *treeNodeType, LinkedList *list);
 
-struct TreeNode *insertBetween(struct TreeNode **t, int i, KeyType k);
+struct TreeNodeType *insertBetween(struct TreeNodeType **treeNodeType, int index, LinkedList *list);
 
-struct TreeNode *insertIntoTree(struct TreeNode **treeNode, KeyType k);
+struct TreeNodeType *insertIntoTree(struct TreeNodeType **treeNodeType, LinkedList *list);

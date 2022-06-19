@@ -1,101 +1,48 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "linkedlist/linkedlist.h"
+#include<stdlib.h>
+#include <stdbool.h>
+#include <sys/time.h>
 
-#ifndef TADPATRICIA_H
-#define TADPATRICIA_H
+#define D 8   /* depende de KeyType */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#define TRUE 1
-#define FALSE !TRUE
-typedef  char *String;
-
-typedef char *string;
-typedef short boolean;
+typedef unsigned char KeyType
+{
+        char string[CHAR_MAX];
+        ////tem q coloca aquela estrutura iDoc bosta
+} KeyType;
+typedef unsigned char TipoIndexAmp;
+typedef unsigned char TipoDib;
 
 typedef enum
 {
-    Interno, Externo
-} TipoNo;
+    Internal, External
+} NodeType;
 
-typedef struct TipoPatNo *TArvore;
-typedef struct TipoPatNo
+typedef struct TreeNode
 {
-    TipoNo nt;
+    NodeType nodeType;
     union
     {
-        String Chave;
         struct
         {
-            short Index;
-            char Caractere;
-            TArvore Esq, Dir;
-        } NInterno;
-    } NO;
+            TipoIndexAmp Index;
+            char differChar;
+            struct TreeNode *left;
+            struct TreeNode *right;
+        } InternalNode;
+        KeyType string;
+    } Node;
+} TreeNode;
 
-    struct
-    {
-        LinkedList lista;
-        int tamanho;
-    } NoLista;
+TipoDib Bit(TipoIndexAmp index, KeyType k);
 
-} TipoPatNo;
+bool isExternal(struct TreeNode *treeNode);
 
-char Caractere(short i, String k);
+struct TreeNode *createIntNode(struct TreeNode **left, struct TreeNode **right, int index);
 
-boolean MenorIgual(char a, char b);
+struct TreeNode *createExternalNode(KeyType k);
 
-boolean EExterno(TArvore p);
+void search(struct TreeNode *treeNode, KeyType string);
 
-TArvore CriaNoInt(short i, TArvore *Esq, TArvore *Dir, char Caractere);
+struct TreeNode *insertBetween(struct TreeNode **t, int i, KeyType k);
 
-TArvore CriaNoExt(String k, int idDoc);
-
-boolean pesquisaOcorrencia(String k, TArvore t, int idDoc);
-
-float retornaPesoTermo(String k, TArvore t, int idDoc);
-
-void imprimirNo(TArvore no);
-
-void imprimirOrdem(TArvore ap);
-
-TArvore InsereEntre(String k, TArvore *t, short i, int idDoc);
-
-TArvore Insere(String k, TArvore *t, int idDoc);
-
-string *nomeArquivos;
-int *nPalavrasDistintas;
-int nDoc;
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* TADPATRICIA_H */
-
-
-/*
-#include <stdio.h>
-#include <stdlib.h>
-
-#define CHAR_SIZE 26
-
-struct Trie
-{
-    int isLeaf;             // 1 when the node is a leaf node
-    struct Trie* character[CHAR_SIZE];
-};
-
-
-// Function
-
-struct Trie* getNewTrieNode();
-void insert(struct Trie *head, char* str);
-int search(struct Trie* head, char* str);
-int hasChildren(struct Trie* curr);
-int deletion(struct Trie **curr, char* str);
-*/
+struct TreeNode *insertIntoTree(struct TreeNode **treeNode, KeyType k);

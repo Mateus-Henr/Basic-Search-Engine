@@ -19,12 +19,13 @@ void initialisePATRICIA(PATRICIA *patricia)
  *  @param     patricia     pointer to PATRICIA struct.
  *  @param     word         word to look for.
  */
-bool search(PATRICIA *patricia, const char *word)
+void search(PATRICIA *patricia, char *word)
 {
-    return searchTreeNode(patricia->root, word);
+    searchTreeNode(patricia->root, word);
+    return;
 }
 
-bool insertIntoTree(PATRICIA *patricia, const char *word)
+bool insertIntoTree(PATRICIA *patricia, char *word)
 {
     return insertTreeNode(patricia->root, word);
 }

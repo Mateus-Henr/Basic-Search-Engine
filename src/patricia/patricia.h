@@ -9,8 +9,8 @@ typedef struct
 
 void initialisePATRICIA(PATRICIA *patricia);
 
-bool insertIntoTree(PATRICIA *patricia, const char *word);
+bool insertIntoTree(PATRICIA *patricia, char *word);
 
-bool search(PATRICIA *patricia, const char *word);
+void search(PATRICIA *patricia, char *word);
 
 int getTreeSize(PATRICIA *patricia);

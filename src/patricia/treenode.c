@@ -7,7 +7,6 @@
 // Function prototype.
 struct TreeNodeType *insertBetween(struct TreeNodeType **treeNodeType, int index, char *word);
 
-
 /*
  *  Initialises internal node with given values.
  *
@@ -16,8 +15,7 @@ struct TreeNodeType *insertBetween(struct TreeNodeType **treeNodeType, int index
  *  @param     index     index value to be stored in the tree node.
  *  @return              pointer to the initialised tree node.
  */
-struct TreeNodeType *
-createInternalNode(struct TreeNodeType **left, struct TreeNodeType **right, int index, const char *word)
+struct TreeNodeType *createInternalNode(struct TreeNodeType **left, struct TreeNodeType **right, int index, char *word)
 {
     struct TreeNodeType *newInternalNode = (struct TreeNodeType *) malloc(sizeof(struct TreeNodeType));
 
@@ -41,7 +39,7 @@ createInternalNode(struct TreeNodeType **left, struct TreeNodeType **right, int 
  *  @param     node     pointer to Node struct to be set as the value.
  *  @return             pointer to the initialised tree node.
  */
-struct TreeNodeType *createExternalNode(const char *word, int documentID)
+struct TreeNodeType *createExternalNode(char *word, int documentID)
 {
     struct TreeNodeType *newExternalNode = (struct TreeNodeType *) malloc(sizeof(struct TreeNodeType));
 
@@ -70,19 +68,25 @@ struct TreeNodeType *createExternalNode(const char *word, int documentID)
  *
  *  @param
  */
-bool searchTreeNode(struct TreeNodeType *treeNodeType, const char *word)
+void searchTreeNode(struct TreeNodeType *treeNodeType, char *word)
 {
     if (isExternalNode(treeNodeType))
     {
-        if (!strcmp(treeNodeType->TreeNode->node->word, word))
+        if (strcmp(treeNodeType->TreeNode->node->word, word))
         {
-            return true;
+            printf("\nElement %s found!\n", word);
+
+            return;
+        }
+        else
+        {
+            printf("\nElement %s not found!\n", word);
+            return;
         }
 
-        return false;
     }
 
-    if (compareWords(treeNodeType->TreeNode->InternalNode->index, word) == 0)
+    if (compareWords(word, treeNodeType->TreeNode->InternalNode->index, treeNodeType->TreeNode->InternalNode->differChar) == 0)
     {
         return searchTreeNode(treeNodeType->TreeNode->InternalNode->left, word);
     }
@@ -101,7 +105,7 @@ struct TreeNodeType *insertBetween(struct TreeNodeType **treeNodeType, int index
 
         if (compareWords(index, node) == 1)
         {
-            return createInternalNode(&treeNode, treeNodeType, index);
+            return createInternalNode();
         }
 
         return createInternalNode(&treeNode, treeNodeType, index);
@@ -122,7 +126,7 @@ struct TreeNodeType *insertBetween(struct TreeNodeType **treeNodeType, int index
 }
 
 
-struct TreeNodeType *insertTreeNode(struct TreeNodeType **treeNodeType, const char *word, int documentID)
+struct TreeNodeType *insertTreeNode(struct TreeNodeType **treeNodeType, char *word, int documentID)
 {
     if (!(*treeNodeType))
     {
@@ -145,7 +149,7 @@ struct TreeNodeType *insertTreeNode(struct TreeNodeType **treeNodeType, const ch
 
     int currIndex = 1;
 
-    while (compareWords((currIndex, word) == compareWords(currIndex, currTreeNode->TreeNode->node))
+    while (compareWords((currIndex, word) == compareWords(currIndex, currTreeNode->TreeNode->node)))
     {
         currIndex++;
     }
@@ -161,9 +165,19 @@ struct TreeNodeType *insertTreeNode(struct TreeNodeType **treeNodeType, const ch
 }
 
 
-int compareWords(int index, const char *word)
+int compareWords(char *word, int index, char difChat)
 {
-    return 0;
+    char letter = word[index];
+
+    if(difChat > letter)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+
 }
 
 /*

@@ -7,9 +7,9 @@ typedef enum
     Internal, External
 } NodeType;
 
-typedef struct
+typedef struct ExternalNode
 {
-    const char *word;
+    char *word;
     PairLinkedList *pairSet;
 } ExternalNode;
 
@@ -21,7 +21,7 @@ typedef struct TreeNodeType
         struct
         {
             unsigned char index;
-            const char differChar;
+            char differChar;
             struct TreeNodeType *left;
             struct TreeNodeType *right;
         } *InternalNode;
@@ -30,14 +30,14 @@ typedef struct TreeNodeType
 } TreeNodeType;
 
 struct TreeNodeType *
-createInternalNode(struct TreeNodeType **left, struct TreeNodeType **right, int index, const char *word);
+createInternalNode(struct TreeNodeType **left, struct TreeNodeType **right, int index, char *word);
 
-struct TreeNodeType *createExternalNode(const char *word, int documentID);
+struct TreeNodeType *createExternalNode(char *word, int documentID);
 
-bool searchTreeNode(struct TreeNodeType *treeNodeType, char *word);
+void searchTreeNode(struct TreeNodeType *treeNodeType, char *word);
 
 struct TreeNodeType *insertTreeNode(struct TreeNodeType **treeNodeType, char *word);
 
-int compareWords(int index, Node *node);
+int compareWords(char *word, int index, char difChat);
 
 bool isExternalNode(struct TreeNodeType *treeNodeType);

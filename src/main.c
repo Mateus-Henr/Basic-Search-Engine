@@ -21,15 +21,16 @@ int main(void)
     {
         int option = 0;
 
-        printf("\nChoose one of the option:\n");
+        printf("\nOptions\n");
+        printf("[0] Exit\n");
         printf("[1] Print the inverted index\n");
         printf("[2] Search for a term\n");
         printf("[3] Print the inverted index - alphabetic order\n");
-        printf("[0] Leave\n");
+        printf("Choose one of the options:\n");
 
         if (!scanf("%d", &option))
         {
-            printf("Insert a valid option (1,2 or 3)\n");
+            printf(INVALID_VALUE);
             cleanStdin();
             continue;
         }
@@ -42,9 +43,9 @@ int main(void)
 
         // Initialise the hashtable.
         Hashtable hashtable;
-        initialiseHashtable(&hashtable, 1000); // You can change the hash table size
+        initialiseHashtable(&hashtable, 100); // You can change the hash table size
 
-        int numDocs;
+        int numDocs = 0;
 
         char inputFilename[CHAR_MAX];
         printf("========================\n");
@@ -64,9 +65,9 @@ int main(void)
 
         if (option == 1)
         {
-
             printf("Printing the hashtable\n");
             printHashtable(&hashtable);
+            freeFilenames(filenames, numDocs);
         }
         else if (option == 2)
         {
@@ -101,6 +102,7 @@ int main(void)
         {
             printf("Printing the hashtable sorted\n");
             sortAndPrintHashtable(&hashtable);
+            freeFilenames(filenames, numDocs);
         }
 
         freeHashtable(&hashtable);
@@ -108,6 +110,7 @@ int main(void)
 
     return 0;
 }
+
 
 /*
  *  Clears stdin to avoid problems with the "scanf()" function.

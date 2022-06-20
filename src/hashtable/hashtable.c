@@ -368,12 +368,13 @@ void calculateRelevance(Hashtable *hashtable, char **words, char **filenames, in
 
     insertionSort(relevanceArray, numDocs);
 
-    printf("\n\nTD-IDF:\n");
+    printf("\nTD-IDF:\n");
     for (int i = 0; i < numDocs; i++)
     {
         printf("Texto %ld (%s) = %lf\n", relevanceArray[i].ID, relevanceArray[i].filename, relevanceArray[i].value);
         freeRelevance(&relevanceArray[i]);
     }
+    printf("\n");
 }
 
 

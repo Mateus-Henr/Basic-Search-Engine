@@ -32,7 +32,7 @@ char **readFilenames(Hashtable *hashtable, char *inputFilename, int *numFiles)
         return NULL;
     }
 
-    if (!fscanf(file, "%d", numFiles))
+    if (!fscanf(file, "%d", numFiles) || *numFiles <= 0)
     {
         return NULL;
     }

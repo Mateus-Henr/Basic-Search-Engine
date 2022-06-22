@@ -1,4 +1,5 @@
 #include <stdbool.h>
+
 #include "pairlinkedlist/pairlinkedlist.h"
 
 typedef enum

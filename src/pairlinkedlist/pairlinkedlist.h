@@ -1,4 +1,5 @@
 #include <stdbool.h>
+
 #include "pairnode.h"
 #include "tfidf/tfidf.h"
 

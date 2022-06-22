@@ -1,12 +1,11 @@
 #include <stdbool.h>
-
 #include "pairlinkedlist/pairlinkedlist.h"
 
 typedef enum
 {
     Internal, External
 } NodeType;
-typedef struct  TreeNodeType* TreeType;
+typedef struct TreeNodeType *TreeType;
 typedef struct ExternalNode
 {
     char *word;
@@ -37,8 +36,10 @@ void searchTreeNode(struct TreeNodeType *treeNodeType, char *word);
 
 TreeType insertTreeNode(TreeNodeType **treeNodeType, char *word, long documentID);
 
-int compareWords(char *word, int *index, char difChat);
+int compareWords(const char *word, const int *index, char difChat);
 
 bool isExternalNode(struct TreeNodeType *treeNodeType);
 
-char findCharNode(char *word, TreeNodeType *currNode,int *currIndex);
+char findCharNode(const char *word, TreeNodeType *currNode, int *currIndex);
+
+void printTree(TreeNodeType *tree);

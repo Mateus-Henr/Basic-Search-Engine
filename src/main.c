@@ -42,8 +42,11 @@ int main(void)
         }
 
         // Initialise the hashtable.
-        Hashtable hashtable;
-        initialiseHashtable(&hashtable, 100); // You can change the hash table size
+//        Hashtable hashtable;
+//        initialiseHashtable(&hashtable, 100); // You can change the hash table size
+
+        // Initialise tree.
+        TreeNodeType treeNodeType;
 
         int numDocs = 0;
 
@@ -53,21 +56,25 @@ int main(void)
         printf("========================\n");
         scanf("%s", inputFilename);
 
-        char **filenames = readFilenames(&hashtable, inputFilename, &numDocs);
+        char **filenames = readFilenamesPatricia(&treeNodeType, inputFilename, &numDocs);
 
         if (!filenames)
         {
             printf(FILE_ERROR, inputFilename);
-            freeHashtable(&hashtable);
+//            freeHashtable(&treeNodeType);
             cleanStdin();
             continue;
         }
 
         if (option == 1)
         {
-            printf("Printing the hashtable\n");
-            printHashtable(&hashtable);
+            printf("Printing the tree\n");
+            printTree(&treeNodeType);
             freeFilenames(filenames, numDocs);
+
+//            printf("Printing the hashtable\n");
+//            printHashtable(&hashtable);
+//            freeFilenames(filenames, numDocs);
         }
         else if (option == 2)
         {
@@ -78,7 +85,7 @@ int main(void)
             {
                 printf(INVALID_VALUE);
                 freeFilenames(filenames, numDocs);
-                freeHashtable(&hashtable);
+//                freeHashtable(&hashtable);
                 cleanStdin();
                 continue;
             }
@@ -96,16 +103,16 @@ int main(void)
                 reformatString(words[i], word);
             }
 
-            calculateRelevance(&hashtable, words, filenames, numWords, numDocs);
+//            calculateRelevance(&hashtable, words, filenames, numWords, numDocs);
         }
         else if (option == 3)
         {
             printf("Printing the hashtable sorted\n");
-            sortAndPrintHashtable(&hashtable);
+//            sortAndPrintHashtable(&hashtable);
             freeFilenames(filenames, numDocs);
         }
 
-        freeHashtable(&hashtable);
+//        freeHashtable(&hashtable);
     }
 
     return 0;

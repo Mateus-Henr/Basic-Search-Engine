@@ -18,7 +18,8 @@
  *  @param     numFiles          number of file.
  *  @return                      array with all the filenames.
  */
-char **readFilenames(Hashtable *hashtable, char *inputFilename, int *numFiles) {
+char **readFilenames(Hashtable *hashtable, char *inputFilename, int *numFiles)
+{
     char filePath[strlen(INPUT_FILES_PATH) + strlen(inputFilename) + 1];
 
     strcpy(filePath, INPUT_FILES_PATH);
@@ -26,21 +27,25 @@ char **readFilenames(Hashtable *hashtable, char *inputFilename, int *numFiles) {
 
     FILE *file = fopen(filePath, "r");
 
-    if (!file) {
+    if (!file)
+    {
         return NULL;
     }
 
-    if (!fscanf(file, "%d", numFiles) || *numFiles <= 0) {
+    if (!fscanf(file, "%d", numFiles) || *numFiles <= 0)
+    {
         return NULL;
     }
 
     char **filenames = (char **) malloc(*numFiles * sizeof(char *));
 
-    for (int i = 0; i < *numFiles; i++) {
+    for (int i = 0; i < *numFiles; i++)
+    {
         char filename[CHAR_MAX];
 
         fscanf(file, "%s", filename);
-        if (!readFileIntoHashtable(hashtable, filename, i + 1)) {
+        if (!readFileIntoHashtable(hashtable, filename, i + 1))
+        {
             printf(FILE_ERROR, filename);
         }
 
@@ -55,7 +60,16 @@ char **readFilenames(Hashtable *hashtable, char *inputFilename, int *numFiles) {
 }
 
 
-char **readFilenamesPatricia(TreeType *tree, char *inputFilename, int *numFiles) {
+/*
+ *  Reads filenames that contain input texts.
+ *
+ *  @param     hashtable         struct to Hashtable struct.
+ *  @param     inputFilename     input filename.
+ *  @param     numFiles          number of file.
+ *  @return                      array with all the filenames.
+ */
+char **readFilenamesPatricia(TreeNodeType *tree, char *inputFilename, int *numFiles)
+{
     char filePath[strlen(INPUT_FILES_PATH) + strlen(inputFilename) + 1];
 
     strcpy(filePath, INPUT_FILES_PATH);
@@ -63,22 +77,25 @@ char **readFilenamesPatricia(TreeType *tree, char *inputFilename, int *numFiles)
 
     FILE *file = fopen(filePath, "r");
 
-    if (!file) {
+    if (!file)
+    {
         return NULL;
     }
 
-    if (!fscanf(file, "%d", numFiles) || *numFiles <= 0) {
+    if (!fscanf(file, "%d", numFiles) || *numFiles <= 0)
+    {
         return NULL;
     }
 
     char **filenames = (char **) malloc(*numFiles * sizeof(char *));
 
-    for (int i = 0; i < *numFiles; i++) {
+    for (int i = 0; i < *numFiles; i++)
+    {
         char filename[CHAR_MAX];
 
         fscanf(file, "%s", filename);
-        i++;
-        if (!readFilenamesPatricia(tree, filename, i + (int*) 1 )){
+        if (!readFileIntoPatricia(tree, filename, i + 1))
+        {
             printf(FILE_ERROR, filename);
         }
 
@@ -91,6 +108,7 @@ char **readFilenamesPatricia(TreeType *tree, char *inputFilename, int *numFiles)
 
     return filenames;
 }
+
 
 /* Read text from file into the Patricia tree
  *
@@ -100,7 +118,8 @@ char **readFilenamesPatricia(TreeType *tree, char *inputFilename, int *numFiles)
  *
  * @return                  whether the operation was successful or not.
  */
-bool readFileIntoPatricia(TreeNodeType *tree, char *filename, int fileNumber) {
+bool readFileIntoPatricia(TreeNodeType *tree, char *filename, int fileNumber)
+{
     char filePath[strlen(INPUT_FILES_PATH) + strlen(filename) + 1];
 
     strcpy(filePath, INPUT_FILES_PATH);
@@ -108,19 +127,23 @@ bool readFileIntoPatricia(TreeNodeType *tree, char *filename, int fileNumber) {
 
     FILE *file = fopen(filePath, "r");
 
-    if (!file) {
+    if (!file)
+    {
         return false;
     }
 
-    while (!feof(file)) {
+    while (!feof(file))
+    {
         char string[CHAR_MAX];
         fscanf(file, "%s", string);
 
         char reformattedString[strlen(string) + 1];
         reformatString(reformattedString, string);
 
-        if (strlen(reformattedString) != 0) {
-            if (!insertTreeNode(&tree, reformattedString, fileNumber)) {
+        if (strlen(reformattedString) != 0)
+        {
+            if (!insertTreeNode(&tree, reformattedString, fileNumber))
+            {
                 return false;
             }
         }
@@ -140,7 +163,8 @@ bool readFileIntoPatricia(TreeNodeType *tree, char *filename, int fileNumber) {
  *  @param     fileNumber    number of the file being read.
  *  @return                  whether the operation was successful or not.
  */
-bool readFileIntoHashtable(Hashtable *hashtable, char *filename, int fileNumber) {
+bool readFileIntoHashtable(Hashtable *hashtable, char *filename, int fileNumber)
+{
     char filePath[strlen(INPUT_FILES_PATH) + strlen(filename) + 1];
 
     strcpy(filePath, INPUT_FILES_PATH);
@@ -148,19 +172,23 @@ bool readFileIntoHashtable(Hashtable *hashtable, char *filename, int fileNumber)
 
     FILE *file = fopen(filePath, "r");
 
-    if (!file) {
+    if (!file)
+    {
         return false;
     }
 
-    while (!feof(file)) {
+    while (!feof(file))
+    {
         char string[CHAR_MAX];
         fscanf(file, "%s", string);
 
         char reformattedString[strlen(string) + 1];
         reformatString(reformattedString, string);
 
-        if (strlen(reformattedString) != 0) {
-            if (!insert(hashtable, reformattedString, fileNumber)) {
+        if (strlen(reformattedString) != 0)
+        {
+            if (!insert(hashtable, reformattedString, fileNumber))
+            {
                 return false;
             }
         }
@@ -180,9 +208,12 @@ bool readFileIntoHashtable(Hashtable *hashtable, char *filename, int fileNumber)
  *  @param     dest     destination string.
  *  @param     src      source string.
  */
-void reformatString(char *dest, char *src) {
-    while (*src) {
-        if (isalpha((unsigned char) *src)) {
+void reformatString(char *dest, char *src)
+{
+    while (*src)
+    {
+        if (isalpha((unsigned char) *src))
+        {
             *dest++ = (char) tolower((unsigned char) *src);
         }
 
@@ -201,10 +232,14 @@ void reformatString(char *dest, char *src) {
  *  @param     filenames     pointer to array of filenames.
  *  @param     n             size of the array.
  */
-void freeFilenames(char **filenames, int n) {
-    if (filenames) {
-        for (int i = 0; i < n; i++) {
-            if (filenames[i]) {
+void freeFilenames(char **filenames, int n)
+{
+    if (filenames)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            if (filenames[i])
+            {
                 free(filenames[i]);
             }
         }

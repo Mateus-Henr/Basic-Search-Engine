@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <stddef.h>
 
 #include "treenode.h"
@@ -13,16 +14,18 @@
  *  @param     index     index value to be stored in the tree node.
  *  @return              pointer to the initialised tree node.
  */
-TreeType createInternalNode(struct TreeNodeType **left, struct TreeNodeType **right, int *index, char differChar) {
+TreeType createInternalNode(struct TreeNodeType **left, struct TreeNodeType **right, int *index, char differChar)
+{
     struct TreeNodeType *newInternalNode = (struct TreeNodeType *) malloc(sizeof(struct TreeNodeType));
 
-    if (!newInternalNode) {
+    if (!newInternalNode)
+    {
         return NULL;
     }
     newInternalNode->nodeType = Internal;
     newInternalNode->TreeNode->InternalNode->left = *left;
     newInternalNode->TreeNode->InternalNode->right = *right;
-    newInternalNode->TreeNode->InternalNode->differChar=differChar;
+    newInternalNode->TreeNode->InternalNode->differChar = differChar;
     newInternalNode->TreeNode->InternalNode->index = index;
 
     return newInternalNode;
@@ -35,10 +38,12 @@ TreeType createInternalNode(struct TreeNodeType **left, struct TreeNodeType **ri
  *  @param     node     pointer to Node struct to be set as the value.
  *  @return             pointer to the initialised tree node.
  */
-TreeType createExternalNode(char *word, int numFiles) {
+TreeType createExternalNode(char *word, int numFiles)
+{
     struct TreeNodeType *newExternalNode = (struct TreeNodeType *) malloc(sizeof(struct TreeNodeType));
 
-    if (!newExternalNode) {
+    if (!newExternalNode)
+    {
         return NULL;
     }
 
@@ -47,7 +52,8 @@ TreeType createExternalNode(char *word, int numFiles) {
     newExternalNode->TreeNode->node->pairSet = initialisePairLinkedList();
     pushPair(newExternalNode->TreeNode->node->pairSet, numFiles);
 
-    if (!pushPair(newExternalNode->TreeNode->node->pairSet, numFiles)) {
+    if (!pushPair(newExternalNode->TreeNode->node->pairSet, numFiles))
+    {
         return NULL;
     }
 
@@ -61,12 +67,17 @@ TreeType createExternalNode(char *word, int numFiles) {
  *
  *  @param
  */
-void searchTreeNode(struct TreeNodeType *treeNodeType, char *word) {
-    if (isExternalNode(treeNodeType)) {
-        if (treeNodeType->TreeNode->node->word== word) {
+void searchTreeNode(struct TreeNodeType *treeNodeType, char *word)
+{
+    if (isExternalNode(treeNodeType))
+    {
+        if (treeNodeType->TreeNode->node->word == word)
+        {
             printf("\nElement %s found!\n", word);
             return;
-        } else {
+        }
+        else
+        {
             printf("\nElement %s not found!\n", word);
             return;
         }
@@ -74,44 +85,63 @@ void searchTreeNode(struct TreeNodeType *treeNodeType, char *word) {
     }
 
     if (compareWords(word, treeNodeType->TreeNode->InternalNode->index,
-                     treeNodeType->TreeNode->InternalNode->differChar) == 0) {
+                     treeNodeType->TreeNode->InternalNode->differChar) == 0)
+    {
         return searchTreeNode(treeNodeType->TreeNode->InternalNode->left, word);
-    } else {
+    }
+    else
+    {
         return searchTreeNode(treeNodeType->TreeNode->InternalNode->right, word);
     }
 }
 
-TreeType insertBetween(TreeType *treeNodeType, char *word, int numFiles, int *index,char differChar){
-    TreeType p;
-    if(isExternalNode(*treeNodeType) || index<(*treeNodeType)->TreeNode->InternalNode->index){
-        p= createExternalNode(word,numFiles);
-        if(compareWords(word,(*treeNodeType)->TreeNode->InternalNode->index,(*treeNodeType)->TreeNode->InternalNode->differChar)==1){
-            return createInternalNode(treeNodeType,&p,index,differChar);
-        } else {
-            return createInternalNode(&p,treeNodeType,index,differChar);
+
+TreeType insertBetween(TreeType *treeNodeType, char *word, int numFiles, int *index, char differChar)
+{
+    if (isExternalNode(*treeNodeType) || index < (*treeNodeType)->TreeNode->InternalNode->index)
+    {
+        TreeType treeNodeToAdd = createExternalNode(word, numFiles);
+
+        if (compareWords(word, (*treeNodeType)->TreeNode->InternalNode->index,
+                         (*treeNodeType)->TreeNode->InternalNode->differChar) == 1)
+        {
+            return createInternalNode(treeNodeType, &treeNodeToAdd, index, differChar);
         }
-    } else {
-        if(compareWords(word,(*treeNodeType)->TreeNode->InternalNode->index,(*treeNodeType)->TreeNode->InternalNode->differChar)==1){
-            (*treeNodeType)->TreeNode->InternalNode->right= insertBetween(&(*treeNodeType)->TreeNode->InternalNode->right,word,numFiles,index,differChar);
-        } else {
-            (*treeNodeType)->TreeNode->InternalNode->right= insertBetween(&(*treeNodeType)->TreeNode->InternalNode->left,word,numFiles,index,differChar);
+        else
+        {
+            return createInternalNode(&treeNodeToAdd, treeNodeType, index, differChar);
         }
-        return *treeNodeType;
     }
+
+    if (compareWords(word, (*treeNodeType)->TreeNode->InternalNode->index,
+                     (*treeNodeType)->TreeNode->InternalNode->differChar) == 1)
+    {
+        (*treeNodeType)->TreeNode->InternalNode->right = insertBetween(
+                &(*treeNodeType)->TreeNode->InternalNode->right, word, numFiles, index, differChar);
+    }
+    else
+    {
+        (*treeNodeType)->TreeNode->InternalNode->right = insertBetween(
+                &(*treeNodeType)->TreeNode->InternalNode->left, word, numFiles, index, differChar);
+    }
+
+    return *treeNodeType;
 }
 
-TreeType insertTreeNode(TreeType *treeNodeType, char *word, long documentID) {
 
+TreeType insertTreeNode(TreeType *treeNodeType, char *word, long documentID)
+{
     if (!(*treeNodeType))
     {
-        return createExternalNode(word,  documentID);
+        return createExternalNode(word, documentID);
     }
 
     TreeType currTreeNode = *treeNodeType;
 
     while (!isExternalNode(currTreeNode))
     {
-        if (compareWords(word, currTreeNode->TreeNode->InternalNode->index,currTreeNode->TreeNode->InternalNode->differChar) == 1)
+        if (compareWords(word, currTreeNode->TreeNode->InternalNode->index,
+                         currTreeNode->TreeNode->InternalNode->differChar) == 1)
         {
             currTreeNode = currTreeNode->TreeNode->InternalNode->left;
         }
@@ -120,56 +150,73 @@ TreeType insertTreeNode(TreeType *treeNodeType, char *word, long documentID) {
             currTreeNode = currTreeNode->TreeNode->InternalNode->right;
         }
     }
-    int *index;
-    char differChar = findCharNode(word,currTreeNode,index);
-    if(currTreeNode->TreeNode->InternalNode->right->TreeNode->node->word==word || currTreeNode->TreeNode->InternalNode->left->TreeNode->node->word==word)
+
+    int index = 0;
+    char differChar = findCharNode(word, currTreeNode, &index);
+
+    if (currTreeNode->TreeNode->InternalNode->right->TreeNode->node->word == word ||
+        currTreeNode->TreeNode->InternalNode->left->TreeNode->node->word == word)
     {
-        printf("The node %s already exist.", word);
+        if (!pushPair((*treeNodeType)->TreeNode->node->pairSet, documentID))
+        {
+            return NULL;
+        }
+
         return (*treeNodeType);
     }
+
+    return insertBetween(treeNodeType, word, documentID, &index, differChar);
+}
+
+
+void printTree(TreeNodeType *tree)
+{
+    if (tree == NULL)
+    {
+        return;
+    }
+
+    if (!isExternalNode(tree))
+    {
+        printTree(tree->TreeNode->InternalNode->left);
+    }
     else
     {
-        return insertBetween(treeNodeType,word, documentID,index,differChar);
-    }
-}
-
-void printTree(TreeNodeType *tree) {
-    if (tree == NULL)
-        return;
-    if (!isExternalNode(tree))
-        printTree(tree->TreeNode->InternalNode->left);
-    else
         printf("%s\n", tree->TreeNode->node->word);
+    }
+
     if (!isExternalNode(tree))
+    {
         printTree(tree->TreeNode->InternalNode->right);
-}
-
-char findCharNode(char *word, TreeNodeType *currNode, int *currIndex) {
-    int aux ;
-    aux = 0;
-    char differChar;
-
-    while (true) {
-        differChar = currNode->TreeNode->node->word[aux];
-        if (currNode->TreeNode->node->word[aux] != word[aux])
-            break;
-        aux++;
     }
-    currIndex = &aux;
-    return differChar;
 }
 
-int compareWords(char *word, int *index, char difChar) {
-    char letter ;
-    letter = word[*index];
 
-    if (difChar > letter) {
-        return 1;
-    } else {
-        return 0;
+char findCharNode(const char *word, TreeNodeType *currNode, int *currIndex)
+{
+    int currLetter = 0;
+
+    while (currNode->TreeNode->node->word[currLetter] && word[currLetter])
+    {
+        if (currNode->TreeNode->node->word[currLetter] != word[currLetter])
+        {
+            *currIndex = currLetter;
+            return currNode->TreeNode->node->word[currLetter];
+        }
+
+        currLetter++;
     }
 
+    *currIndex = (int) strlen(word) - 1;
+    return word[*currIndex];
 }
+
+
+int compareWords(const char *word, const int *index, char difChar)
+{
+    return difChar > word[*index] ? 1 : 0;
+}
+
 
 /*
  *  Checks whether a given tree node type is an external node.
@@ -177,10 +224,13 @@ int compareWords(char *word, int *index, char difChar) {
  *  @param     treeNodeType    pointer to TreeNodeType struct.
  *  @return                    whether the node is external or not.
  */
-bool isExternalNode(struct TreeNodeType *treeNodeType) {
+bool isExternalNode(struct TreeNodeType *treeNodeType)
+{
     return (treeNodeType->nodeType == External);
 }
 
-void freeTree(TreeType tree){
 
-}
+//void freeTree(TreeType tree)
+//{
+//
+//}

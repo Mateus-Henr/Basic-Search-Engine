@@ -60,6 +60,44 @@ char **readFilenames(Hashtable *hashtable, char *inputFilename, int *numFiles)
 }
 
 
+char **readFilenamesPatricia(TreeType *tree, char *inputFilename, int *numFiles) {
+    char filePath[strlen(INPUT_FILES_PATH) + strlen(inputFilename) + 1];
+
+    strcpy(filePath, INPUT_FILES_PATH);
+    strcat(filePath, inputFilename);
+
+    FILE *file = fopen(filePath, "r");
+
+    if (!file) {
+        return NULL;
+    }
+
+    if (!fscanf(file, "%d", numFiles) || *numFiles <= 0) {
+        return NULL;
+    }
+
+    char **filenames = (char **) malloc(*numFiles * sizeof(char *));
+
+    for (int i = 0; i < *numFiles; i++) {
+        char filename[CHAR_MAX];
+
+        fscanf(file, "%s", filename);
+        i++;
+        if (!readFilenamesPatricia(tree, filename, i + (int*) 1 )){
+            printf(FILE_ERROR, filename);
+        }
+
+        filenames[i] = (char *) malloc(strlen(filename) + 1);
+        strcpy(filenames[i], filename);
+    }
+
+    fclose(file);
+    file = NULL;
+
+    return filenames;
+}
+
+
 /*
  *  Read text from file into the hashtable.
  *

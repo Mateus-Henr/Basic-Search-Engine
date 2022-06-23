@@ -8,9 +8,9 @@
 /*
  *  Initialises Node struct with given values.
  *
- *  @param     word          word to be inserted into the node.
+ *  @param     word          word to be inserted into the externalNode.
  *  @param     documentID    document's number (ID).
- *  @return                  pointer to the initialised node.
+ *  @return                  pointer to the initialised externalNode.
  */
 struct Node *initialiseNode(const char *word, long documentID)
 {
@@ -51,9 +51,9 @@ struct Node *initialiseNode(const char *word, long documentID)
 
 
 /*
- *  Initialises a new pointer with existent node content.
+ *  Initialises a new pointer with existent externalNode content.
  *
- *  @param     node     pointer to Node struct.
+ *  @param     externalNode     pointer to Node struct.
  *  @return             pointer to the new pointer address.
  */
 struct Node *initialiseNodeWithExistentData(struct Node *node)

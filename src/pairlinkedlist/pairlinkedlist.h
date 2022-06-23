@@ -14,6 +14,8 @@ PairLinkedList *initialisePairLinkedList();
 
 bool pushPair(PairLinkedList *list, long documentID);
 
+PairNode *searchPairNode(PairLinkedList *list, long documentID);
+
 int getPairLinkedListSize(PairLinkedList *list);
 
 bool isPairLinkedListEmpty(PairLinkedList *list);

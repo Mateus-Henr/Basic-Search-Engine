@@ -5,36 +5,36 @@ typedef enum
 {
     Internal, External
 } NodeType;
-typedef struct TreeNodeType *TreeType;
+
 typedef struct ExternalNode
 {
     char *word;
     PairLinkedList *pairSet;
 } ExternalNode;
 
+typedef struct
+{
+    int *index;
+    char differChar;
+    struct TreeNodeType *left;
+    struct TreeNodeType *right;
+} InternalNode;
+
 typedef struct TreeNodeType
 {
     NodeType nodeType;
     union
     {
-        struct
-        {
-            int *index;
-            char differChar;
-            struct TreeNodeType *left;
-            struct TreeNodeType *right;
-        } *InternalNode;
-        ExternalNode *node;
-    } *TreeNode;
+        InternalNode *internalNode;
+        ExternalNode *externalNode;
+    } TreeNode;
 } TreeNodeType;
 
-TreeType createInternalNode(struct TreeNodeType **left, struct TreeNodeType **right, int *index, char differChar);
+TreeNodeType *createInternalNode(struct TreeNodeType **left, struct TreeNodeType **right, int *index, char differChar);
 
-TreeType createExternalNode(char *word, int documentID);
+TreeNodeType *createExternalNode(char *word, int documentID);
 
-void searchTreeNode(struct TreeNodeType *treeNodeType, char *word);
-
-TreeType insertTreeNode(TreeNodeType **treeNodeType, char *word, long documentID);
+bool insertTreeNode(TreeNodeType **treeNodeType, char *word, long documentID);
 
 int compareWords(const char *word, const int *index, char difChat);
 
@@ -42,4 +42,4 @@ bool isExternalNode(struct TreeNodeType *treeNodeType);
 
 char findCharNode(const char *word, TreeNodeType *currNode, int *currIndex);
 
-void printTree(TreeNodeType *tree);
+void printTreeNode(TreeNodeType *tree);

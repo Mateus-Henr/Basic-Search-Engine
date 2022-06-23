@@ -8,7 +8,7 @@
  *  Initialises PairNode struct with default values.
  *
  *  @param     documentID    document's number (ID).
- *  @return                  pointer to the initialised node.
+ *  @return                  pointer to the initialised externalNode.
  */
 PairNode *initialisePairNode(long documentID)
 {

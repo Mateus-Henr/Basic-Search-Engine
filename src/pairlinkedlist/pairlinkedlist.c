@@ -27,6 +27,19 @@ PairLinkedList *initialisePairLinkedList()
 }
 
 
+PairNode *searchPairNode(PairLinkedList *list, long documentID)
+{
+    struct PairNode *pairNode = list->head;
+
+    while (pairNode && pairNode->documentID != documentID)
+    {
+        pairNode = pairNode->next;
+    }
+
+    return pairNode;
+}
+
+
 /*
  *  Pushes a new pair (PairNode) to the list.
  *
@@ -121,7 +134,7 @@ void getTFIDFPairLinkedList(PairLinkedList *list, TFIDF *tfidf, bool isRightWord
 
 
 /*
- *  Prints each node of the pair linked list out.
+ *  Prints each externalNode of the pair linked list out.
  *
  *  @param     list     pointer to PairLinkedList struct.
  */

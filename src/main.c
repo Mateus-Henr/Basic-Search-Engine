@@ -46,7 +46,8 @@ int main(void)
 //        initialiseHashtable(&hashtable, 100); // You can change the hash table size
 
         // Initialise tree.
-        TreeNodeType treeNodeType;
+        PATRICIA tree;
+        initialisePATRICIA(&tree);
 
         int numDocs = 0;
 
@@ -56,7 +57,7 @@ int main(void)
         printf("========================\n");
         scanf("%s", inputFilename);
 
-        char **filenames = readFilenamesPatricia(&treeNodeType, inputFilename, &numDocs);
+        char **filenames = readFilenamesPatricia(&tree, inputFilename, &numDocs);
 
         if (!filenames)
         {
@@ -69,7 +70,7 @@ int main(void)
         if (option == 1)
         {
             printf("Printing the tree\n");
-            printTree(&treeNodeType);
+            printTree(&tree);
             freeFilenames(filenames, numDocs);
 
 //            printf("Printing the hashtable\n");

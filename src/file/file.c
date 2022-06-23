@@ -18,46 +18,46 @@
  *  @param     numFiles          number of file.
  *  @return                      array with all the filenames.
  */
-char **readFilenames(Hashtable *hashtable, char *inputFilename, int *numFiles)
-{
-    char filePath[strlen(INPUT_FILES_PATH) + strlen(inputFilename) + 1];
-
-    strcpy(filePath, INPUT_FILES_PATH);
-    strcat(filePath, inputFilename);
-
-    FILE *file = fopen(filePath, "r");
-
-    if (!file)
-    {
-        return NULL;
-    }
-
-    if (!fscanf(file, "%d", numFiles) || *numFiles <= 0)
-    {
-        return NULL;
-    }
-
-    char **filenames = (char **) malloc(*numFiles * sizeof(char *));
-
-    for (int i = 0; i < *numFiles; i++)
-    {
-        char filename[CHAR_MAX];
-
-        fscanf(file, "%s", filename);
-        if (!readFileIntoHashtable(hashtable, filename, i + 1))
-        {
-            printf(FILE_ERROR, filename);
-        }
-
-        filenames[i] = (char *) malloc(strlen(filename) + 1);
-        strcpy(filenames[i], filename);
-    }
-
-    fclose(file);
-    file = NULL;
-
-    return filenames;
-}
+//char **readFilenames(Hashtable *hashtable, char *inputFilename, int *numFiles)
+//{
+//    char filePath[strlen(INPUT_FILES_PATH) + strlen(inputFilename) + 1];
+//
+//    strcpy(filePath, INPUT_FILES_PATH);
+//    strcat(filePath, inputFilename);
+//
+//    FILE *file = fopen(filePath, "r");
+//
+//    if (!file)
+//    {
+//        return NULL;
+//    }
+//
+//    if (!fscanf(file, "%d", numFiles) || *numFiles <= 0)
+//    {
+//        return NULL;
+//    }
+//
+//    char **filenames = (char **) malloc(*numFiles * sizeof(char *));
+//
+//    for (int i = 0; i < *numFiles; i++)
+//    {
+//        char filename[CHAR_MAX];
+//
+//        fscanf(file, "%s", filename);
+//        if (!readFileIntoHashtable(hashtable, filename, i + 1))
+//        {
+//            printf(FILE_ERROR, filename);
+//        }
+//
+//        filenames[i] = (char *) malloc(strlen(filename) + 1);
+//        strcpy(filenames[i], filename);
+//    }
+//
+//    fclose(file);
+//    file = NULL;
+//
+//    return filenames;
+//}
 
 
 /*
@@ -68,7 +68,7 @@ char **readFilenames(Hashtable *hashtable, char *inputFilename, int *numFiles)
  *  @param     numFiles          number of file.
  *  @return                      array with all the filenames.
  */
-char **readFilenamesPatricia(TreeNodeType *tree, char *inputFilename, int *numFiles)
+char **readFilenamesPatricia(PATRICIA *tree, char *inputFilename, int *numFiles)
 {
     char filePath[strlen(INPUT_FILES_PATH) + strlen(inputFilename) + 1];
 
@@ -118,7 +118,7 @@ char **readFilenamesPatricia(TreeNodeType *tree, char *inputFilename, int *numFi
  *
  * @return                  whether the operation was successful or not.
  */
-bool readFileIntoPatricia(TreeNodeType *tree, char *filename, int fileNumber)
+bool readFileIntoPatricia(PATRICIA *tree, char *filename, int fileNumber)
 {
     char filePath[strlen(INPUT_FILES_PATH) + strlen(filename) + 1];
 
@@ -142,7 +142,7 @@ bool readFileIntoPatricia(TreeNodeType *tree, char *filename, int fileNumber)
 
         if (strlen(reformattedString) != 0)
         {
-            if (!insertTreeNode(&tree, reformattedString, fileNumber))
+            if (!insertIntoTree(tree, reformattedString, fileNumber))
             {
                 return false;
             }
@@ -163,42 +163,42 @@ bool readFileIntoPatricia(TreeNodeType *tree, char *filename, int fileNumber)
  *  @param     fileNumber    number of the file being read.
  *  @return                  whether the operation was successful or not.
  */
-bool readFileIntoHashtable(Hashtable *hashtable, char *filename, int fileNumber)
-{
-    char filePath[strlen(INPUT_FILES_PATH) + strlen(filename) + 1];
-
-    strcpy(filePath, INPUT_FILES_PATH);
-    strcat(filePath, filename);
-
-    FILE *file = fopen(filePath, "r");
-
-    if (!file)
-    {
-        return false;
-    }
-
-    while (!feof(file))
-    {
-        char string[CHAR_MAX];
-        fscanf(file, "%s", string);
-
-        char reformattedString[strlen(string) + 1];
-        reformatString(reformattedString, string);
-
-        if (strlen(reformattedString) != 0)
-        {
-            if (!insert(hashtable, reformattedString, fileNumber))
-            {
-                return false;
-            }
-        }
-    }
-
-    fclose(file);
-    file = NULL;
-
-    return true;
-}
+//bool readFileIntoHashtable(Hashtable *hashtable, char *filename, int fileNumber)
+//{
+//    char filePath[strlen(INPUT_FILES_PATH) + strlen(filename) + 1];
+//
+//    strcpy(filePath, INPUT_FILES_PATH);
+//    strcat(filePath, filename);
+//
+//    FILE *file = fopen(filePath, "r");
+//
+//    if (!file)
+//    {
+//        return false;
+//    }
+//
+//    while (!feof(file))
+//    {
+//        char string[CHAR_MAX];
+//        fscanf(file, "%s", string);
+//
+//        char reformattedString[strlen(string) + 1];
+//        reformatString(reformattedString, string);
+//
+//        if (strlen(reformattedString) != 0)
+//        {
+//            if (!insert(hashtable, reformattedString, fileNumber))
+//            {
+//                return false;
+//            }
+//        }
+//    }
+//
+//    fclose(file);
+//    file = NULL;
+//
+//    return true;
+//}
 
 
 /*

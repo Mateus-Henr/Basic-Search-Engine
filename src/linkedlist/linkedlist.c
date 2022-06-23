@@ -79,7 +79,7 @@ bool push(LinkedList *list, const char *word, long documentID)
  *  Note: This method is internally used to get data sorted.
  *
  *  @param     list     pointer to LinkedList struct.
- *  @param     node     pointer to the node to be added.
+ *  @param     externalNode     pointer to the externalNode to be added.
  */
 bool pushSorted(LinkedList *list, Node *node)
 {
@@ -121,11 +121,11 @@ bool pushSorted(LinkedList *list, Node *node)
 
 
 /*
- *  Searches for a node in the linked list.
+ *  Searches for a externalNode in the linked list.
  *
  *  @param     list     pointer to LinkedList struct.
  *  @param     word     word to search for.
- *  @return             pointer for the node if found or null.
+ *  @return             pointer for the externalNode if found or null.
  */
 struct Node *searchNode(struct Node *head, const char *word)
 {

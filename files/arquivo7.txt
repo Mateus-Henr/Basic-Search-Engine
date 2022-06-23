@@ -11885,7 +11885,7 @@ assure you!”
 Hermione, throwing a furious look at Ron.
 
 Unfortunately, Ron’s mouth was packed to exploding
-point again and all he could manage was “node
+point again and all he could manage was “externalNode
 iddum eentup sechew,” which Nick did not seem to
 think constituted an adequate apology. Rising into
 the air, he straightened his feathered hat and swept

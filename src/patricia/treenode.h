@@ -20,7 +20,7 @@ typedef struct ExternalNode
 typedef struct
 {
     char differChar;
-    int *index;
+    int index;
     struct TreeNodeType *left;
     struct TreeNodeType *right;
 } InternalNode;
@@ -35,16 +35,16 @@ typedef struct TreeNodeType
     } TreeNode;
 } TreeNodeType;
 
-TreeNodeType *createInternalNode(struct TreeNodeType **left, struct TreeNodeType **right, int *index, char differChar);
+TreeNodeType *createInternalNode(struct TreeNodeType **left, struct TreeNodeType **right, int index, char differChar);
 
 TreeNodeType *createExternalNode(char *word, int documentID);
 
 bool insertTreeNode(TreeNodeType **treeNodeType, char *word, long documentID);
 
-bool isWordGreaterThanChar(const char *word, const int *index, char differChar);
+bool isWordGreaterThanChar(const char *word, int index, char differChar);
 
 bool isExternalNode(struct TreeNodeType *treeNodeType);
 
-char findCharNode(const char *word, TreeNodeType *currNode, int *currIndex);
+char getDifferChar(const char *word, TreeNodeType *currNode, int *currIndex);
 
 void printTreeNode(TreeNodeType *tree);

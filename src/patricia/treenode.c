@@ -18,7 +18,7 @@ TreeNodeType *searchTreeNode(struct TreeNodeType *treeNodeType, char *word);
  *  @param     index     index value to be stored in the tree externalNode.
  *  @return              pointer to the initialised tree externalNode.
  */
-TreeNodeType *createInternalNode(struct TreeNodeType **left, struct TreeNodeType **right, int *index, char differChar)
+TreeNodeType *createInternalNode(struct TreeNodeType **left, struct TreeNodeType **right, int index, char differChar)
 {
     struct TreeNodeType *newInternalNode = (struct TreeNodeType *) malloc(sizeof(struct TreeNodeType));
 
@@ -125,7 +125,7 @@ TreeNodeType *searchTreeNode(struct TreeNodeType *treeNodeType, char *word)
 }
 
 
-TreeNodeType *insertBetween(TreeNodeType **treeNodeType, char *word, int documentID, int *index, char differChar)
+TreeNodeType *insertBetween(TreeNodeType **treeNodeType, char *word, int documentID, int index, char differChar)
 {
     if (isExternalNode(*treeNodeType) || index < (*treeNodeType)->TreeNode.internalNode->index)
     {
@@ -164,6 +164,7 @@ bool insertTreeNode(TreeNodeType **treeNodeType, char *word, long documentID)
     }
 
     TreeNodeType *currTreeNodeType = *treeNodeType;
+    bool isEqual = false;
 
     while (!isExternalNode(currTreeNodeType))
     {
@@ -174,12 +175,13 @@ bool insertTreeNode(TreeNodeType **treeNodeType, char *word, long documentID)
         }
         else
         {
+            if (word )
             currTreeNodeType = currTreeNodeType->TreeNode.internalNode->left;
         }
     }
 
     int index = 0;
-    char differChar = findCharNode(word, currTreeNodeType, &index);
+    char differChar = getDifferChar(word, currTreeNodeType, &index);
 
     if (!strcmp(currTreeNodeType->TreeNode.externalNode->word, word))
     {
@@ -194,7 +196,7 @@ bool insertTreeNode(TreeNodeType **treeNodeType, char *word, long documentID)
         return pushPair(currTreeNodeType->TreeNode.externalNode->pairSet, documentID);
     }
 
-    *treeNodeType = insertBetween(treeNodeType, word, documentID, &index, differChar);
+    *treeNodeType = insertBetween(treeNodeType, word, documentID, index, differChar);
 
     return true;
 }
@@ -234,7 +236,7 @@ void printTreeNode(TreeNodeType *tree)
 /*
  *  Finds the letter that differs in two words.
  */
-char findCharNode(const char *word, TreeNodeType *currNode, int *currIndex)
+char getDifferChar(const char *word, TreeNodeType *currNode, int *currIndex)
 {
     int currLetter = 0;
 
@@ -254,9 +256,16 @@ char findCharNode(const char *word, TreeNodeType *currNode, int *currIndex)
 }
 
 
-bool isWordGreaterThanChar(const char *word, const int *index, char differChar)
+bool isWordGreaterThanChar(const char *word, int index, char differChar)
 {
-    return differChar < word[*index];
+    int wordLength = (int) strlen(word);
+
+    if (index >= wordLength)
+    {
+        return word[wordLength - 1] > differChar;
+    }
+
+    return word[index] > differChar;
 }
 
 

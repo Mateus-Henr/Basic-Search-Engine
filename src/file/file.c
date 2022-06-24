@@ -146,6 +146,8 @@ bool readFileIntoPatricia(PATRICIA *tree, char *filename, int fileNumber)
             {
                 return false;
             }
+            printTree(tree);
+            printf("\n\n");
         }
     }
 

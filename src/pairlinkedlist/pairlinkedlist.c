@@ -29,7 +29,12 @@ PairLinkedList *initialisePairLinkedList()
 
 PairNode *searchPairNode(PairLinkedList *list, long documentID)
 {
-    struct PairNode *pairNode = list->head;
+    if (isPairLinkedListEmpty(list))
+    {
+        return NULL;
+    }
+
+    PairNode *pairNode = list->head;
 
     while (pairNode && pairNode->documentID != documentID)
     {
@@ -93,7 +98,7 @@ int getPairLinkedListSize(PairLinkedList *list)
  */
 bool isPairLinkedListEmpty(PairLinkedList *list)
 {
-    return list->head == NULL;
+    return list->size == 0;
 }
 
 

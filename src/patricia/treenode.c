@@ -27,6 +27,14 @@ TreeNodeType *createInternalNode(struct TreeNodeType **left, struct TreeNodeType
         return NULL;
     }
     newInternalNode->nodeType = Internal;
+
+    newInternalNode->TreeNode.internalNode = (InternalNode *) malloc(sizeof(InternalNode));
+    if (!newInternalNode->TreeNode.internalNode)
+    {
+        free(newInternalNode);
+        return NULL;
+    }
+
     newInternalNode->TreeNode.internalNode->left = *left;
     newInternalNode->TreeNode.internalNode->right = *right;
     newInternalNode->TreeNode.internalNode->differChar = differChar;
@@ -56,12 +64,15 @@ TreeNodeType *createExternalNode(char *word, int documentID)
     newExternalNode->TreeNode.externalNode = (ExternalNode *) malloc(sizeof(ExternalNode));
     if (!newExternalNode->TreeNode.externalNode)
     {
+        free(newExternalNode);
         return NULL;
     }
 
     newExternalNode->TreeNode.externalNode->word = (char *) malloc(strlen(word));
     if (!word)
     {
+        free(newExternalNode->TreeNode.externalNode);
+        free(newExternalNode);
         return NULL;
     }
     strcpy(newExternalNode->TreeNode.externalNode->word, word);
@@ -69,11 +80,18 @@ TreeNodeType *createExternalNode(char *word, int documentID)
     newExternalNode->TreeNode.externalNode->pairSet = initialisePairLinkedList();
     if (!newExternalNode->TreeNode.externalNode->pairSet)
     {
+        free(word);
+        free(newExternalNode->TreeNode.externalNode);
+        free(newExternalNode);
         return NULL;
     }
 
     if (!pushPair(newExternalNode->TreeNode.externalNode->pairSet, documentID))
     {
+        free(newExternalNode->TreeNode.externalNode->pairSet);
+        free(word);
+        free(newExternalNode->TreeNode.externalNode);
+        free(newExternalNode);
         return NULL;
     }
 
@@ -92,11 +110,11 @@ TreeNodeType *searchTreeNode(struct TreeNodeType *treeNodeType, char *word)
 {
     if (isExternalNode(treeNodeType))
     {
-        return strcmp(treeNodeType->TreeNode.externalNode->word, word) == 0 ? treeNodeType : NULL;
+        return !strcmp(treeNodeType->TreeNode.externalNode->word, word) ? treeNodeType : NULL;
     }
 
-    if (compareWords(word, treeNodeType->TreeNode.internalNode->index,
-                     treeNodeType->TreeNode.internalNode->differChar) == 0)
+    if (!isWordGreaterThanChar(word, treeNodeType->TreeNode.internalNode->index,
+                               treeNodeType->TreeNode.internalNode->differChar))
     {
         return searchTreeNode(treeNodeType->TreeNode.internalNode->left, word);
     }
@@ -113,8 +131,7 @@ TreeNodeType *insertBetween(TreeNodeType **treeNodeType, char *word, int documen
     {
         TreeNodeType *treeNodeToAdd = createExternalNode(word, documentID);
 
-        if (compareWords(word, (*treeNodeType)->TreeNode.internalNode->index,
-                         (*treeNodeType)->TreeNode.internalNode->differChar) == 1)
+        if (isWordGreaterThanChar(word, index, differChar))
         {
             return createInternalNode(treeNodeType, &treeNodeToAdd, index, differChar);
         }
@@ -122,15 +139,15 @@ TreeNodeType *insertBetween(TreeNodeType **treeNodeType, char *word, int documen
         return createInternalNode(&treeNodeToAdd, treeNodeType, index, differChar);
     }
 
-    if (compareWords(word, (*treeNodeType)->TreeNode.internalNode->index,
-                     (*treeNodeType)->TreeNode.internalNode->differChar) == 1)
+    if (isWordGreaterThanChar(word, (*treeNodeType)->TreeNode.internalNode->index,
+                              (*treeNodeType)->TreeNode.internalNode->differChar))
     {
         (*treeNodeType)->TreeNode.internalNode->right = insertBetween(
                 &(*treeNodeType)->TreeNode.internalNode->right, word, documentID, index, differChar);
     }
     else
     {
-        (*treeNodeType)->TreeNode.internalNode->right = insertBetween(
+        (*treeNodeType)->TreeNode.internalNode->left = insertBetween(
                 &(*treeNodeType)->TreeNode.internalNode->left, word, documentID, index, differChar);
     }
 
@@ -150,14 +167,14 @@ bool insertTreeNode(TreeNodeType **treeNodeType, char *word, long documentID)
 
     while (!isExternalNode(currTreeNodeType))
     {
-        if (compareWords(word, currTreeNodeType->TreeNode.internalNode->index,
-                         currTreeNodeType->TreeNode.internalNode->differChar) == 1)
+        if (isWordGreaterThanChar(word, currTreeNodeType->TreeNode.internalNode->index,
+                                  currTreeNodeType->TreeNode.internalNode->differChar))
         {
-            currTreeNodeType = currTreeNodeType->TreeNode.internalNode->left;
+            currTreeNodeType = currTreeNodeType->TreeNode.internalNode->right;
         }
         else
         {
-            currTreeNodeType = currTreeNodeType->TreeNode.internalNode->right;
+            currTreeNodeType = currTreeNodeType->TreeNode.internalNode->left;
         }
     }
 
@@ -166,7 +183,7 @@ bool insertTreeNode(TreeNodeType **treeNodeType, char *word, long documentID)
 
     if (!strcmp(currTreeNodeType->TreeNode.externalNode->word, word))
     {
-        PairNode *foundPairNode = searchPairNode((*treeNodeType)->TreeNode.externalNode->pairSet, documentID);
+        PairNode *foundPairNode = searchPairNode(currTreeNodeType->TreeNode.externalNode->pairSet, documentID);
 
         if (foundPairNode)
         {
@@ -174,10 +191,12 @@ bool insertTreeNode(TreeNodeType **treeNodeType, char *word, long documentID)
             return true;
         }
 
-        return pushPair((*treeNodeType)->TreeNode.externalNode->pairSet, documentID);
+        return pushPair(currTreeNodeType->TreeNode.externalNode->pairSet, documentID);
     }
 
-    return insertBetween(treeNodeType, word, documentID, &index, differChar);
+    *treeNodeType = insertBetween(treeNodeType, word, documentID, &index, differChar);
+
+    return true;
 }
 
 
@@ -200,7 +219,9 @@ void printTreeNode(TreeNodeType *tree)
     }
     else
     {
-        printf("%s\n", tree->TreeNode.externalNode->word);
+        printf("%s ", tree->TreeNode.externalNode->word);
+        printPairLinkedList(tree->TreeNode.externalNode->pairSet);
+        printf("\n");
     }
 
     if (!isExternalNode(tree))
@@ -228,14 +249,14 @@ char findCharNode(const char *word, TreeNodeType *currNode, int *currIndex)
         currLetter++;
     }
 
-    *currIndex = (int) strlen(word) - 1;
-    return word[*currIndex];
+    *currIndex = (int) strlen(currNode->TreeNode.externalNode->word) - 1;
+    return currNode->TreeNode.externalNode->word[*currIndex];
 }
 
 
-int compareWords(const char *word, const int *index, char difChar)
+bool isWordGreaterThanChar(const char *word, const int *index, char differChar)
 {
-    return difChar > word[*index] ? 1 : 0;
+    return differChar < word[*index];
 }
 
 
@@ -247,11 +268,5 @@ int compareWords(const char *word, const int *index, char difChar)
  */
 bool isExternalNode(struct TreeNodeType *treeNodeType)
 {
-    return (treeNodeType->nodeType == External);
+    return treeNodeType->nodeType == External;
 }
-
-
-//void freeTree(TreeNodeType * tree)
-//{
-//
-//}

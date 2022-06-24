@@ -3,6 +3,11 @@
 
 typedef enum
 {
+    Right, Left
+} Direction;
+
+typedef enum
+{
     Internal, External
 } NodeType;
 
@@ -14,8 +19,8 @@ typedef struct ExternalNode
 
 typedef struct
 {
-    int *index;
     char differChar;
+    int *index;
     struct TreeNodeType *left;
     struct TreeNodeType *right;
 } InternalNode;
@@ -36,7 +41,7 @@ TreeNodeType *createExternalNode(char *word, int documentID);
 
 bool insertTreeNode(TreeNodeType **treeNodeType, char *word, long documentID);
 
-int compareWords(const char *word, const int *index, char difChat);
+bool isWordGreaterThanChar(const char *word, const int *index, char differChar);
 
 bool isExternalNode(struct TreeNodeType *treeNodeType);
 

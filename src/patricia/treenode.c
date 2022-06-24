@@ -164,7 +164,6 @@ bool insertTreeNode(TreeNodeType **treeNodeType, char *word, long documentID)
     }
 
     TreeNodeType *currTreeNodeType = *treeNodeType;
-    bool isEqual = false;
 
     while (!isExternalNode(currTreeNodeType))
     {
@@ -175,7 +174,6 @@ bool insertTreeNode(TreeNodeType **treeNodeType, char *word, long documentID)
         }
         else
         {
-            if (word )
             currTreeNodeType = currTreeNodeType->TreeNode.internalNode->left;
         }
     }
@@ -245,13 +243,28 @@ char getDifferChar(const char *word, TreeNodeType *currNode, int *currIndex)
         if (currNode->TreeNode.externalNode->word[currLetter] != word[currLetter])
         {
             *currIndex = currLetter;
+
+            if (currNode->TreeNode.externalNode->word[currLetter] > word[currLetter])
+            {
+                return word[currLetter];
+            }
+
             return currNode->TreeNode.externalNode->word[currLetter];
         }
 
         currLetter++;
     }
 
-    *currIndex = (int) strlen(currNode->TreeNode.externalNode->word) - 1;
+    int wordLength = (int) strlen(word);
+    int nodeWordLength = (int) strlen(currNode->TreeNode.externalNode->word);
+
+    if (nodeWordLength > wordLength)
+    {
+        *currIndex = wordLength - 1;
+        return word[*currIndex];
+    }
+
+    *currIndex = nodeWordLength - 1;
     return currNode->TreeNode.externalNode->word[*currIndex];
 }
 

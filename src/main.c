@@ -28,11 +28,12 @@ int main(void)
     {
         int structOption = -1;
 
-        printf("What structures do you wish to load? "
+        printf("\n\nStructures"
                "\nNotice that the hashtable structure requires 16gb of RAM for a million words."
                "\n[0] Hashtable"
                "\n[1] Patricia"
-               "\n[2] Both\n");
+               "\n[2] Both"
+               "\nWhat structure(s) do you wish to load?\n");
 
         if (!scanf("%d", &structOption) || structOption < 0 || structOption > 2)
         {
@@ -42,12 +43,6 @@ int main(void)
 
         if (structOption == 0)
         {
-            printf("");
-
-            Hashtable hashtable;
-            initialiseHashtable(&hashtable, 100);
-
-            int numFiles = 0;
             char inputFilename[CHAR_MAX];
 
             printf("========================"
@@ -55,6 +50,12 @@ int main(void)
                    "\n========================\n");
             scanf("%s", inputFilename);
 
+            double timeHashtable = clock();
+
+            Hashtable hashtable;
+            initialiseHashtable(&hashtable, 100);
+
+            int numFiles = 0;
             char **filenames = readFilenamesHashtable(&hashtable, inputFilename, &numFiles);
 
             if (!filenames)
@@ -64,6 +65,8 @@ int main(void)
                 cleanStdin();
                 continue;
             }
+
+            printf("\nTotal time hashtable = %lfs\n", calculateTotalTime(timeHashtable));
 
             int operationOption = -1;
 
@@ -113,12 +116,6 @@ int main(void)
         }
         else if (structOption == 1)
         {
-            printf("");
-
-            PATRICIA tree;
-            initialisePATRICIA(&tree);
-
-            int numFiles = 0;
             char inputFilename[CHAR_MAX];
 
             printf("========================"
@@ -126,6 +123,12 @@ int main(void)
                    "\n========================\n");
             scanf("%s", inputFilename);
 
+            double timePATRICIA = clock();
+
+            PATRICIA tree;
+            initialisePATRICIA(&tree);
+
+            int numFiles = 0;
             char **filenames = readFilenamesPatricia(&tree, inputFilename, &numFiles);
 
             if (!filenames)
@@ -135,6 +138,8 @@ int main(void)
                 cleanStdin();
                 continue;
             }
+
+            printf("\nTotal time PATRICIA = %lfs\n", calculateTotalTime(timePATRICIA));
 
             int operationOption = -1;
 
@@ -184,7 +189,12 @@ int main(void)
         }
         else
         {
-            printf("");
+            char inputFilename[CHAR_MAX];
+
+            printf("========================"
+                   "\n      Filename"
+                   "\n========================\n");
+            scanf("%s", inputFilename);
 
             double timeHashtable = clock();
 
@@ -193,13 +203,6 @@ int main(void)
             initialiseHashtable(&hashtable, 100);
 
             int numFiles = 0;
-            char inputFilename[CHAR_MAX];
-
-            printf("========================"
-                   "\n      Filename"
-                   "\n========================\n");
-            scanf("%s", inputFilename);
-
             char **filenames = readFilenamesHashtable(&hashtable, inputFilename, &numFiles);
 
             if (!filenames)
@@ -222,10 +225,11 @@ int main(void)
 
             timePATRICIA = calculateTotalTime(timePATRICIA);
 
-            int numFilesPatricia = 0;
-
-            readFilenamesPatricia(&tree, inputFilename, &numFilesPatricia);
+            int numFilesPATRICIA = 0;
+            readFilenamesPatricia(&tree, inputFilename, &numFilesPATRICIA);
             ///-------------------------------------------------------------------------
+
+            printf("\nTotal time hashtable = %lfs | Total time PATRICIA = %lfs\n", timeHashtable, timePATRICIA);
 
             int operationOption = -1;
 

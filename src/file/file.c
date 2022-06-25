@@ -132,11 +132,10 @@ bool readFileIntoPatricia(PATRICIA *tree, char *filename, int fileNumber)
         return false;
     }
 
-    while (!feof(file))
-    {
-        char string[CHAR_MAX];
-        fscanf(file, "%s", string);
+    char string[CHAR_MAX];
 
+    while (fscanf(file, "%s", string) != EOF)
+    {
         char reformattedString[strlen(string) + 1];
         reformatString(reformattedString, string);
 
@@ -177,11 +176,10 @@ bool readFileIntoPatricia(PATRICIA *tree, char *filename, int fileNumber)
 //        return false;
 //    }
 //
-//    while (!feof(file))
-//    {
-//        char string[CHAR_MAX];
-//        fscanf(file, "%s", string);
+//    char string[CHAR_MAX];
 //
+//    while (fscanf(file, "%s", string) != EOF)
+//    {
 //        char reformattedString[strlen(string) + 1];
 //        reformatString(reformattedString, string);
 //

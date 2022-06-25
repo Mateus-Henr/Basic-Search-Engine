@@ -1,5 +1,4 @@
-4
-arquivo2.txt
+7
 arquivo3.txt
 arquivo4.txt
 arquivo5.txt

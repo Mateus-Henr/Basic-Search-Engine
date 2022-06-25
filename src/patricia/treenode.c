@@ -244,12 +244,12 @@ char getDifferChar(const char *word, TreeNodeType *currNode, int *currIndex)
         {
             *currIndex = currLetter;
 
-            if (currNode->TreeNode.externalNode->word[currLetter] >= word[currLetter])
+            if (currNode->TreeNode.externalNode->word[currLetter] > word[currLetter])
             {
-                return word[currLetter];
+                return currNode->TreeNode.externalNode->word[currLetter];
             }
 
-            return currNode->TreeNode.externalNode->word[currLetter];
+            return word[currLetter];
         }
 
         currLetter++;
@@ -260,7 +260,7 @@ char getDifferChar(const char *word, TreeNodeType *currNode, int *currIndex)
 
     if (nodeWordLength == wordLength)
     {
-        return 0;
+        return word[wordLength - 1];
     }
     else if (nodeWordLength > wordLength)
     {
@@ -279,10 +279,10 @@ bool isWordGreaterThanChar(const char *word, int index, char differChar)
 
     if (index >= wordLength)
     {
-        return true;
+        return false;
     }
 
-    return word[index] > differChar;
+    return word[index] >= differChar;
 }
 
 

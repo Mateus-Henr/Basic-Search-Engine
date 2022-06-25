@@ -314,13 +314,6 @@ bool getUserOperationOption(int *operationOption)
 }
 
 
-void freeStructs(Hashtable *hashtable, PATRICIA *tree)
-{
-    freeHashtable(hashtable);
-    freeTree(tree);
-}
-
-
 bool getNumberTerms(int *numTerms)
 {
     return scanf("%d", numTerms) && *numTerms > 0;

@@ -17,3 +17,5 @@ void search(PATRICIA *patricia, char *word);
 int getTreeSize(PATRICIA *patricia);
 
 void printTree(PATRICIA *patricia);
+
+void freeTree(PATRICIA *patricia);

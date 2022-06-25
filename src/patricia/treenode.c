@@ -201,37 +201,6 @@ bool insertTreeNode(TreeNodeType **treeNodeType, char *word, long documentID)
 
 
 /*
- *  Prints out nodes by using jumping from one to the next.
- *
- *  @param     tree     pointer to TreeNodeType struct.
- */
-void printTreeNode(TreeNodeType *tree)
-{
-    if (!tree)
-    {
-        printf("EMPTY.\n");
-        return;
-    }
-
-    if (!isExternalNode(tree))
-    {
-        printTreeNode(tree->TreeNode.internalNode->left);
-    }
-    else
-    {
-        printf("%s ", tree->TreeNode.externalNode->word);
-        printPairLinkedList(tree->TreeNode.externalNode->pairSet);
-        printf("\n");
-    }
-
-    if (!isExternalNode(tree))
-    {
-        printTreeNode(tree->TreeNode.internalNode->right);
-    }
-}
-
-
-/*
  *  Finds the letter that differs in two words.
  */
 char getDifferChar(const char *word, TreeNodeType *currNode, int *currIndex)
@@ -295,4 +264,70 @@ bool isWordGreaterThanChar(const char *word, int index, char differChar)
 bool isExternalNode(struct TreeNodeType *treeNodeType)
 {
     return treeNodeType->nodeType == External;
+}
+
+
+/*
+ *  Prints out nodes by using jumping from one to the next.
+ *
+ *  @param     tree     pointer to TreeNodeType struct.
+ */
+void printTreeNode(TreeNodeType *tree)
+{
+    if (!tree)
+    {
+        printf("EMPTY.\n");
+        return;
+    }
+
+    if (!isExternalNode(tree))
+    {
+        printTreeNode(tree->TreeNode.internalNode->left);
+    }
+    else
+    {
+        printf("%s ", tree->TreeNode.externalNode->word);
+        printPairLinkedList(tree->TreeNode.externalNode->pairSet);
+        printf("\n");
+    }
+
+    if (!isExternalNode(tree))
+    {
+        printTreeNode(tree->TreeNode.internalNode->right);
+    }
+}
+
+
+
+void freeTreeNodes(TreeNodeType *tree)
+{
+    if (tree)
+    {
+        if (!isExternalNode(tree))
+        {
+            printTreeNode(tree->TreeNode.internalNode->left);
+        }
+        else
+        {
+            if (tree->TreeNode.externalNode->word)
+            {
+                free(tree->TreeNode.externalNode->word);
+            }
+
+            if (tree->TreeNode.externalNode->pairSet)
+            {
+                freePairLinkedList(tree->TreeNode.externalNode->pairSet);
+            }
+
+            free(tree->TreeNode.externalNode);
+        }
+
+        if (!isExternalNode(tree))
+        {
+            printTreeNode(tree->TreeNode.internalNode->right);
+        }
+
+        free(tree);
+    }
+
 }

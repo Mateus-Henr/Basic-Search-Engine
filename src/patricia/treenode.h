@@ -48,3 +48,5 @@ bool isExternalNode(struct TreeNodeType *treeNodeType);
 char getDifferChar(const char *word, TreeNodeType *currNode, int *currIndex);
 
 void printTreeNode(TreeNodeType *tree);
+
+void freeTreeNodes(TreeNodeType *tree);

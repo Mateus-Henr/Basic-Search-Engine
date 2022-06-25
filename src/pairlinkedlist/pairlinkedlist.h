@@ -1,5 +1,9 @@
 #include <stdbool.h>
 
+
+#ifndef _PAIR_LINKED_LIST_H_
+#define _PAIR_LINKED_LIST_H_
+
 #include "pairnode.h"
 #include "tfidf/tfidf.h"
 
@@ -25,3 +29,7 @@ void getTFIDFPairLinkedList(PairLinkedList *list, TFIDF *tfidf, bool isRightWord
 void printPairLinkedList(PairLinkedList *list);
 
 void freePairLinkedList(PairLinkedList *list);
+
+// bloco de código
+
+#endif

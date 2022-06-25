@@ -126,7 +126,7 @@ bool checkForPrimality(int numberToCheck)
  *  @param     documentID    document's number (ID).
  *  @return                  whether the operation was successful or not.
  */
-bool insert(Hashtable *hashtable, const char *word, long documentID)
+bool insertIntoHashtable(Hashtable *hashtable, const char *word, long documentID)
 {
     int hashedKey = hash(hashtable, hashCode(word, hashtable->weights));
 

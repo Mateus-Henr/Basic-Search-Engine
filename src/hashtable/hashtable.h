@@ -11,7 +11,7 @@ typedef struct Hashtable
 
 void initialiseHashtable(Hashtable *hashtable, int sizeSuggestion);
 
-bool insert(Hashtable *hashtable, const char *word, long documentID);
+bool insertIntoHashtable(Hashtable *hashtable, const char *word, long documentID);
 
 long getHashtableSize(Hashtable *hashtable);
 

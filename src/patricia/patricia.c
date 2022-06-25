@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "patricia.h"
 
 
@@ -18,7 +19,7 @@ void initialisePATRICIA(PATRICIA *patricia)
  *  Inserts externalNode into the tree.
  *
  *  @param     patricia       pointer to PATRICIA struct.
- *  @param     word           word to insert.
+ *  @param     word           word to insertIntoHashtable.
  *  @param     documentID     document's ID.
  */
 bool insertIntoTree(PATRICIA *patricia, char *word, int documentID)
@@ -47,4 +48,15 @@ int getTreeSize(PATRICIA *patricia)
 void printTree(PATRICIA *patricia)
 {
     printTreeNode(patricia->root);
+}
+
+
+/*
+ *  Deallocates structs that have been allocated dynamically.
+ *
+ *  @param     patricia     pointer to PATRICIA struct.
+ */
+void freeTree(PATRICIA *patricia)
+{
+    freeTreeNodes(patricia->root);
 }

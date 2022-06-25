@@ -326,7 +326,7 @@ void calculateWeight(Hashtable *hashtable, double *weights, TFIDF *tfidf)
  *  @param     numWords      number of words in the array.
  *  @param     numDocs       number of files.
  */
-void calculateRelevance(Hashtable *hashtable, char **words, char **filenames, int numWords, int numDocs)
+void relevanceHashtable(Hashtable *hashtable, char **words, char **filenames, int numWords, int numDocs)
 {
     Relevance relevanceArray[numDocs];
     double values[numDocs];

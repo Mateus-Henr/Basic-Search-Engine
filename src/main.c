@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <limits.h>
 #include "file/file.h"
 
@@ -11,11 +12,11 @@
 // Function prototype.
 void cleanStdin();
 
-void printOperationOptions();
+double calculateTotalTime(double initialTime);
 
-int getUserOperationOption(int *operationOption);
+bool getUserOperationOption(int *operationOption);
 
-void freeStructs(Hashtable *hashtable, PATRICIA *tree);
+bool getNumberTerms(int *numTerms);
 
 
 /*
@@ -31,7 +32,7 @@ int main(void)
                "\nNotice that the hashtable structure requires 16gb of RAM for a million words."
                "\n[0] Hashtable"
                "\n[1] Patricia"
-               "\n[2] Both");
+               "\n[2] Both\n");
 
         if (!scanf("%d", &structOption) || structOption < 0 || structOption > 2)
         {
@@ -46,111 +47,55 @@ int main(void)
             Hashtable hashtable;
             initialiseHashtable(&hashtable, 100);
 
+            int numFiles = 0;
+            char inputFilename[CHAR_MAX];
+
+            printf("========================"
+                   "\n      Filename"
+                   "\n========================\n");
+            scanf("%s", inputFilename);
+
+            char **filenames = readFilenamesHashtable(&hashtable, inputFilename, &numFiles);
+
+            if (!filenames)
+            {
+                printf(FILE_ERROR, inputFilename);
+                freeHashtable(&hashtable);
+                cleanStdin();
+                continue;
+            }
+
             int operationOption = -1;
 
-            while (getUserOperationOption(&operationOption) != 1)
+            while (!getUserOperationOption(&operationOption))
             {
                 printf(INVALID_VALUE);
                 cleanStdin();
             }
-        }
-        else if (structOption == 1)
-        {
-            printf("");
 
-            PATRICIA tree;
-            initialisePATRICIA(&tree);
-
-            int operationOption = -1;
-
-            while (getUserOperationOption(&operationOption) != 1)
+            if (operationOption == 0)
             {
-                printf(INVALID_VALUE);
-                cleanStdin();
+                printf("Leaving...\n");
+                break;
             }
-        }
-        else
-        {
-            printf("");
-
-            Hashtable hashtable;
-            initialiseHashtable(&hashtable, 100);
-
-            PATRICIA tree;
-            initialisePATRICIA(&tree);
-
-            int operationOption = -1;
-
-            while (getUserOperationOption(&operationOption) != 1)
+            else if (operationOption == 1)
             {
-                printf(INVALID_VALUE);
-                cleanStdin();
-            }
-        }
-
-        if (operationOption == 0)
-        {
-            printf("Leaving...\n");
-            break;
-        }
-
-        // Initialise the hashtable.
-        Hashtable hashtable;
-        initialiseHashtable(&hashtable, 100); // You can change the hash table size.
-
-        // Initialise the tree.
-        PATRICIA tree;
-        initialisePATRICIA(&tree);
-
-        int numDocs = 0;
-
-        char inputFilename[CHAR_MAX];
-        printf("========================\n");
-        printf("      Filename\n");
-        printf("========================\n");
-        scanf("%s", inputFilename);
-
-        char **filenames = readFilenames(&hashtable, &tree, inputFilename, &numDocs);
-
-        if (!filenames)
-        {
-            printf(FILE_ERROR, inputFilename);
-            freeHashtable(&hashtable);
-            cleanStdin();
-            continue;
-        }
-
-        bool loop = true;
-
-        while (loop)
-        {
-            if (operationOption == 1)
-            {
-                printf("Printing the tree\n");
-                printTree(&tree);
-                freeFilenames(filenames, numDocs);
-
-//            printf("Printing the hashtable\n");
-//            printHashtable(&hashtable);
-//            freeFilenames(filenames, numDocs);
+                printf("Printing hashtable inverted index");
+                sortAndPrintHashtable(&hashtable);
             }
             else if (operationOption == 2)
             {
-                int numWords = 0;
+                int numTerms = 0;
 
-                printf("Type the number of terms to look for:\n");
-                if (!scanf("%d", &numWords) || numWords <= 0)
+                while (!getNumberTerms(&numTerms))
                 {
                     printf(INVALID_VALUE);
-                    freeFilenames(filenames, numDocs);
-                    freeStructs(&hashtable, &tree);
                     cleanStdin();
-                    continue;
                 }
 
-                char *words[numWords];
+                char *words[numTerms];
 
-                for (int i = 0; i < numWords; i++)
+                for (int i = 0; i < numTerms; i++)
                 {
                     char word[CHAR_MAX];
 
@@ -161,19 +106,178 @@ int main(void)
                     reformatString(words[i], word);
                 }
 
-                calculateRelevance(&hashtable, words, filenames, numWords, numDocs);
-            }
-            else if (operationOption == 3)
-            {
-                printf("Printing the hashtable sorted\n");
-                sortAndPrintHashtable(&hashtable);
-                freeFilenames(filenames, numDocs);
+                relevanceHashtable(&hashtable, words, filenames, numTerms, numFiles);
             }
 
-            loop = false;
+            freeHashtable(&hashtable);
         }
+        else if (structOption == 1)
+        {
+            printf("");
 
-        freeStructs(&hashtable, &tree);
+            PATRICIA tree;
+            initialisePATRICIA(&tree);
+
+            int numFiles = 0;
+            char inputFilename[CHAR_MAX];
+
+            printf("========================"
+                   "\n      Filename"
+                   "\n========================\n");
+            scanf("%s", inputFilename);
+
+            char **filenames = readFilenamesPatricia(&tree, inputFilename, &numFiles);
+
+            if (!filenames)
+            {
+                printf(FILE_ERROR, inputFilename);
+                freeTree(&tree);
+                cleanStdin();
+                continue;
+            }
+
+            int operationOption = -1;
+
+            while (!getUserOperationOption(&operationOption))
+            {
+                printf(INVALID_VALUE);
+                cleanStdin();
+            }
+
+            if (operationOption == 0)
+            {
+                printf("Leaving...\n");
+                break;
+            }
+            else if (operationOption == 1)
+            {
+                printf("Printing PATRICIA inverted index");
+                printTree(&tree);
+            }
+            else if (operationOption == 2)
+            {
+                int numTerms = 0;
+
+                while (!getNumberTerms(&numTerms))
+                {
+                    printf(INVALID_VALUE);
+                    cleanStdin();
+                }
+
+                char *words[numTerms];
+
+                for (int i = 0; i < numTerms; i++)
+                {
+                    char word[CHAR_MAX];
+
+                    printf("Type the word:\n");
+                    scanf("%s", word);
+
+                    words[i] = (char *) malloc(strlen(word) + 1);
+                    reformatString(words[i], word);
+                }
+
+//                relevancePATRICIA(&tree, words, filenames, numTerms, numFiles);
+            }
+
+            freeTree(&tree);
+        }
+        else
+        {
+            printf("");
+
+            double timeHashtable = clock();
+
+            /// Hashtable
+            Hashtable hashtable;
+            initialiseHashtable(&hashtable, 100);
+
+            int numFiles = 0;
+            char inputFilename[CHAR_MAX];
+
+            printf("========================"
+                   "\n      Filename"
+                   "\n========================\n");
+            scanf("%s", inputFilename);
+
+            char **filenames = readFilenamesHashtable(&hashtable, inputFilename, &numFiles);
+
+            if (!filenames)
+            {
+                printf(FILE_ERROR, inputFilename);
+                freeHashtable(&hashtable);
+                cleanStdin();
+                continue;
+            }
+
+            timeHashtable = calculateTotalTime(timeHashtable);
+            ///-------------------------------------------------------------------------
+
+
+            /// PATRICIA
+            double timePATRICIA = clock();
+
+            PATRICIA tree;
+            initialisePATRICIA(&tree);
+
+            timePATRICIA = calculateTotalTime(timePATRICIA);
+
+            int numFilesPatricia = 0;
+
+            readFilenamesPatricia(&tree, inputFilename, &numFilesPatricia);
+            ///-------------------------------------------------------------------------
+
+            int operationOption = -1;
+
+            while (!getUserOperationOption(&operationOption))
+            {
+                printf(INVALID_VALUE);
+                cleanStdin();
+            }
+
+            if (operationOption == 0)
+            {
+                printf("Leaving...\n");
+                break;
+            }
+            else if (operationOption == 1)
+            {
+                printf("Printing hashtable inverted index");
+                sortAndPrintHashtable(&hashtable);
+
+                printf("\nPrinting PATRICIA inverted index");
+                printTree(&tree);
+            }
+            else if (operationOption == 2)
+            {
+                int numTerms = 0;
+
+                while (!getNumberTerms(&numTerms))
+                {
+                    printf(INVALID_VALUE);
+                    cleanStdin();
+                }
+
+                char *words[numTerms];
+
+                for (int i = 0; i < numTerms; i++)
+                {
+                    char word[CHAR_MAX];
+
+                    printf("Type the word:\n");
+                    scanf("%s", word);
+
+                    words[i] = (char *) malloc(strlen(word) + 1);
+                    reformatString(words[i], word);
+                }
+
+                relevanceHashtable(&hashtable, words, filenames, numTerms, numFiles);
+                // relevancePATRICIA(&tree, words, filenames, numTerms, numFiles);
+            }
+
+            freeHashtable(&hashtable);
+            freeTree(&tree);
+        }
     }
 
     return 0;
@@ -194,25 +298,15 @@ void cleanStdin(void)
 }
 
 
-void printOperationOptions()
+bool getUserOperationOption(int *operationOption)
 {
     printf("\nOptions"
            "\n[0] Exit"
-           "\n[1] Print the inverted index"
+           "\n[1] Print inverted index"
            "\n[2] Search for a term"
-           "\n[3] Print the inverted index - Ascending order"
            "\nChoose one of the options:\n");
-}
 
-int getUserOperationOption(int *operationOption)
-{
-    printOperationOptions();
-    if (!scanf("%d", operationOption) || operationOption < 0 || operationOption > 4)
-    {
-        return -1;
-    }
-
-    return 1;
+    return scanf("%d", operationOption) && *operationOption >= 0 && *operationOption <= 2;
 }
 
 
@@ -220,4 +314,16 @@ void freeStructs(Hashtable *hashtable, PATRICIA *tree)
 {
     freeHashtable(hashtable);
     freeTree(tree);
+}
+
+
+bool getNumberTerms(int *numTerms)
+{
+    return scanf("%d", numTerms) && *numTerms > 0;
+}
+
+
+double calculateTotalTime(double initialTime)
+{
+    return (clock() - initialTime) / CLOCKS_PER_SEC;
 }

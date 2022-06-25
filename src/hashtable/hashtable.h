@@ -25,4 +25,4 @@ void sortAndPrintHashtable(Hashtable *hashtable);
 
 void freeHashtable(Hashtable *hashtable);
 
-void calculateRelevance(Hashtable *hashtable, char **words, char **filenames, int numWords, int numDocs);
+void relevanceHashtable(Hashtable *hashtable, char **words, char **filenames, int numWords, int numDocs);

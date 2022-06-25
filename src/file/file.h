@@ -4,8 +4,12 @@
 
 void reformatString(char *dest, char *src);
 
-char **readFilenames(Hashtable *hashtable, PATRICIA *tree, char *inputFilename, int *numFiles);
+char **readFilenamesHashtable(Hashtable *hashtable, char *inputFilename, int *numFiles);
 
-bool readFileIntoStructs(Hashtable *hashtable, PATRICIA *tree, char *filename, int fileNumber);
+char **readFilenamesPatricia(PATRICIA *tree, char *inputFilename, int *numFiles);
+
+bool readFileIntoHashtable(Hashtable *hashtable, char *filename, int fileNumber);
+
+bool readFileIntoPatricia(PATRICIA *tree, char *filename, int fileNumber);
 
 void freeFilenames(char **filenames, int n);

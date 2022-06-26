@@ -21,7 +21,7 @@ struct Node *initialiseNode(const char *word, long documentID)
         return NULL;
     }
 
-    nodeToAdd->word = (char *) malloc(sizeof(strlen(word)) + 1);
+    nodeToAdd->word = (char *) malloc(strlen(word) + 1);
 
     if (!nodeToAdd->word)
     {
@@ -31,7 +31,6 @@ struct Node *initialiseNode(const char *word, long documentID)
 
     strcpy(nodeToAdd->word, word);
     nodeToAdd->pairSet = initialisePairLinkedList();
-    nodeToAdd->next = NULL;
 
     if (!nodeToAdd->pairSet)
     {
@@ -45,6 +44,8 @@ struct Node *initialiseNode(const char *word, long documentID)
         free(nodeToAdd);
         return NULL;
     }
+
+    nodeToAdd->next = NULL;
 
     return nodeToAdd;
 }

@@ -11,7 +11,6 @@ typedef struct
 {
     PairNode *head;
     PairNode *tail;
-    int size;
 } PairLinkedList;
 
 PairLinkedList *initialisePairLinkedList();
@@ -25,6 +24,8 @@ bool isPairLinkedListEmpty(PairLinkedList *list);
 void printPairLinkedList(PairLinkedList *list);
 
 void getTFIDFPairLinkedList(PairLinkedList *list, TFIDF *tfidf, bool isRightWord);
+
+long getSizeOfPairLinkedList(PairLinkedList *list);
 
 void freePairLinkedList(PairLinkedList *list);
 

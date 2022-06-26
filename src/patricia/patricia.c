@@ -140,6 +140,22 @@ void relevancePATRICIA(PATRICIA *tree, char **words, char **filenames, int numWo
 
 
 /*
+ *  Gets the size of the PATRICIA tree.
+ *
+ *  @param     patricia     pointer to PATRICIA struct.
+ *  @return                 size of PATRICIA tree.
+ */
+long getSizeOfPATRICIA(PATRICIA *patricia)
+{
+    long size = 0;
+
+    getSizeTreeNodes(patricia->root, &size);
+
+    return size;
+}
+
+
+/*
  *  Deallocates structs that have been allocated dynamically.
  *
  *  @param     patricia     pointer to PATRICIA struct.

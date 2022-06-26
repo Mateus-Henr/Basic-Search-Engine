@@ -17,4 +17,6 @@ void getTFIDFPATRICIA(PATRICIA *patricia, TFIDF *tfidf);
 
 void relevancePATRICIA(PATRICIA *tree, char **words, char **filenames, int numWords, int numDocs);
 
+long getSizeOfPATRICIA(PATRICIA *patricia);
+
 void freeTree(PATRICIA *patricia);

@@ -22,3 +22,5 @@ void getTFIDFLinkedList(LinkedList *list, TFIDF *tfidf);
 void freeLinkedList(LinkedList *list);
 
 void freeSortedLinkedList(LinkedList *list);
+
+long getSizeOfLinkedList(LinkedList *list);

@@ -21,7 +21,6 @@ PairLinkedList *initialisePairLinkedList()
 
     list->head = NULL;
     list->tail = NULL;
-    list->size = 0;
 
     return list;
 }
@@ -77,8 +76,6 @@ bool pushPair(PairLinkedList *list, long documentID)
         list->tail->next = node;
         list->tail = node;
     }
-
-    list->size++;
 
     return true;
 }
@@ -152,6 +149,30 @@ void getTFIDFPairLinkedList(PairLinkedList *list, TFIDF *tfidf, bool isRightWord
 
         currNode = currNode->next;
     }
+}
+
+
+/*
+ *  Gets the size of a PairLinkedList.
+ *
+ *  @param     list    pointer to PairLinkedList struct.
+ *  @return            size of the pair linked list in bytes.
+ */
+long getSizeOfPairLinkedList(PairLinkedList *list)
+{
+    long size = 0;
+    struct PairNode *currPairNode = list->head;
+
+    while (currPairNode)
+    {
+        size += sizeof(PairNode);
+
+        currPairNode = currPairNode->next;
+    }
+
+    size += sizeof(PairLinkedList);
+
+    return size;
 }
 
 

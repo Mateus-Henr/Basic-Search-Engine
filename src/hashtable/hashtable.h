@@ -19,4 +19,6 @@ void getTFIDFHashtable(Hashtable *hashtable, TFIDF *tfidf);
 
 void relevanceHashtable(Hashtable *hashtable, char **words, char **filenames, int numWords, int numDocs);
 
+long getSizeOfHashtable(Hashtable *hashtable);
+
 void freeHashtable(Hashtable *hashtable);

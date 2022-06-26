@@ -337,6 +337,40 @@ void insertionSort(Relevance *array, int n)
 
 
 /*
+ *  Gets the size of a hashtable.
+ *
+ *  @param     hashtable    pointer to Hashtable struct.
+ *  @return                 size of the hashtable in bytes.
+ */
+long getSizeOfHashtable(Hashtable *hashtable)
+{
+    long size = 0;
+
+    if (hashtable->linkedListArray)
+    {
+        for (int i = 0; i < hashtable->maxSize; i++)
+        {
+            if (hashtable->linkedListArray[i])
+            {
+                size += getSizeOfLinkedList(hashtable->linkedListArray[i]);
+            }
+
+            size += sizeof(LinkedList *);
+        }
+    }
+
+    if (hashtable->weights)
+    {
+        size += sizeof(int) * MAXIMUM_WORD_LENGTH;
+    }
+
+    size += sizeof(Hashtable);
+
+    return size;
+}
+
+
+/*
  *  Deallocates structs that have been allocated dynamically.
  *
  *  @param     hashtable     pointer to Hashtable struct.

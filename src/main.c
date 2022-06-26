@@ -24,7 +24,7 @@ void cleanStdin();
 
 typedef enum
 {
-    Leave, Hash, Patricia
+    Leave, Hash, Patricia, Both
 } Structs;
 
 
@@ -44,14 +44,14 @@ int main(void)
         int structOption = -1;
 
         printf("\n\nStructures"
-               "\nNotice that the hashtable you can edit the suggestion size in the code at line 78."
+               "\nNotice that the hashtable you can edit the suggestion size in the code in the main code."
                "\n[0] Leave"
                "\n[1] Hashtable"
                "\n[2] Patricia"
                "\n[3] Both"
                "\nWhat structure(s) do you wish to load?\n");
 
-        if (!scanf("%d", &structOption) || structOption < Leave || structOption > Patricia)
+        if (!scanf("%d", &structOption) || structOption < Leave || structOption > Both)
         {
             printf(INVALID_VALUE);
             cleanStdin();
@@ -88,7 +88,8 @@ int main(void)
                 continue;
             }
 
-            printf("\nTotal time hashtable = %lfs\n", calculateTotalTime(timeHashtable));
+            printf("\nHashtable's size = %ld bytes\n", getSizeOfHashtable(&hashtable));
+            printf("Total time hashtable = %lfs\n", calculateTotalTime(timeHashtable));
 
             while (true)
             {
@@ -166,7 +167,8 @@ int main(void)
                 continue;
             }
 
-            printf("\nTotal time PATRICIA = %lfs\n", calculateTotalTime(timePATRICIA));
+            printf("\nPATRICIA's size = %ld bytes\n", getSizeOfPATRICIA(&tree));
+            printf("Total time PATRICIA = %lfs\n", calculateTotalTime(timePATRICIA));
 
             while (true)
             {
@@ -219,7 +221,7 @@ int main(void)
             freeTree(&tree);
             freeFilenames(filenames, numFiles);
         }
-        else
+        else if (structOption == Both)
         {
             printf("========================"
                    "\n      Filename"
@@ -260,8 +262,10 @@ int main(void)
 
             timePATRICIA = calculateTotalTime(timePATRICIA);
             ///-------------------------------------------------------------------------
-
-            printf("\nTotal time hashtable = %lfs | Total time PATRICIA = %lfs\n", timeHashtable, timePATRICIA);
+            printf("\nHashtable's size = %ld bytes | PATRICIA's size = %ld bytes\n",
+                   getSizeOfHashtable(&hashtable),
+                   getSizeOfPATRICIA(&tree));
+            printf("Total time hashtable = %lfs | Total time PATRICIA = %lfs\n", timeHashtable, timePATRICIA);
 
             while (true)
             {

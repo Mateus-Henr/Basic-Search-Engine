@@ -41,3 +41,5 @@ void printTreeNode(TreeNodeType *tree);
 void getTFIDFTreeNodes(TreeNodeType *treeNode, TFIDF *tfidf);
 
 void freeTreeNodes(TreeNodeType *tree);
+
+void getSizeTreeNodes(TreeNodeType *tree,long *size);

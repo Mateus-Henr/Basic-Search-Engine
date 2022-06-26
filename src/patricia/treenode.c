@@ -341,6 +341,7 @@ void freeTreeNodes(TreeNodeType *tree)
         if (!isExternalNode(tree))
         {
             freeTreeNodes(tree->TreeNode.internalNode->left);
+            free(tree->TreeNode.internalNode->left);
         }
         else
         {
@@ -363,8 +364,55 @@ void freeTreeNodes(TreeNodeType *tree)
         if (!isExternalNode(tree))
         {
             freeTreeNodes(tree->TreeNode.internalNode->right);
+            free(tree->TreeNode.internalNode->right);
         }
 
         free(tree);
+    }
+}
+
+
+/*
+ *  Gets the size of a TreeNode.
+ *
+ *  @param     list     pointer to TreeNodeType struct.
+ *  @param     size     size of the TreeNodeType in bites.
+ */
+void getSizeTreeNodes(TreeNodeType *tree, long *size)
+{
+    if (tree)
+    {
+        if (!isExternalNode(tree))
+        {
+            getSizeTreeNodes(tree->TreeNode.internalNode->left, size);
+            *size += sizeof(InternalNode);
+            *size += sizeof(TreeNodeType);
+        }
+        else
+        {
+            if (tree->TreeNode.externalNode)
+            {
+                if (tree->TreeNode.externalNode->word)
+                {
+                    *size += sizeof(strlen(tree->TreeNode.externalNode->word) + 1);
+                }
+
+                if (tree->TreeNode.externalNode->pairSet)
+                {
+                    *size += getSizeOfPairLinkedList(tree->TreeNode.externalNode->pairSet);
+                }
+
+                *size += sizeof(TreeNodeType);
+            }
+        }
+
+        if (!isExternalNode(tree))
+        {
+            getSizeTreeNodes(tree->TreeNode.internalNode->right, size);
+            *size += sizeof(InternalNode);
+            *size += sizeof(TreeNodeType);
+        }
+
+        *size += sizeof(TreeNodeType *);
     }
 }

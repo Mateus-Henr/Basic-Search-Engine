@@ -197,6 +197,40 @@ void getTFIDFLinkedList(LinkedList *list, TFIDF *tfidf)
 
 
 /*
+ *  Gets the sizeof of a linkedlist.
+ *
+ *  @param     list    pointer to LinkedList struct.
+ *  @return            size of the linked list in bytes.
+ */
+long getSizeOfLinkedList(LinkedList *list)
+{
+    long size = 0;
+    struct Node *currNode = list->head;
+
+    while (currNode)
+    {
+        if (currNode->word)
+        {
+            size += sizeof(strlen(currNode->word) + 1);
+        }
+
+        if (currNode->pairSet)
+        {
+            size += getSizeOfPairLinkedList(currNode->pairSet);
+        }
+
+        size += sizeof(Node);
+
+        currNode = currNode->next;
+    }
+
+    size += sizeof(LinkedList);
+
+    return size;
+}
+
+
+/*
  *  Deallocates linked list and its content allocated dynamically from memory.
  *
  *  @param     list     pointer to LinkedList struct.
@@ -212,7 +246,7 @@ void freeLinkedList(LinkedList *list)
             free(currNode->word);
         }
 
-        if (currNode->pairSet && currNode->pairSet->size > 0)
+        if (currNode->pairSet)
         {
             freePairLinkedList(currNode->pairSet);
         }

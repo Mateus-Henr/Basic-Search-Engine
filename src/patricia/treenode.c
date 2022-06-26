@@ -14,6 +14,9 @@ bool isWordGreaterOrEqualThanChar(const char *word, int index, char differChar);
 
 bool isExternalNode(struct TreeNodeType *treeNodeType);
 
+TreeNodeType *insertBetween(TreeNodeType **treeNodeType, char *word, int documentID, int index, char differChar);
+
+
 
 /*
  *  Initialises internal externalNode with given values.

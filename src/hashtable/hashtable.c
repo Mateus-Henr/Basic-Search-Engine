@@ -285,11 +285,6 @@ void relevanceHashtable(Hashtable *hashtable, char **words, char **filenames, in
             values[j] += weights[j];
         }
 
-        if (words[i])
-        {
-            free(words[i]);
-        }
-
         freeTFIDF(&tfidf);
     }
 
@@ -297,7 +292,6 @@ void relevanceHashtable(Hashtable *hashtable, char **words, char **filenames, in
     {
         values[i] = (1.0 / (double) distinctTerms[i]) * values[i];
         initialiseRelevance(&relevanceArray[i], i + 1, filenames[i], values[i]);
-        free(filenames[i]);
     }
 
     insertionSort(relevanceArray, numDocs);

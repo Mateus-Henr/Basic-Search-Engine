@@ -369,8 +369,6 @@ void freeTreeNodes(TreeNodeType *tree)
             freeTreeNodes(tree->TreeNode.internalNode->right);
             free(tree->TreeNode.internalNode->right);
         }
-
-        free(tree);
     }
 }
 

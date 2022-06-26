@@ -163,4 +163,5 @@ long getSizeOfPATRICIA(PATRICIA *patricia)
 void freeTree(PATRICIA *patricia)
 {
     freeTreeNodes(patricia->root);
+    free(patricia->root);
 }

@@ -397,13 +397,8 @@ double calculateTotalTime(double initialTime)
  */
 void freeWords(char **words, int numWords)
 {
-    if (words)
+    for (int i = 0; i < numWords; ++i)
     {
-        for (int i = 0; i < numWords; ++i)
-        {
-            free(words[i]);
-        }
-
-        free(words);
+        free(words[i]);
     }
 }

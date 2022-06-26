@@ -44,14 +44,14 @@ int main(void)
         int structOption = -1;
 
         printf("\n\nStructures"
-               "\nNotice that the hashtable structure requires 16gb of RAM for a million words."
+               "\nNotice that the hashtable you can edit the suggestion size in the code at line 78."
                "\n[0] Leave"
                "\n[1] Hashtable"
                "\n[2] Patricia"
                "\n[3] Both"
                "\nWhat structure(s) do you wish to load?\n");
 
-        if (!scanf("%d", &structOption) || structOption < 0 || structOption > 3)
+        if (!scanf("%d", &structOption) || structOption < Leave || structOption > Patricia)
         {
             printf(INVALID_VALUE);
             cleanStdin();
@@ -358,7 +358,7 @@ bool getUserOperationOption(int *operationOption)
            "\n[2] Search for a term"
            "\nChoose one of the options:\n");
 
-    return scanf("%d", operationOption) && *operationOption >= 0 && *operationOption <= 2;
+    return scanf("%d", operationOption) && *operationOption >= Exit && *operationOption <= Search;
 }
 
 

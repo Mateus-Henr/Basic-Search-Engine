@@ -6,3 +6,5 @@ set(CMAKE_C_STANDARD 11)
 include_directories(src)
 
 add_executable(TP1-AEDS2 src/main.c src/file/file.c src/linkedlist/linkedlist.c src/pairlinkedlist/pairlinkedlist.c src/hashtable/hashtable.c src/linkedlist/node.c src/pairlinkedlist/pairnode.c src/tfidf/tfidf.c src/patricia/treenode.c src/patricia/patricia.c src/patricia/patricia.h)
+
+target_link_libraries(TP1-AEDS2 m)

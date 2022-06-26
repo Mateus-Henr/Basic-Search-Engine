@@ -11,7 +11,7 @@
 
 // Function prototypes.
 
-bool getUserOperationOption(int *operationOption);
+bool getUserOperationOption(char *currStruct, char *filename, int *operationOption);
 
 bool getNumberTerms(int *numTerms);
 
@@ -92,11 +92,9 @@ int main(void)
 
             while (true)
             {
-                printf("\nOptions on hashtable ('%s')", inputFilename);
-
                 int operationOption = -1;
 
-                while (!getUserOperationOption(&operationOption))
+                while (!getUserOperationOption("hashtable", inputFilename, &operationOption))
                 {
                     printf(INVALID_VALUE);
                     cleanStdin();
@@ -172,11 +170,9 @@ int main(void)
 
             while (true)
             {
-                printf("\nOptions on PATRICIA ('%s')", inputFilename);
-
                 int operationOption = -1;
 
-                while (!getUserOperationOption(&operationOption))
+                while (!getUserOperationOption("PATRICIA", inputFilename, &operationOption))
                 {
                     printf(INVALID_VALUE);
                     cleanStdin();
@@ -269,11 +265,9 @@ int main(void)
 
             while (true)
             {
-                printf("\nOptions on hashtable and PATRICIA ('%s')", inputFilename);
-
                 int operationOption = -1;
 
-                while (!getUserOperationOption(&operationOption))
+                while (!getUserOperationOption("hashtable and PATRICIA", inputFilename, &operationOption))
                 {
                     printf(INVALID_VALUE);
                     cleanStdin();
@@ -348,15 +342,18 @@ void cleanStdin(void)
 /*
  *  Gets the input from the user for the operation to be performed.
  *
+ *  @param     currStruct          struct for operations.
+ *  @param     filename            name of the file for operations.
  *  @param     operationOption     pointer to an int to receive the input.
  *  @return                        whether the operation was valid or not.
  */
-bool getUserOperationOption(int *operationOption)
+bool getUserOperationOption(char *currStruct, char *filename, int *operationOption)
 {
-    printf("\n[0] Exit to struct menu"
+    printf("\n\nOptions on %s ('%s')"
+           "\n[0] Exit to struct menu"
            "\n[1] Print inverted index"
            "\n[2] Search for a term"
-           "\nChoose one of the options:\n");
+           "\nChoose one of the options:\n", currStruct, filename);
 
     return scanf("%d", operationOption) && *operationOption >= Exit && *operationOption <= Search;
 }

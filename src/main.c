@@ -9,14 +9,15 @@
 #define INVALID_VALUE "\nInvalid value.\n\n"
 
 
-// Function prototype.
-void cleanStdin();
-
-double calculateTotalTime(double initialTime);
+// Function prototypes.
 
 bool getUserOperationOption(int *operationOption);
 
 bool getNumberTerms(int *numTerms);
+
+double calculateTotalTime(double initialTime);
+
+void cleanStdin();
 
 
 /*
@@ -43,11 +44,11 @@ int main(void)
 
         if (structOption == 0)
         {
-            char inputFilename[CHAR_MAX];
-
             printf("========================"
                    "\n      Filename"
                    "\n========================\n");
+
+            char inputFilename[CHAR_MAX];
             scanf("%s", inputFilename);
 
             double timeHashtable = clock();
@@ -182,18 +183,18 @@ int main(void)
                     reformatString(words[i], word);
                 }
 
-//                relevancePATRICIA(&tree, words, filenames, numTerms, numFiles);
+                relevancePATRICIA(&tree, words, filenames, numTerms, numFiles);
             }
 
             freeTree(&tree);
         }
         else
         {
-            char inputFilename[CHAR_MAX];
-
             printf("========================"
                    "\n      Filename"
                    "\n========================\n");
+
+            char inputFilename[CHAR_MAX];
             scanf("%s", inputFilename);
 
             double timeHashtable = clock();
@@ -223,10 +224,10 @@ int main(void)
             PATRICIA tree;
             initialisePATRICIA(&tree);
 
-            timePATRICIA = calculateTotalTime(timePATRICIA);
-
             int numFilesPATRICIA = 0;
             readFilenamesPatricia(&tree, inputFilename, &numFilesPATRICIA);
+
+            timePATRICIA = calculateTotalTime(timePATRICIA);
             ///-------------------------------------------------------------------------
 
             printf("\nTotal time hashtable = %lfs | Total time PATRICIA = %lfs\n", timeHashtable, timePATRICIA);
@@ -254,7 +255,7 @@ int main(void)
             }
             else if (operationOption == 2)
             {
-                int numTerms = 0;
+                int numTerms = -1;
 
                 while (!getNumberTerms(&numTerms))
                 {
@@ -276,7 +277,7 @@ int main(void)
                 }
 
                 relevanceHashtable(&hashtable, words, filenames, numTerms, numFiles);
-                // relevancePATRICIA(&tree, words, filenames, numTerms, numFiles);
+                relevancePATRICIA(&tree, words, filenames, numTerms, numFiles);
             }
 
             freeHashtable(&hashtable);
@@ -302,6 +303,12 @@ void cleanStdin(void)
 }
 
 
+/*
+ *  Gets the input from the user for the operation to be performed.
+ *
+ *  @param     operationOption     pointer to an int to receive the input.
+ *  @return                        whether the operation was valid or not.
+ */
 bool getUserOperationOption(int *operationOption)
 {
     printf("\nOptions"
@@ -314,12 +321,25 @@ bool getUserOperationOption(int *operationOption)
 }
 
 
+/*
+ *  Gets the input from the user regarding the number of terms to be inputted.
+ *
+ *  @param     numTerms     pointer to an int to receive the input.
+ *  @return                        whether the operation was valid or not.
+ */
 bool getNumberTerms(int *numTerms)
 {
+    printf("Type the number of terms that you wanna search for:\n");
     return scanf("%d", numTerms) && *numTerms > 0;
 }
 
 
+/*
+ *  Calculates total time based on a given initial time.
+ *
+ *  @param     initialTime     initial time.
+ *  @return                    total time.
+ */
 double calculateTotalTime(double initialTime)
 {
     return (clock() - initialTime) / CLOCKS_PER_SEC;

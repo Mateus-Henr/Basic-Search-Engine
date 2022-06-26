@@ -18,4 +18,8 @@ int getTreeSize(PATRICIA *patricia);
 
 void printTree(PATRICIA *patricia);
 
+void getTFIDFPATRICIA(PATRICIA *patricia, TFIDF *tfidf);
+
 void freeTree(PATRICIA *patricia);
+
+void relevancePATRICIA(PATRICIA *tree, char **words, char **filenames, int numWords, int numDocs);

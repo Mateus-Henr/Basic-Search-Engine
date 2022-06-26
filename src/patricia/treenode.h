@@ -49,4 +49,6 @@ char getDifferChar(const char *word, TreeNodeType *currNode, int *currIndex);
 
 void printTreeNode(TreeNodeType *tree);
 
+void getTFIDFTreeNodes(TreeNodeType *treeNode, TFIDF *tfidf);
+
 void freeTreeNodes(TreeNodeType *tree);

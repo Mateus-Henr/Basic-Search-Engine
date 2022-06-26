@@ -301,7 +301,7 @@ void freeHashtable(Hashtable *hashtable)
  *  @param     hashtable     pointer to Hashtable struct.
  *  @param     tfidf         pointer to TFIDF struct.
  */
-void calculateWeight(Hashtable *hashtable, double *weights, TFIDF *tfidf)
+void calculateWeightHashtable(Hashtable *hashtable, double *weights, TFIDF *tfidf)
 {
     getTFIDFHashtable(hashtable, tfidf);
 
@@ -343,7 +343,7 @@ void relevanceHashtable(Hashtable *hashtable, char **words, char **filenames, in
         initialiseTFIDF(&tfidf, words[i], numDocs);
 
         double weights[tfidf.numDocs];
-        calculateWeight(hashtable, weights, &tfidf);
+        calculateWeightHashtable(hashtable, weights, &tfidf);
 
         for (int j = 0; j < numDocs; j++)
         {

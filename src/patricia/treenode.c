@@ -297,6 +297,23 @@ void printTreeNode(TreeNodeType *tree)
     }
 }
 
+void getTFIDFTreeNodes(TreeNodeType *treeNode, TFIDF *tfidf)
+{
+    if (!isExternalNode(treeNode))
+    {
+        getTFIDFTreeNodes(treeNode->TreeNode.internalNode->left, tfidf);
+    }
+    else
+    {
+        getTFIDFPairLinkedList(treeNode->TreeNode.externalNode->pairSet, tfidf,
+                               !strcmp(treeNode->TreeNode.externalNode->word, tfidf->word));
+    }
+
+    if (!isExternalNode(treeNode))
+    {
+        getTFIDFTreeNodes(treeNode->TreeNode.internalNode->right, tfidf);
+    }
+}
 
 
 void freeTreeNodes(TreeNodeType *tree)

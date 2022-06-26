@@ -6,6 +6,11 @@
 #include "linkedlist.h"
 
 
+// Function prototype.
+
+struct Node *searchNode(struct Node *head, const char *word);
+
+
 /*
  *  Initialises LinkedList struct with default values.
  *
@@ -22,9 +27,26 @@ LinkedList *initialiseLinkedList()
 
     list->head = NULL;
     list->tail = NULL;
-    list->size = 0;
 
     return list;
+}
+
+
+/*
+ *  Searches for a externalNode in the linked list.
+ *
+ *  @param     list     pointer to LinkedList struct.
+ *  @param     word     word to search for.
+ *  @return             pointer for the externalNode if found or null.
+ */
+struct Node *searchNode(struct Node *head, const char *word)
+{
+    while (head && strcmp(word, head->word) != 0)
+    {
+        head = head->next;
+    }
+
+    return head;
 }
 
 
@@ -116,36 +138,6 @@ bool pushSorted(LinkedList *list, Node *node)
 
 
 /*
- *  Searches for a externalNode in the linked list.
- *
- *  @param     list     pointer to LinkedList struct.
- *  @param     word     word to search for.
- *  @return             pointer for the externalNode if found or null.
- */
-struct Node *searchNode(struct Node *head, const char *word)
-{
-    while (head && strcmp(word, head->word) != 0)
-    {
-        head = head->next;
-    }
-
-    return head;
-}
-
-
-/*
- *  Gets the linked list size.
- *
- *  @param     list     pointer to LinkedList struct.
- *  @return             the list size.
- */
-int getLinkedListSize(LinkedList *list)
-{
-    return list->size;
-}
-
-
-/*
  *  Checks if the linked list is empty.
  *
  *  @param     list     pointer to LinkedList struct.
@@ -154,25 +146,6 @@ int getLinkedListSize(LinkedList *list)
 bool isLinkedListEmpty(LinkedList *list)
 {
     return list->head == NULL;
-}
-
-
-/*
- *  Calculates TF-IDF and put result into TFIDF struct.
- *
- *  @param     list      pointer to LinkedList struct.
- *  @param     tfidf     pointer to TFIDF struct.
- */
-void getTFIDFLinkedList(LinkedList *list, TFIDF *tfidf)
-{
-    struct Node *currNode = list->head;
-
-    while (currNode)
-    {
-        getTFIDFPairLinkedList(currNode->pairSet, tfidf, !strcmp(currNode->word, tfidf->word));
-
-        currNode = currNode->next;
-    }
 }
 
 
@@ -201,6 +174,25 @@ void printLinkedList(LinkedList *list)
     }
 
     printf("\n");
+}
+
+
+/*
+ *  Calculates TF-IDF and put result into TFIDF struct.
+ *
+ *  @param     list      pointer to LinkedList struct.
+ *  @param     tfidf     pointer to TFIDF struct.
+ */
+void getTFIDFLinkedList(LinkedList *list, TFIDF *tfidf)
+{
+    struct Node *currNode = list->head;
+
+    while (currNode)
+    {
+        getTFIDFPairLinkedList(currNode->pairSet, tfidf, !strcmp(currNode->word, tfidf->word));
+
+        currNode = currNode->next;
+    }
 }
 
 
@@ -237,7 +229,7 @@ void freeLinkedList(LinkedList *list)
 /*
  *  Deallocates struct that was built for sorted data.
  *  It only deallocates nodes from the struct Node.
- *  Note: This method is used internally only for the linked list that was allocated
+ *  Note: This method is used only for the linked list that was allocated
  *        by the "sortAndPrintHashtable" method.
  *
  *  @param     list     pointer to LinkedList struct.

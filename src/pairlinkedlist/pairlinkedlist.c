@@ -85,18 +85,6 @@ bool pushPair(PairLinkedList *list, long documentID)
 
 
 /*
- *  Gets the pair linked list size.
- *
- *  @param     list     pointer to PairLinkedList struct.
- *  @return             list size.
- */
-int getPairLinkedListSize(PairLinkedList *list)
-{
-    return list->size;
-}
-
-
-/*
  *  Checks whether the pair linked list is empty or not.
  *
  *  @param     list     pointer to PairLinkedList struct.
@@ -104,7 +92,30 @@ int getPairLinkedListSize(PairLinkedList *list)
  */
 bool isPairLinkedListEmpty(PairLinkedList *list)
 {
-    return list->size == 0;
+    return list->head == NULL;
+}
+
+
+/*
+ *  Prints each externalNode of the pair linked list out.
+ *
+ *  @param     list     pointer to PairLinkedList struct.
+ */
+void printPairLinkedList(PairLinkedList *list)
+{
+    if (isPairLinkedListEmpty(list))
+    {
+        printf("EMPTY.\n");
+        return;
+    }
+
+    struct PairNode *currNode = list->head;
+
+    while (currNode)
+    {
+        printf("| <N = %ld | ID = %ld> ", currNode->numberOfOccurrences, currNode->documentID);
+        currNode = currNode->next;
+    }
 }
 
 
@@ -139,29 +150,6 @@ void getTFIDFPairLinkedList(PairLinkedList *list, TFIDF *tfidf, bool isRightWord
 
         tfidf->distinctTermsInDocs[currNode->documentID - 1]++;
 
-        currNode = currNode->next;
-    }
-}
-
-
-/*
- *  Prints each externalNode of the pair linked list out.
- *
- *  @param     list     pointer to PairLinkedList struct.
- */
-void printPairLinkedList(PairLinkedList *list)
-{
-    if (isPairLinkedListEmpty(list))
-    {
-        printf("EMPTY.\n");
-        return;
-    }
-
-    struct PairNode *currNode = list->head;
-
-    while (currNode)
-    {
-        printf("| <N = %ld | ID = %ld> ", currNode->numberOfOccurrences, currNode->documentID);
         currNode = currNode->next;
     }
 }

@@ -6,21 +6,17 @@ typedef struct Hashtable
     LinkedList **linkedListArray;
     int *weights;
     int maxSize;
-    long size;
+    int numInsertions;
 } Hashtable;
 
 void initialiseHashtable(Hashtable *hashtable, int sizeSuggestion);
 
 bool insertIntoHashtable(Hashtable *hashtable, const char *word, long documentID);
 
-long getHashtableSize(Hashtable *hashtable);
-
-bool isHashtableEmpty(Hashtable *hashtable);
+void sortAndPrintHashtable(Hashtable *hashtable);
 
 void getTFIDFHashtable(Hashtable *hashtable, TFIDF *tfidf);
 
-void sortAndPrintHashtable(Hashtable *hashtable);
+void relevanceHashtable(Hashtable *hashtable, char **words, char **filenames, int numWords, int numDocs);
 
 void freeHashtable(Hashtable *hashtable);
-
-void relevanceHashtable(Hashtable *hashtable, char **words, char **filenames, int numWords, int numDocs);

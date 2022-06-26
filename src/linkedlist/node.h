@@ -13,6 +13,4 @@ struct Node *initialiseNodeWithExistentData(struct Node *node);
 
 int compareAlphabetically(const char *word, const char *anotherWord);
 
-struct Node *searchNode(struct Node *head, const char *word);
-
 int hashCode(const char *word, const int *weights);

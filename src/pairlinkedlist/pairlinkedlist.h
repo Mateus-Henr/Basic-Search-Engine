@@ -16,17 +16,15 @@ typedef struct
 
 PairLinkedList *initialisePairLinkedList();
 
-bool pushPair(PairLinkedList *list, long documentID);
-
 PairNode *searchPairNode(PairLinkedList *list, long documentID);
 
-int getPairLinkedListSize(PairLinkedList *list);
+bool pushPair(PairLinkedList *list, long documentID);
 
 bool isPairLinkedListEmpty(PairLinkedList *list);
 
-void getTFIDFPairLinkedList(PairLinkedList *list, TFIDF *tfidf, bool isRightWord);
-
 void printPairLinkedList(PairLinkedList *list);
+
+void getTFIDFPairLinkedList(PairLinkedList *list, TFIDF *tfidf, bool isRightWord);
 
 void freePairLinkedList(PairLinkedList *list);
 

@@ -286,12 +286,6 @@ bool isExternalNode(struct TreeNodeType *treeNodeType)
  */
 void printTreeNode(TreeNodeType *tree)
 {
-    if (!tree)
-    {
-        printf("EMPTY.\n");
-        return;
-    }
-
     if (!isExternalNode(tree))
     {
         printTreeNode(tree->TreeNode.internalNode->left);

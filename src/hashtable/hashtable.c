@@ -12,8 +12,6 @@
 
 // Function prototypes.
 
-int hash(Hashtable *hashtable, int value);
-
 int *initialiseWeightsArray();
 
 int getTwoPowerValueGreaterOrEqual(int number);
@@ -21,6 +19,8 @@ int getTwoPowerValueGreaterOrEqual(int number);
 int getPreviousPrime(int number);
 
 bool checkForPrimality(int numberToCheck);
+
+int hash(Hashtable *hashtable, int value);
 
 void insertionSort(Relevance *array, int n);
 
@@ -37,7 +37,7 @@ void initialiseHashtable(Hashtable *hashtable, int sizeSuggestion)
     hashtable->maxSize = getPreviousPrime(getTwoPowerValueGreaterOrEqual(sizeSuggestion));
     hashtable->linkedListArray = (LinkedList **) calloc(hashtable->maxSize, sizeof(LinkedList *));
     hashtable->weights = initialiseWeightsArray();
-    hashtable->size = 0;
+    hashtable->numInsertions = 0;
 }
 
 
@@ -120,6 +120,19 @@ bool checkForPrimality(int numberToCheck)
 
 
 /*
+ *  Gets an index within the range of the hashtable array based on a hash code.
+ *
+ *  @param     hashtable     pointer to Hashtable struct.
+ *  @param     value         hash code value.
+ *  @return                  index for the hashtable array.
+ */
+int hash(Hashtable *hashtable, int value)
+{
+    return abs(value % hashtable->maxSize);
+}
+
+
+/*
  *  Inserts a new word into the hashtable.
  *
  *  @param     hashtable     pointer to Hashtable struct.
@@ -146,22 +159,9 @@ bool insertIntoHashtable(Hashtable *hashtable, const char *word, long documentID
         return false;
     }
 
-    hashtable->size++;
+    hashtable->numInsertions++;
 
     return true;
-}
-
-
-/*
- *  Gets an index within the range of the hashtable array based on a hash code.
- *
- *  @param     hashtable     pointer to Hashtable struct.
- *  @param     value         hash code value.
- *  @return                  index for the hashtable array.
- */
-int hash(Hashtable *hashtable, int value)
-{
-    return abs(value % hashtable->maxSize);
 }
 
 
@@ -184,18 +184,6 @@ void getTFIDFHashtable(Hashtable *hashtable, TFIDF *tfidf)
 
 
 /*
- *  Gets the hashtable size.
- *
- *  @param     hashtable     pointer to Hashtable struct.
- *  @return                  hashtable size.
- */
-long getHashtableSize(Hashtable *hashtable)
-{
-    return hashtable->size;
-}
-
-
-/*
  *  Checks if the hashtable is empty.
  *
  *  @param     hashtable     pointer to Hashtable struct.
@@ -203,7 +191,7 @@ long getHashtableSize(Hashtable *hashtable)
  */
 bool isHashtableEmpty(Hashtable *hashtable)
 {
-    return hashtable->size == 0;
+    return hashtable->numInsertions == 0;
 }
 
 
@@ -238,33 +226,6 @@ void sortAndPrintHashtable(Hashtable *hashtable)
 
     printLinkedList(list);
     freeSortedLinkedList(list);
-}
-
-
-/*
- *  Deallocates structs that have been allocated dynamically.
- *
- *  @param     hashtable     pointer to Hashtable struct.
- */
-void freeHashtable(Hashtable *hashtable)
-{
-    if (hashtable->linkedListArray)
-    {
-        for (int i = 0; i < hashtable->maxSize; i++)
-        {
-            if (hashtable->linkedListArray[i] && hashtable->linkedListArray[i]->size > 0)
-            {
-                freeLinkedList(hashtable->linkedListArray[i]);
-            }
-        }
-
-        free(hashtable->linkedListArray);
-    }
-
-    if (hashtable->weights)
-    {
-        free(hashtable->weights);
-    }
 }
 
 
@@ -371,5 +332,32 @@ void insertionSort(Relevance *array, int n)
         }
 
         array[j + 1] = key;
+    }
+}
+
+
+/*
+ *  Deallocates structs that have been allocated dynamically.
+ *
+ *  @param     hashtable     pointer to Hashtable struct.
+ */
+void freeHashtable(Hashtable *hashtable)
+{
+    if (hashtable->linkedListArray)
+    {
+        for (int i = 0; i < hashtable->maxSize; i++)
+        {
+            if (hashtable->linkedListArray[i])
+            {
+                freeLinkedList(hashtable->linkedListArray[i]);
+            }
+        }
+
+        free(hashtable->linkedListArray);
+    }
+
+    if (hashtable->weights)
+    {
+        free(hashtable->weights);
     }
 }

@@ -17,7 +17,6 @@ void initialisePATRICIA(PATRICIA *patricia)
 {
     patricia->root = (TreeNodeType *) malloc(sizeof(TreeNodeType));
     patricia->root = NULL;
-    patricia->size = 0;
 }
 
 
@@ -35,24 +34,18 @@ bool insertIntoTree(PATRICIA *patricia, char *word, int documentID)
 
 
 /*
- *  Gets the PATRICIA tree's size.
- *
- *  @param     patricia     pointer to PATRICIA struct.
- *  @return                 number of words in the tree.
- */
-int getTreeSize(PATRICIA *patricia)
-{
-    return patricia->size;
-}
-
-
-/*
  *  Prints the PATRICIA tree out.
  *
  *  @param     patricia     pointer to PATRICIA struct.
  */
 void printTree(PATRICIA *patricia)
 {
+    if (!patricia->root)
+    {
+        printf("EMPTY.\n");
+        return;
+    }
+
     printTreeNode(patricia->root);
 }
 
@@ -66,17 +59,6 @@ void printTree(PATRICIA *patricia)
 void getTFIDFPATRICIA(PATRICIA *patricia, TFIDF *tfidf)
 {
     getTFIDFTreeNodes(patricia->root, tfidf);
-}
-
-
-/*
- *  Deallocates structs that have been allocated dynamically.
- *
- *  @param     patricia     pointer to PATRICIA struct.
- */
-void freeTree(PATRICIA *patricia)
-{
-    freeTreeNodes(patricia->root);
 }
 
 
@@ -154,4 +136,15 @@ void relevancePATRICIA(PATRICIA *tree, char **words, char **filenames, int numWo
         freeRelevance(&relevanceArray[i]);
     }
     printf("\n");
+}
+
+
+/*
+ *  Deallocates structs that have been allocated dynamically.
+ *
+ *  @param     patricia     pointer to PATRICIA struct.
+ */
+void freeTree(PATRICIA *patricia)
+{
+    freeTreeNodes(patricia->root);
 }

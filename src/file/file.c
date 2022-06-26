@@ -61,6 +61,51 @@ char **readFilenamesHashtable(Hashtable *hashtable, char *inputFilename, int *nu
 
 
 /*
+ *  Reads text from file into the hashtable.
+ *
+ *  @param     hashtable     struct to Hashtable struct.
+ *  @param     filename      filename that contains the text.
+ *  @param     fileNumber    number of the file being read.
+ *  @return                  whether the operation was successful or not.
+ */
+bool readFileIntoHashtable(Hashtable *hashtable, char *filename, int fileNumber)
+{
+    char filePath[strlen(INPUT_FILES_PATH) + strlen(filename) + 1];
+
+    strcpy(filePath, INPUT_FILES_PATH);
+    strcat(filePath, filename);
+
+    FILE *file = fopen(filePath, "r");
+
+    if (!file)
+    {
+        return false;
+    }
+
+    char string[CHAR_MAX];
+
+    while (fscanf(file, "%s", string) != EOF)
+    {
+        char reformattedString[strlen(string) + 1];
+        reformatString(reformattedString, string);
+
+        if (strlen(reformattedString) != 0)
+        {
+            if (!insertIntoHashtable(hashtable, reformattedString, fileNumber))
+            {
+                return false;
+            }
+        }
+    }
+
+    fclose(file);
+    file = NULL;
+
+    return true;
+}
+
+
+/*
  *  Reads filenames that contain input texts.
  *
  *  @param     hashtable         struct to Hashtable struct.
@@ -142,51 +187,6 @@ bool readFileIntoPatricia(PATRICIA *tree, char *filename, int fileNumber)
         if (strlen(reformattedString) != 0)
         {
             if (!insertIntoTree(tree, reformattedString, fileNumber))
-            {
-                return false;
-            }
-        }
-    }
-
-    fclose(file);
-    file = NULL;
-
-    return true;
-}
-
-
-/*
- *  Reads text from file into the hashtable.
- *
- *  @param     hashtable     struct to Hashtable struct.
- *  @param     filename      filename that contains the text.
- *  @param     fileNumber    number of the file being read.
- *  @return                  whether the operation was successful or not.
- */
-bool readFileIntoHashtable(Hashtable *hashtable, char *filename, int fileNumber)
-{
-    char filePath[strlen(INPUT_FILES_PATH) + strlen(filename) + 1];
-
-    strcpy(filePath, INPUT_FILES_PATH);
-    strcat(filePath, filename);
-
-    FILE *file = fopen(filePath, "r");
-
-    if (!file)
-    {
-        return false;
-    }
-
-    char string[CHAR_MAX];
-
-    while (fscanf(file, "%s", string) != EOF)
-    {
-        char reformattedString[strlen(string) + 1];
-        reformatString(reformattedString, string);
-
-        if (strlen(reformattedString) != 0)
-        {
-            if (!insertIntoHashtable(hashtable, reformattedString, fileNumber))
             {
                 return false;
             }

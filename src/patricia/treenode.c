@@ -47,8 +47,9 @@ TreeNodeType *createInternalNode(struct TreeNodeType **left, struct TreeNodeType
 /*
  *  Initialises external externalNode with given values.
  *
- *  @param     externalNode     pointer to Node struct to be set as the value.
- *  @return                     pointer to the initialised tree external node.
+ *  @param     word           word to be stored in the node.
+ *  @param     documentID     id of the document.
+ *  @return                   pointer to the initialised external node.
  */
 TreeNodeType *createExternalNode(char *word, int documentID)
 {
@@ -113,8 +114,8 @@ TreeNodeType *searchTreeNode(struct TreeNodeType *treeNodeType, char *word)
         return !strcmp(treeNodeType->TreeNode.externalNode->word, word) ? treeNodeType : NULL;
     }
 
-    if (!isWordGreaterThanChar(word, treeNodeType->TreeNode.internalNode->index,
-                               treeNodeType->TreeNode.internalNode->differChar))
+    if (!isWordGreaterOrEqualThanChar(word, treeNodeType->TreeNode.internalNode->index,
+                                      treeNodeType->TreeNode.internalNode->differChar))
     {
         return searchTreeNode(treeNodeType->TreeNode.internalNode->left, word);
     }
@@ -131,7 +132,7 @@ TreeNodeType *insertBetween(TreeNodeType **treeNodeType, char *word, int documen
     {
         TreeNodeType *treeNodeToAdd = createExternalNode(word, documentID);
 
-        if (isWordGreaterThanChar(word, index, differChar))
+        if (isWordGreaterOrEqualThanChar(word, index, differChar))
         {
             return createInternalNode(treeNodeType, &treeNodeToAdd, index, differChar);
         }
@@ -139,8 +140,8 @@ TreeNodeType *insertBetween(TreeNodeType **treeNodeType, char *word, int documen
         return createInternalNode(&treeNodeToAdd, treeNodeType, index, differChar);
     }
 
-    if (isWordGreaterThanChar(word, (*treeNodeType)->TreeNode.internalNode->index,
-                              (*treeNodeType)->TreeNode.internalNode->differChar))
+    if (isWordGreaterOrEqualThanChar(word, (*treeNodeType)->TreeNode.internalNode->index,
+                                     (*treeNodeType)->TreeNode.internalNode->differChar))
     {
         (*treeNodeType)->TreeNode.internalNode->right = insertBetween(
                 &(*treeNodeType)->TreeNode.internalNode->right, word, documentID, index, differChar);
@@ -167,8 +168,8 @@ bool insertTreeNode(TreeNodeType **treeNodeType, char *word, long documentID)
 
     while (!isExternalNode(currTreeNodeType))
     {
-        if (isWordGreaterThanChar(word, currTreeNodeType->TreeNode.internalNode->index,
-                                  currTreeNodeType->TreeNode.internalNode->differChar))
+        if (isWordGreaterOrEqualThanChar(word, currTreeNodeType->TreeNode.internalNode->index,
+                                         currTreeNodeType->TreeNode.internalNode->differChar))
         {
             currTreeNodeType = currTreeNodeType->TreeNode.internalNode->right;
         }
@@ -202,6 +203,9 @@ bool insertTreeNode(TreeNodeType **treeNodeType, char *word, long documentID)
 
 /*
  *  Finds the letter that differs in two words.
+ *
+ *  @param     word     word to be searched in.
+ *  @param
  */
 char getDifferChar(const char *word, TreeNodeType *currNode, int *currIndex)
 {
@@ -242,7 +246,15 @@ char getDifferChar(const char *word, TreeNodeType *currNode, int *currIndex)
 }
 
 
-bool isWordGreaterThanChar(const char *word, int index, char differChar)
+/*
+ *  Checks whether a word in a specified index is greater or equal than a character.
+ *
+ *  @param     word           word to be compared.
+ *  @param     index          index in the word.
+ *  @param     differChar     char to be compared against.
+ *  @return                   whether the letter in the word is greater or equal than the char.
+ */
+bool isWordGreaterOrEqualThanChar(const char *word, int index, char differChar)
 {
     int wordLength = (int) strlen(word);
 
@@ -297,6 +309,13 @@ void printTreeNode(TreeNodeType *tree)
     }
 }
 
+
+/*
+ *  Calculates TF-IDF and put result into TFIDF struct.
+ *
+ *  @param     treeNode     pointer to TreeNodeType struct.
+ *  @param     tfidf        pointer to TFIDF struct.
+ */
 void getTFIDFTreeNodes(TreeNodeType *treeNode, TFIDF *tfidf)
 {
     if (!isExternalNode(treeNode))
@@ -316,35 +335,42 @@ void getTFIDFTreeNodes(TreeNodeType *treeNode, TFIDF *tfidf)
 }
 
 
+/*
+ *  Deallocates tree node in the tree from memory.
+ *
+ *  @param     tree     head node of the tree.
+ */
 void freeTreeNodes(TreeNodeType *tree)
 {
     if (tree)
     {
         if (!isExternalNode(tree))
         {
-            printTreeNode(tree->TreeNode.internalNode->left);
+            freeTreeNodes(tree->TreeNode.internalNode->left);
         }
         else
         {
-            if (tree->TreeNode.externalNode->word)
+            if (tree->TreeNode.externalNode)
             {
-                free(tree->TreeNode.externalNode->word);
-            }
+                if (tree->TreeNode.externalNode->word)
+                {
+                    free(tree->TreeNode.externalNode->word);
+                }
 
-            if (tree->TreeNode.externalNode->pairSet)
-            {
-                freePairLinkedList(tree->TreeNode.externalNode->pairSet);
-            }
+                if (tree->TreeNode.externalNode->pairSet)
+                {
+                    freePairLinkedList(tree->TreeNode.externalNode->pairSet);
+                }
 
-            free(tree->TreeNode.externalNode);
+                free(tree->TreeNode.externalNode);
+            }
         }
 
         if (!isExternalNode(tree))
         {
-            printTreeNode(tree->TreeNode.internalNode->right);
+            freeTreeNodes(tree->TreeNode.internalNode->right);
         }
 
         free(tree);
     }
-
 }

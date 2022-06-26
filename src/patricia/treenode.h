@@ -41,7 +41,7 @@ TreeNodeType *createExternalNode(char *word, int documentID);
 
 bool insertTreeNode(TreeNodeType **treeNodeType, char *word, long documentID);
 
-bool isWordGreaterThanChar(const char *word, int index, char differChar);
+bool isWordGreaterOrEqualThanChar(const char *word, int index, char differChar);
 
 bool isExternalNode(struct TreeNodeType *treeNodeType);
 

@@ -56,12 +56,7 @@ bool push(LinkedList *list, const char *word, long documentID)
         return list->tail;
     }
 
-    struct PairNode *nodeToSearch = foundNode->pairSet->head;
-
-    while (nodeToSearch && nodeToSearch->documentID != documentID)
-    {
-        nodeToSearch = nodeToSearch->next;
-    }
+    struct PairNode *nodeToSearch = searchPairNode(foundNode->pairSet, documentID);
 
     if (!nodeToSearch)
     {

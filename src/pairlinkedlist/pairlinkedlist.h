@@ -30,6 +30,4 @@ void printPairLinkedList(PairLinkedList *list);
 
 void freePairLinkedList(PairLinkedList *list);
 
-// bloco de código
-
 #endif

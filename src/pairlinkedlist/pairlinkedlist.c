@@ -27,6 +27,12 @@ PairLinkedList *initialisePairLinkedList()
 }
 
 
+/*
+ *  Searches pair node in the pair linked list.
+ *
+ *  @param     list           pointer to PairLinkedList struct.
+ *  @param     documentID     id of the document to look for.
+ */
 PairNode *searchPairNode(PairLinkedList *list, long documentID)
 {
     if (isPairLinkedListEmpty(list))

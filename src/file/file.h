@@ -12,4 +12,4 @@ bool readFileIntoHashtable(Hashtable *hashtable, char *filename, int fileNumber)
 
 bool readFileIntoPatricia(PATRICIA *tree, char *filename, int fileNumber);
 
-void freeFilenames(char **filenames, int n);
+void freeFilenames(char **filenames, int numFiles);

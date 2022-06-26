@@ -5,6 +5,8 @@
 #include "patricia.h"
 
 
+// Function prototype.
+
 void insertionSort(Relevance *array, int n);
 
 
@@ -20,7 +22,7 @@ void initialisePATRICIA(PATRICIA *patricia)
 
 
 /*
- *  Inserts externalNode into the tree.
+ *  Inserts externalNode into the PATRICIA tree.
  *
  *  @param     patricia       pointer to PATRICIA struct.
  *  @param     word           word to insertIntoHashtable.
@@ -33,7 +35,7 @@ bool insertIntoTree(PATRICIA *patricia, char *word, int documentID)
 
 
 /*
- *  Gets the tree's size.
+ *  Gets the PATRICIA tree's size.
  *
  *  @param     patricia     pointer to PATRICIA struct.
  *  @return                 number of words in the tree.
@@ -54,6 +56,13 @@ void printTree(PATRICIA *patricia)
     printTreeNode(patricia->root);
 }
 
+
+/*
+ *  Gets TFIDF calculus in the PATRICIA tree.
+ *
+ *  @param     patricia     pointer to PATRICIA struct.
+ *  @param     tfidf        pointer to TFIDF struct.
+ */
 void getTFIDFPATRICIA(PATRICIA *patricia, TFIDF *tfidf)
 {
     getTFIDFTreeNodes(patricia->root, tfidf);
@@ -138,7 +147,7 @@ void relevancePATRICIA(PATRICIA *tree, char **words, char **filenames, int numWo
 
     insertionSort(relevanceArray, numDocs);
 
-    printf("\nTD-IDF:\n");
+    printf("\nPATRICIA TD-IDF:\n");
     for (int i = 0; i < numDocs; i++)
     {
         printf("Texto %ld (%s) = %lf\n", relevanceArray[i].ID, relevanceArray[i].filename, relevanceArray[i].value);

@@ -154,8 +154,9 @@ bool readFileIntoPatricia(PATRICIA *tree, char *filename, int fileNumber)
     return true;
 }
 
+
 /*
- *  Read text from file into the hashtable.
+ *  Reads text from file into the hashtable.
  *
  *  @param     hashtable     struct to Hashtable struct.
  *  @param     filename      filename that contains the text.
@@ -223,18 +224,16 @@ void reformatString(char *dest, char *src)
 
 
 /*
- *  Deallocates filenames array from memory.
- *  Note: This is only used when the user enters an invalid value as
- *        some sort of "clean up" to allow the user to reenter a value.
+ *  Deallocates array of strings containing filenames from memory.
  *
- *  @param     filenames     pointer to array of filenames.
- *  @param     n             size of the array.
+ *  @param     filenames     pointer to array containing filenames.
+ *  @param     numFiles      number of files in the array.
  */
-void freeFilenames(char **filenames, int n)
+void freeFilenames(char **filenames, int numFiles)
 {
     if (filenames)
     {
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < numFiles; i++)
         {
             if (filenames[i])
             {

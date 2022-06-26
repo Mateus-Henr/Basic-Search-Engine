@@ -17,8 +17,6 @@ bool getNumberTerms(int *numTerms);
 
 double calculateTotalTime(double initialTime);
 
-void freeFilenames(char **filenames, int numFiles);
-
 void freeWords(char **words, int numWords);
 
 void cleanStdin();
@@ -47,7 +45,7 @@ int main(void)
 
         printf("\n\nStructures"
                "\nNotice that the hashtable structure requires 16gb of RAM for a million words."
-               "\n[0] Zero"
+               "\n[0] Leave"
                "\n[1] Hashtable"
                "\n[2] Patricia"
                "\n[3] Both"
@@ -62,7 +60,7 @@ int main(void)
 
         if (structOption == Leave)
         {
-            printf("Leaving...\n");
+            printf("Bye :(\n");
             break;
         }
         else if (structOption == Hash)
@@ -94,6 +92,8 @@ int main(void)
 
             while (true)
             {
+                printf("\nOptions on hashtable ('%s')", inputFilename);
+
                 int operationOption = -1;
 
                 while (!getUserOperationOption(&operationOption))
@@ -104,7 +104,7 @@ int main(void)
 
                 if (operationOption == Exit)
                 {
-                    printf("Leaving...\n");
+                    printf("Leaving to main menu...\n");
                     break;
                 }
                 else if (operationOption == Print)
@@ -138,10 +138,9 @@ int main(void)
                     relevanceHashtable(&hashtable, words, filenames, numTerms, numFiles);
                     freeWords(words, numTerms);
                 }
-
-                freeHashtable(&hashtable);
             }
 
+            freeHashtable(&hashtable);
             freeFilenames(filenames, numFiles);
         }
         else if (structOption == Patricia)
@@ -173,6 +172,8 @@ int main(void)
 
             while (true)
             {
+                printf("\nOptions on PATRICIA ('%s')", inputFilename);
+
                 int operationOption = -1;
 
                 while (!getUserOperationOption(&operationOption))
@@ -183,7 +184,7 @@ int main(void)
 
                 if (operationOption == Exit)
                 {
-                    printf("Leaving...\n");
+                    printf("Leaving to main menu...\n");
                     break;
                 }
                 else if (operationOption == Print)
@@ -217,10 +218,9 @@ int main(void)
                     relevancePATRICIA(&tree, words, filenames, numTerms, numFiles);
                     freeWords(words, numTerms);
                 }
-
-                freeTree(&tree);
             }
 
+            freeTree(&tree);
             freeFilenames(filenames, numFiles);
         }
         else
@@ -269,6 +269,8 @@ int main(void)
 
             while (true)
             {
+                printf("\nOptions on hashtable and PATRICIA ('%s')", inputFilename);
+
                 int operationOption = -1;
 
                 while (!getUserOperationOption(&operationOption))
@@ -279,7 +281,7 @@ int main(void)
 
                 if (operationOption == Exit)
                 {
-                    printf("Leaving...\n");
+                    printf("Leaving to main menu...\n");
                     break;
                 }
                 else if (operationOption == Print)
@@ -317,11 +319,10 @@ int main(void)
                     relevancePATRICIA(&tree, words, filenames, numTerms, numFiles);
                     freeWords(words, numTerms);
                 }
-
-                freeHashtable(&hashtable);
-                freeTree(&tree);
             }
 
+            freeHashtable(&hashtable);
+            freeTree(&tree);
             freeFilenames(filenames, numFiles);
         }
     }
@@ -352,8 +353,7 @@ void cleanStdin(void)
  */
 bool getUserOperationOption(int *operationOption)
 {
-    printf("\nOptions"
-           "\n[0] Exit"
+    printf("\n[0] Exit to struct menu"
            "\n[1] Print inverted index"
            "\n[2] Search for a term"
            "\nChoose one of the options:\n");
@@ -370,7 +370,7 @@ bool getUserOperationOption(int *operationOption)
  */
 bool getNumberTerms(int *numTerms)
 {
-    printf("Type the number of terms that you wanna search for:\n");
+    printf("Type the number of terms:\n");
 
     return scanf("%d", numTerms) && *numTerms > 0;
 }
@@ -385,29 +385,6 @@ bool getNumberTerms(int *numTerms)
 double calculateTotalTime(double initialTime)
 {
     return (clock() - initialTime) / CLOCKS_PER_SEC;
-}
-
-
-/*
- *  Deallocates array of strings containing filenames from memory.
- *
- *  @param     filenames     pointer to array containing filenames.
- *  @param     numFiles      number of files in the array.
- */
-void freeFilenames(char **filenames, int numFiles)
-{
-    if (filenames)
-    {
-        for (int i = 0; i < numFiles; i++)
-        {
-            if (filenames[i])
-            {
-                free(filenames[i]);
-            }
-        }
-
-        free(filenames);
-    }
 }
 
 

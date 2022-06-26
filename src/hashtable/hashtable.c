@@ -11,6 +11,7 @@
 
 
 // Function prototypes.
+
 int hash(Hashtable *hashtable, int value);
 
 int *initialiseWeightsArray();
@@ -207,34 +208,6 @@ bool isHashtableEmpty(Hashtable *hashtable)
 
 
 /*
- *  Prints the hashtable out.
- *
- *  @param     hashtable     pointer to Hashtable struct.
- */
-void printHashtable(Hashtable *hashtable)
-{
-    if (isHashtableEmpty(hashtable))
-    {
-        printf("EMPTY.\n");
-        return;
-    }
-
-    for (int i = 0; i < hashtable->maxSize; i++)
-    {
-        if (!hashtable->linkedListArray[i])
-        {
-            printf("[%d] NULL\n", i);
-        }
-        else
-        {
-            printf("[%d] ", i);
-            printLinkedList(hashtable->linkedListArray[i]);
-        }
-    }
-}
-
-
-/*
  *  Sorts and then prints the hashtable out.
  *
  *  @param     hashtable     pointer to Hashtable struct.
@@ -368,7 +341,7 @@ void relevanceHashtable(Hashtable *hashtable, char **words, char **filenames, in
 
     insertionSort(relevanceArray, numDocs);
 
-    printf("\nTD-IDF:\n");
+    printf("\nHashtable TD-IDF:\n");
     for (int i = 0; i < numDocs; i++)
     {
         printf("Texto %ld (%s) = %lf\n", relevanceArray[i].ID, relevanceArray[i].filename, relevanceArray[i].value);

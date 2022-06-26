@@ -17,8 +17,6 @@ long getHashtableSize(Hashtable *hashtable);
 
 bool isHashtableEmpty(Hashtable *hashtable);
 
-void printHashtable(Hashtable *hashtable);
-
 void getTFIDFHashtable(Hashtable *hashtable, TFIDF *tfidf);
 
 void sortAndPrintHashtable(Hashtable *hashtable);

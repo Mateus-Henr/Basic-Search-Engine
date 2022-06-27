@@ -4,8 +4,17 @@ No trabalho, foi sugerido a implementação de um código para a construção de
 
 # Compilar o codigo no Ubuntu
 Como o código foi feito por meio da IDE CLion então utilizaremos da cmakefile para compilar o código, primeiro tente rodar o Makefile dentro do diretorio build do projeto onde está contido o codigo compilado com o comando:
+~~~
+./TP1-AEDS2
+~~~
+Caso não funcione tente :
+~~~
+make && ./TP1-AEDS2
+~~~
+Em ultimo caso pode ser necessario utilizar o cmake para rodar o codigo, por isso dexamos o arquivo CMakeFile.txt
+siga as instruções seguintes para este caso:
 
-execute o código para instalar o cmake em seu sistema operacional com o comando:
+Execute o código para instalar o cmake em seu sistema operacional com o comando:
 ~~~
 $ sudo apt-get install cmake
 ~~~

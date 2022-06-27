@@ -20,7 +20,7 @@ Execute o código para instalar o cmake em seu sistema operacional com o comando
 
 "$ sudo apt-get install cmake"
 
-O programa exige no minimo a versão 16 do cmake, talvez seja necessario atualiza-lo. Após a instalação, basta abrir o projeto e executar os seguintes comandos:
+O programa exige no minímo a versão 16 do cmake, talvez seja necessário atualizá-lo. Após a instalação, basta abrir o projeto e executar os seguintes comandos:
 
 "$ rm -rf build"
 "$ mkdir build && cd build"

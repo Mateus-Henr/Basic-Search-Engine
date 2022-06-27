@@ -1,5 +1,3 @@
-#include <stdbool.h>
-
 typedef struct PairNode
 {
     long numberOfOccurrences;

@@ -5,6 +5,9 @@
 #include <limits.h>
 #include "file/file.h"
 
+// This is the default value for the hashtable, it can be changed according to your desires.
+#define HASHTABLE_SUGGESTION_SIZE 100
+
 #define FILE_ERROR "\nCouldn't open the file: '%s' or error trying to insert into the hashtable.\n\n"
 #define INVALID_VALUE "\nInvalid value.\n\n"
 
@@ -17,16 +20,17 @@ bool getNumberTerms(int *numTerms);
 
 double calculateTotalTime(double initialTime);
 
-void freeWords(char **words, int numWords);
+void freeTerms(char **terms, int numTerms);
 
-void cleanStdin();
+void cleanStdin(void);
 
+
+// Menu enums.
 
 typedef enum
 {
     Leave, Hash, Patricia, Both
 } Structs;
-
 
 typedef enum
 {
@@ -44,7 +48,7 @@ int main(void)
         int structOption = -1;
 
         printf("\n\nStructures"
-               "\nNotice that the hashtable you can edit the suggestion size in the code in the main code."
+               "\nNotice that you can edit the hashtable suggestion size in the constant in the main code."
                "\n[0] Leave"
                "\n[1] Hashtable"
                "\n[2] Patricia"
@@ -72,10 +76,10 @@ int main(void)
             char inputFilename[CHAR_MAX];
             scanf("%s", inputFilename);
 
-            double timeHashtable = clock();
+            double timeHashtable = (double) clock();
 
             Hashtable hashtable;
-            initialiseHashtable(&hashtable, 100);
+            initialiseHashtable(&hashtable, HASHTABLE_SUGGESTION_SIZE);
 
             int numFiles = 0;
             char **filenames = readFilenamesHashtable(&hashtable, inputFilename, &numFiles);
@@ -88,7 +92,7 @@ int main(void)
                 continue;
             }
 
-            printf("\nHashtable's size = %ld bytes\n", getSizeOfHashtable(&hashtable));
+            printf("\nHashtable size = %ld bytes\n", getSizeOfHashtable(&hashtable));
             printf("Total time hashtable = %lfs\n", calculateTotalTime(timeHashtable));
 
             while (true)
@@ -121,7 +125,7 @@ int main(void)
                         cleanStdin();
                     }
 
-                    char *words[numTerms];
+                    char *terms[numTerms];
 
                     for (int i = 0; i < numTerms; i++)
                     {
@@ -130,12 +134,12 @@ int main(void)
                         printf("Type the word:\n");
                         scanf("%s", word);
 
-                        words[i] = (char *) malloc(strlen(word) + 1);
-                        reformatString(words[i], word);
+                        terms[i] = (char *) malloc(strlen(word) + 1);
+                        reformatString(terms[i], word);
                     }
 
-                    relevanceHashtable(&hashtable, words, filenames, numTerms, numFiles);
-                    freeWords(words, numTerms);
+                    relevanceHashtable(&hashtable, terms, filenames, numTerms, numFiles);
+                    freeTerms(terms, numTerms);
                 }
             }
 
@@ -151,7 +155,7 @@ int main(void)
                    "\n========================\n");
             scanf("%s", inputFilename);
 
-            double timePATRICIA = clock();
+            double timePATRICIA = (double) clock();
 
             PATRICIA tree;
             initialisePATRICIA(&tree);
@@ -167,7 +171,7 @@ int main(void)
                 continue;
             }
 
-            printf("\nPATRICIA's size = %ld bytes\n", getSizeOfPATRICIA(&tree));
+            printf("\nPATRICIA size = %ld bytes\n", getSizeOfPATRICIA(&tree));
             printf("Total time PATRICIA = %lfs\n", calculateTotalTime(timePATRICIA));
 
             while (true)
@@ -200,7 +204,7 @@ int main(void)
                         cleanStdin();
                     }
 
-                    char *words[numTerms];
+                    char *terms[numTerms];
 
                     for (int i = 0; i < numTerms; i++)
                     {
@@ -209,12 +213,12 @@ int main(void)
                         printf("Type the word:\n");
                         scanf("%s", word);
 
-                        words[i] = (char *) malloc(strlen(word) + 1);
-                        reformatString(words[i], word);
+                        terms[i] = (char *) malloc(strlen(word) + 1);
+                        reformatString(terms[i], word);
                     }
 
-                    relevancePATRICIA(&tree, words, filenames, numTerms, numFiles);
-                    freeWords(words, numTerms);
+                    relevancePATRICIA(&tree, terms, filenames, numTerms, numFiles);
+                    freeTerms(terms, numTerms);
                 }
             }
 
@@ -230,11 +234,11 @@ int main(void)
             char inputFilename[CHAR_MAX];
             scanf("%s", inputFilename);
 
-            double timeHashtable = clock();
+            /// ------------------------------------------- Hashtable ---------------------------------------------- ///
+            double timeHashtable = (double) clock();
 
-            /// Hashtable
             Hashtable hashtable;
-            initialiseHashtable(&hashtable, 100);
+            initialiseHashtable(&hashtable, HASHTABLE_SUGGESTION_SIZE);
 
             int numFiles = 0;
             char **filenames = readFilenamesHashtable(&hashtable, inputFilename, &numFiles);
@@ -248,11 +252,11 @@ int main(void)
             }
 
             timeHashtable = calculateTotalTime(timeHashtable);
-            ///-------------------------------------------------------------------------
+            /// ---------------------------------------------------------------------------------------------------- ///
 
 
-            /// PATRICIA
-            double timePATRICIA = clock();
+            /// -------------------------------------------- PATRICIA ---------------------------------------------- ///
+            double timePATRICIA = (double) clock();
 
             PATRICIA tree;
             initialisePATRICIA(&tree);
@@ -261,8 +265,9 @@ int main(void)
             readFilenamesPatricia(&tree, inputFilename, &numFilesPATRICIA);
 
             timePATRICIA = calculateTotalTime(timePATRICIA);
-            ///-------------------------------------------------------------------------
-            printf("\nHashtable's size = %ld bytes | PATRICIA's size = %ld bytes\n",
+            /// ---------------------------------------------------------------------------------------------------- ///
+
+            printf("\nHashtable size = %ld bytes | PATRICIA size = %ld bytes\n",
                    getSizeOfHashtable(&hashtable),
                    getSizeOfPATRICIA(&tree));
             printf("Total time hashtable = %lfs | Total time PATRICIA = %lfs\n", timeHashtable, timePATRICIA);
@@ -292,7 +297,7 @@ int main(void)
                 }
                 else if (operationOption == Search)
                 {
-                    int numTerms = -1;
+                    int numTerms = 0;
 
                     while (!getNumberTerms(&numTerms))
                     {
@@ -300,7 +305,7 @@ int main(void)
                         cleanStdin();
                     }
 
-                    char *words[numTerms];
+                    char *terms[numTerms];
 
                     for (int i = 0; i < numTerms; i++)
                     {
@@ -309,13 +314,13 @@ int main(void)
                         printf("Type the word:\n");
                         scanf("%s", word);
 
-                        words[i] = (char *) malloc(strlen(word) + 1);
-                        reformatString(words[i], word);
+                        terms[i] = (char *) malloc(strlen(word) + 1);
+                        reformatString(terms[i], word);
                     }
 
-                    relevanceHashtable(&hashtable, words, filenames, numTerms, numFiles);
-                    relevancePATRICIA(&tree, words, filenames, numTerms, numFiles);
-                    freeWords(words, numTerms);
+                    relevanceHashtable(&hashtable, terms, filenames, numTerms, numFiles);
+                    relevancePATRICIA(&tree, terms, filenames, numTerms, numFiles);
+                    freeTerms(terms, numTerms);
                 }
             }
 
@@ -385,20 +390,20 @@ bool getNumberTerms(int *numTerms)
  */
 double calculateTotalTime(double initialTime)
 {
-    return (clock() - initialTime) / CLOCKS_PER_SEC;
+    return (((double) clock()) - initialTime) / CLOCKS_PER_SEC;
 }
 
 
 /*
- *  Deallocates array of strings containing words from memory.
+ *  Deallocates array of strings containing terms from memory.
  *
- *  @param     words        pointer to array containing filenames.
- *  @param     numWords     number of words in the array.
+ *  @param     terms        pointer to array containing filenames.
+ *  @param     numTerms     number of terms in the array.
  */
-void freeWords(char **words, int numWords)
+void freeTerms(char **terms, int numTerms)
 {
-    for (int i = 0; i < numWords; ++i)
+    for (int i = 0; i < numTerms; ++i)
     {
-        free(words[i]);
+        free(terms[i]);
     }
 }

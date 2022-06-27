@@ -1,5 +1,4 @@
 #include <stdbool.h>
-
 #include "treenode.h"
 
 typedef struct

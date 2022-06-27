@@ -11,7 +11,9 @@ void insertionSort(Relevance *array, int n);
 
 
 /*
- *  Initialises PATRICIA struct with default values;
+ *  Initialises PATRICIA struct with default values.
+ *
+ *  @param     patricia     pointer to PATRICIA struct.
  */
 void initialisePATRICIA(PATRICIA *patricia)
 {
@@ -26,6 +28,7 @@ void initialisePATRICIA(PATRICIA *patricia)
  *  @param     patricia       pointer to PATRICIA struct.
  *  @param     word           word to insertIntoHashtable.
  *  @param     documentID     document's ID.
+ *  @return                   whether the operation was successful or not.
  */
 bool insertIntoTree(PATRICIA *patricia, char *word, int documentID)
 {
@@ -162,6 +165,9 @@ long getSizeOfPATRICIA(PATRICIA *patricia)
  */
 void freeTree(PATRICIA *patricia)
 {
-    freeTreeNodes(patricia->root);
-    free(patricia->root);
+    if (patricia->root)
+    {
+        freeTreeNodes(patricia->root);
+        free(patricia->root);
+    }
 }

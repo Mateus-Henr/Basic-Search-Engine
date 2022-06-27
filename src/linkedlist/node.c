@@ -55,7 +55,7 @@ struct Node *initialiseNode(const char *word, long documentID)
  *  Initialises a new pointer with existent externalNode content.
  *
  *  @param     externalNode     pointer to Node struct.
- *  @return             pointer to the new pointer address.
+ *  @return                     pointer to the new pointer address.
  */
 struct Node *initialiseNodeWithExistentData(struct Node *node)
 {
@@ -74,6 +74,7 @@ struct Node *initialiseNodeWithExistentData(struct Node *node)
  *
  *  @param     word            first word to compare.
  *  @param     anotherWord     second word to compare.
+ *  @return                    1 if the first word is greater, otherwise -1.
  */
 int compareAlphabetically(const char *word, const char *anotherWord)
 {

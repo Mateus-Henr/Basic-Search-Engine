@@ -15,7 +15,7 @@
  *
  *  @param     hashtable         struct to Hashtable struct.
  *  @param     inputFilename     input filename.
- *  @param     numFiles          number of file.
+ *  @param     numFiles          pointer to int that stores the number of files.
  *  @return                      array with all the filenames.
  */
 char **readFilenamesHashtable(Hashtable *hashtable, char *inputFilename, int *numFiles)
@@ -155,7 +155,7 @@ char **readFilenamesPatricia(PATRICIA *tree, char *inputFilename, int *numFiles)
 }
 
 
-/* Read text from file into the Patricia tree
+/* Reads text from file into the PATRICIA tree.
  *
  * @param   tree        struct for the patricia tree
  * @param   filename    filename that contains the text.

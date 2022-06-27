@@ -17,7 +17,6 @@ bool isExternalNode(struct TreeNodeType *treeNodeType);
 TreeNodeType *insertBetween(TreeNodeType **treeNodeType, char *word, int documentID, int index, char differChar);
 
 
-
 /*
  *  Initialises internal externalNode with given values.
  *
@@ -116,6 +115,7 @@ TreeNodeType *createExternalNode(char *word, int documentID)
  *  @param     documentID       id of the document.
  *  @param     index            index of the character that differs in the word.
  *  @param     differChar       char that differs.
+ *  @return                     tree's root.
  */
 TreeNodeType *insertBetween(TreeNodeType **treeNodeType, char *word, int documentID, int index, char differChar)
 {

@@ -10,7 +10,7 @@
  *
  *  @return                 pointer to the initialised struct.
  */
-PairLinkedList *initialisePairLinkedList()
+PairLinkedList *initialisePairLinkedList(void)
 {
     PairLinkedList *list = (PairLinkedList *) malloc(sizeof(PairLinkedList));
 
@@ -31,6 +31,7 @@ PairLinkedList *initialisePairLinkedList()
  *
  *  @param     list           pointer to PairLinkedList struct.
  *  @param     documentID     id of the document to look for.
+ *  @return                   pointer found node or null.
  */
 PairNode *searchPairNode(PairLinkedList *list, long documentID)
 {
@@ -85,7 +86,7 @@ bool pushPair(PairLinkedList *list, long documentID)
  *  Checks whether the pair linked list is empty or not.
  *
  *  @param     list     pointer to PairLinkedList struct.
- *  @param              whether the list is empty or not.
+ *  @return             whether the list is empty or not.
  */
 bool isPairLinkedListEmpty(PairLinkedList *list)
 {
@@ -153,7 +154,7 @@ void getTFIDFPairLinkedList(PairLinkedList *list, TFIDF *tfidf, bool isRightWord
 
 
 /*
- *  Gets the size of a PairLinkedList.
+ *  Gets the sizeof of a pair linked list.
  *
  *  @param     list    pointer to PairLinkedList struct.
  *  @return            size of the pair linked list in bytes.

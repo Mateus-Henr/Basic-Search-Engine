@@ -12,7 +12,7 @@
 
 // Function prototypes.
 
-int *initialiseWeightsArray();
+int *initialiseWeightsArray(void);
 
 int getTwoPowerValueGreaterOrEqual(int number);
 
@@ -43,12 +43,12 @@ void initialiseHashtable(Hashtable *hashtable, int sizeSuggestion)
 
 /*
  *  Initialises weight array that is used for generating hash codes.
- *  for words.
+ *  for words. It uses as default size the biggest word rarely used
+ *  in the English language.
  *
- *  @param     size    array's size.
  *  @return                        pointer to the initialised array.
  */
-int *initialiseWeightsArray()
+int *initialiseWeightsArray(void)
 {
     srand(time(NULL));
     int *weights = (int *) malloc(MAXIMUM_WORD_LENGTH * sizeof(int));
@@ -63,10 +63,11 @@ int *initialiseWeightsArray()
 
 
 /*
- *  Gets the two power greater or equal to a given number.
+ *  Gets the closest two power number greater or equal to a given number.
  *  Note: Used to find an M value according to Sedgewick.
  *
  *  @param     number     number to search for the two power.
+ *  @return               closest number to the power of two greater or equal.
  */
 int getTwoPowerValueGreaterOrEqual(int number)
 {
@@ -196,7 +197,9 @@ bool isHashtableEmpty(Hashtable *hashtable)
 
 
 /*
- *  Sorts and then prints the hashtable out.
+ *  Sorts the hashtable by creating a linked list of pointers
+ *  and then adding sorted items to it. After that this list gets
+ *  printed out and deleted at the end.
  *
  *  @param     hashtable     pointer to Hashtable struct.
  */
@@ -233,6 +236,7 @@ void sortAndPrintHashtable(Hashtable *hashtable)
  *  Calculates TD-IDF weight of a given word.
  *
  *  @param     hashtable     pointer to Hashtable struct.
+ *  @param     weights       pointer to the weights array.
  *  @param     tfidf         pointer to TFIDF struct.
  */
 void calculateWeightHashtable(Hashtable *hashtable, double *weights, TFIDF *tfidf)
@@ -331,7 +335,7 @@ void insertionSort(Relevance *array, int n)
 
 
 /*
- *  Gets the size of a hashtable.
+ *  Gets the sizeof of a hashtable.
  *
  *  @param     hashtable    pointer to Hashtable struct.
  *  @return                 size of the hashtable in bytes.

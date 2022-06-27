@@ -13,7 +13,7 @@ typedef struct
     PairNode *tail;
 } PairLinkedList;
 
-PairLinkedList *initialisePairLinkedList();
+PairLinkedList *initialisePairLinkedList(void);
 
 PairNode *searchPairNode(PairLinkedList *list, long documentID);
 

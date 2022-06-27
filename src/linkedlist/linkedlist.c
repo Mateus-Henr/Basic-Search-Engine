@@ -95,7 +95,7 @@ bool push(LinkedList *list, const char *word, long documentID)
  *  Inserts data into a linked list in a sorted fashion.
  *  Note: This method is internally used to get data sorted.
  *
- *  @param     list     pointer to LinkedList struct.
+ *  @param     list             pointer to LinkedList struct.
  *  @param     externalNode     pointer to the externalNode to be added.
  */
 bool pushSorted(LinkedList *list, Node *node)
@@ -197,7 +197,7 @@ void getTFIDFLinkedList(LinkedList *list, TFIDF *tfidf)
 
 
 /*
- *  Gets the sizeof of a linkedlist.
+ *  Gets the sizeof of a linked list.
  *
  *  @param     list    pointer to LinkedList struct.
  *  @return            size of the linked list in bytes.

@@ -1,5 +1,3 @@
-#include <stdbool.h>
-#include "treenode.h"
 /*
  * TP1-AEDS2-UFV-Florestal
  * Mecanismo de Busca Básico
@@ -8,6 +6,8 @@
  * Vitor Ribeiro Lacerda-4675
  * Mateus Henrique Vieira Figueiredo-4707
  */
+#include <stdbool.h>
+#include "treenode.h"
 
 typedef struct
 {

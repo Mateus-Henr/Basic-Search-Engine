@@ -1,7 +1,3 @@
-#include <stdlib.h>
-#include <stddef.h>
-
-#include "pairnode.h"
 /*
  * TP1-AEDS2-UFV-Florestal
  * Mecanismo de Busca Básico
@@ -10,6 +6,11 @@
  * Vitor Ribeiro Lacerda-4675
  * Mateus Henrique Vieira Figueiredo-4707
  */
+#include <stdlib.h>
+#include <stddef.h>
+
+#include "pairnode.h"
+
 
 /*
  *  Initialises PairNode struct with default values.

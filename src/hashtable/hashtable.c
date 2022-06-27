@@ -1,3 +1,11 @@
+/*
+ * TP1-AEDS2-UFV-Florestal
+ * Mecanismo de Busca Básico
+ *
+ * João Victor Graciano Belfort de andrade-4694
+ * Vitor Ribeiro Lacerda-4675
+ * Mateus Henrique Vieira Figueiredo-4707
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -8,14 +16,6 @@
 
 // According to Grammarly the longest word that is actually used in the English language has 45 words.
 #define MAXIMUM_WORD_LENGTH 45
-/*
- * TP1-AEDS2-UFV-Florestal
- * Mecanismo de Busca Básico
- *
- * João Victor Graciano Belfort de andrade-4694
- * Vitor Ribeiro Lacerda-4675
- * Mateus Henrique Vieira Figueiredo-4707
- */
 
 // Function prototypes.
 

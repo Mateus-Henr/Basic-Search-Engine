@@ -1,9 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stddef.h>
-
-#include "linkedlist.h"
 /*
  * TP1-AEDS2-UFV-Florestal
  * Mecanismo de Busca Básico
@@ -12,6 +6,12 @@
  * Vitor Ribeiro Lacerda-4675
  * Mateus Henrique Vieira Figueiredo-4707
  */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stddef.h>
+
+#include "linkedlist.h"
 
 
 // Function prototype.

@@ -1,19 +1,21 @@
-# Mecanismo de Busca Basico 
+# Mecanismo de Busca Básico 
 > Trabalho Prático 01 – AEDES 2 – Trio
 No trabalho, foi sugerido a implementação de um código para a construção de índice invertido para máquinas de busca, a análise do tempo de execução, a relevância dos termos para a consulta, etc. a fim de compreender melhor como funciona a busca de palavras-chave.
 
-# Compilar o codigo no ubuntu
-Como o codigo foi feito por meio da IDE CLion então utilizaremos da cmakefile para compilar o codigo,primeiro execute o codigopara instalar o cmake em seu sistema operacional com o comando:
+# Compilar o codigo no Ubuntu
+Como o código foi feito por meio da IDE CLion então utilizaremos da cmakefile para compilar o código, primeiro tente rodar o Makefile dentro do diretorio build do projeto onde está contido o codigo compilado com o comando:
+
+execute o código para instalar o cmake em seu sistema operacional com o comando:
 ~~~
 $ sudo apt-get install cmake
 ~~~
-Apos a instalação basta abrir o projeto e executar os seguintes comandos:
+Após a instalação basta abrir o projeto e executar os seguintes comandos:
 ~~~
 $ rm -rf build
 $ mkdir build && cd build
 $ cmake ../
 $ make 
-$ ./TP1-AEDES2
+$ ./TP1-AEDS2
 ~~~
 # Colaboradores
 ## João Victor

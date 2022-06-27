@@ -10,7 +10,14 @@
 
 #define FILE_ERROR "\nCouldn't open the file: '%s' or error trying to insert into the hashtable.\n\n"
 #define INVALID_VALUE "\nInvalid value.\n\n"
-
+/*
+ * TP1-AEDS2-UFV-Florestal
+ * Mecanismo de Busca Básico
+ *
+ * João Victor Graciano Belfort de andrade-4694
+ * Vitor Ribeiro Lacerda-4675
+ * Mateus Henrique Vieira Figueiredo-4707
+ */
 
 // Function prototypes.
 

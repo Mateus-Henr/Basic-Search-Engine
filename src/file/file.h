@@ -1,6 +1,14 @@
 #include <stdbool.h>
 #include "patricia/patricia.h"
 #include "hashtable/hashtable.h"
+/*
+ * TP1-AEDS2-UFV-Florestal
+ * Mecanismo de Busca Básico
+ *
+ * João Victor Graciano Belfort de andrade-4694
+ * Vitor Ribeiro Lacerda-4675
+ * Mateus Henrique Vieira Figueiredo-4707
+ */
 
 char **readFilenamesHashtable(Hashtable *hashtable, char *inputFilename, int *numFiles);
 

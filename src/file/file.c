@@ -8,7 +8,14 @@
 
 #define INPUT_FILES_PATH "../files/"
 #define FILE_ERROR "\nCouldn't open the file: '%s'\n\n"
-
+/*
+ * TP1-AEDS2-UFV-Florestal
+ * Mecanismo de Busca Básico
+ *
+ * João Victor Graciano Belfort de andrade-4694
+ * Vitor Ribeiro Lacerda-4675
+ * Mateus Henrique Vieira Figueiredo-4707
+ */
 
 /*
  *  Reads filenames that contain input texts.

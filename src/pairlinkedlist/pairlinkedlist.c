@@ -3,7 +3,14 @@
 #include <stddef.h>
 
 #include "pairlinkedlist.h"
-
+/*
+ * TP1-AEDS2-UFV-Florestal
+ * Mecanismo de Busca Básico
+ *
+ * João Victor Graciano Belfort de andrade-4694
+ * Vitor Ribeiro Lacerda-4675
+ * Mateus Henrique Vieira Figueiredo-4707
+ */
 
 /*
  *  Initialises PairLinkedList with default values.

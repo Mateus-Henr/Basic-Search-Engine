@@ -204,7 +204,7 @@ void sortAndPrintHashtable(Hashtable *hashtable)
 {
     if (isHashtableEmpty(hashtable))
     {
-        printf("EMPTY.\n");
+        printf("\nEMPTY.\n");
         return;
     }
 

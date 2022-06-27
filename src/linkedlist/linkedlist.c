@@ -158,7 +158,7 @@ void printLinkedList(LinkedList *list)
 {
     if (isLinkedListEmpty(list))
     {
-        printf("EMPTY.\n");
+        printf("\nEMPTY.\n");
         return;
     }
 

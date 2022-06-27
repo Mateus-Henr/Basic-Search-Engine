@@ -42,7 +42,7 @@ void printTree(PATRICIA *patricia)
 {
     if (!patricia->root)
     {
-        printf("EMPTY.\n");
+        printf("\nEMPTY.\n");
         return;
     }
 

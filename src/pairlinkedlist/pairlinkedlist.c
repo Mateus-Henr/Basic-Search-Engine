@@ -102,7 +102,7 @@ void printPairLinkedList(PairLinkedList *list)
 {
     if (isPairLinkedListEmpty(list))
     {
-        printf("EMPTY.\n");
+        printf("\nEMPTY.\n");
         return;
     }
 

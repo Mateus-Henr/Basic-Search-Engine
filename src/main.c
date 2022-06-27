@@ -5,7 +5,7 @@
 #include <limits.h>
 #include "file/file.h"
 
-#define FILE_ERROR "\nCouldn't open the file: '%s' or error trying to insertIntoHashtable into the hashtable.\n\n"
+#define FILE_ERROR "\nCouldn't open the file: '%s' or error trying to insert into the hashtable.\n\n"
 #define INVALID_VALUE "\nInvalid value.\n\n"
 
 
